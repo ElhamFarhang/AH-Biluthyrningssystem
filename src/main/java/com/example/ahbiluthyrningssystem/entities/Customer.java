@@ -1,8 +1,6 @@
 package com.example.ahbiluthyrningssystem.entities;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Customer {
@@ -14,7 +12,7 @@ public class Customer {
     private String first_name;
     @Column (length = 30, nullable = false)
     private String last_name;
-    @Column (length = 12, nullable = false, unique = true)
+    @Column (length = 15, nullable = false, unique = true)
     private String personal_number;
     @Column (length = 30, nullable = false)
     private String address;
@@ -22,8 +20,8 @@ public class Customer {
     private String email;
     @Column (length = 14, nullable = true)
     private String phone_number;
-    @Column
-    private Long order_id;
+    @JoinColumn (name = "order_id", nullable = true)
+    private Long order_id ;
 
     public Customer() {
     }
@@ -84,6 +82,13 @@ public class Customer {
         this.phone_number = phone_number;
     }
 
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
+    }
 
     @Override
     public String toString() {
@@ -95,7 +100,7 @@ public class Customer {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phone_number='" + phone_number + '\'' +
-//                ", orders=" + orders +
+                ", order_id=" + order_id +
                 ']';
     }
 }

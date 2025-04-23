@@ -1,0 +1,95 @@
+package com.example.ahbiluthyrningssystem.entities;
+
+import jakarta.persistence.*;
+
+import java.util.Date;
+
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(length = 12, nullable = false)
+    private Date dateCreated;
+    @Column(length = 12, nullable = false)
+    private Date dateStart;
+    @Column(length = 12, nullable = false)
+    private Date dateEnd;
+    @Column(length = 12, nullable = false)
+    private int daysTotal;                      //behövs?
+    @Column(length = 10, nullable = false)
+    private boolean active;
+    @Column(length = 10, nullable = false)
+    private boolean canceled=false;
+    @Column(length = 10, nullable = false)
+    private int totalCost;
+/*    @Column(length = 40, nullable = false)
+    private Customer customer;*/
+/*    @Column(length = 40, nullable = false)
+    private Car car;*/              //cars-lista?
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public int getDaysTotal() {
+        return daysTotal;
+    }
+
+    public void setDaysTotal(int daysTotal) {
+        this.daysTotal = daysTotal;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public int getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
+}

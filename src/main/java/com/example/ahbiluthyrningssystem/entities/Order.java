@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -23,10 +24,19 @@ public class Order {                //Anna
     private boolean canceled=false;
     @Column(length = 10, nullable = false)
     private int totalCost;
-/*    @Column(length = 40, nullable = false)
-    private Customer customer;*/
-/*    @Column(length = 40, nullable = false)
-    private Car car;*/              //cars-lista?
+    //@JsonIgnoreProperties("orders")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private Customer customer;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private Car car;
+
+
+    public Order() {
+    }
+
+
 
 
     public int getId() {

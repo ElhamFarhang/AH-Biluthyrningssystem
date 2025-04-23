@@ -102,4 +102,20 @@ public class Order {                //Anna
     public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

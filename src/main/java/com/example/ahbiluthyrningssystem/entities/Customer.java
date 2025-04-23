@@ -1,7 +1,7 @@
 package com.example.ahbiluthyrningssystem.entities;
 
 import jakarta.persistence.*;
-
+//---------------------Elham- class Customer--------------
 @Entity
 public class Customer {
 

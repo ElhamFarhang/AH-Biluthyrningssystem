@@ -9,7 +9,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     @Column (length = 30, nullable = false)
     private String first_name;
     @Column (length = 30, nullable = false)
@@ -29,11 +29,11 @@ public class Customer {
     public Customer() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -96,14 +96,14 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer[" +
-                "customer_id=" + id +
+                "id=" + id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", personal_number='" + personal_number + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phone_number='" + phone_number + '\'' +
-                ", order_id=" + orders +
+                ", orders=" + orders +
                 ']';
     }
 }

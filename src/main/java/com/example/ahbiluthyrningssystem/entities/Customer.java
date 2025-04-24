@@ -2,12 +2,14 @@ package com.example.ahbiluthyrningssystem.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customer_id;
+    private Long id;
     @Column (length = 30, nullable = false)
     private String first_name;
     @Column (length = 30, nullable = false)
@@ -20,18 +22,19 @@ public class Customer {
     private String email;
     @Column (length = 14, nullable = true)
     private String phone_number;
-    @JoinColumn (name = "order_id", nullable = true)
-    private Long order_id ;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id")
+    private List<Order> orders ;
 
     public Customer() {
     }
 
-    public Long getCustomer_id() {
-        return customer_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomer_id(Long customer_id) {
-        this.customer_id = customer_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirst_name() {
@@ -82,25 +85,25 @@ public class Customer {
         this.phone_number = phone_number;
     }
 
-    public Long getOrder_id() {
-        return order_id;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrder_id(Long order_id) {
-        this.order_id = order_id;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
     public String toString() {
         return "Customer[" +
-                "customer_id=" + customer_id +
+                "customer_id=" + id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", personal_number='" + personal_number + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phone_number='" + phone_number + '\'' +
-                ", order_id=" + order_id +
+                ", order_id=" + orders +
                 ']';
     }
 }

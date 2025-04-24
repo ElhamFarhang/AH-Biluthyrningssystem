@@ -1,10 +1,12 @@
 package com.example.ahbiluthyrningssystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "`order`")
 public class Order {                //Anna
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +25,19 @@ public class Order {                //Anna
     private boolean canceled=false;
     @Column(length = 10, nullable = false)
     private int totalCost;
-/*    @Column(length = 40, nullable = false)
-    private Customer customer;*/
-/*    @Column(length = 40, nullable = false)
-    private Car car;*/              //cars-lista?
+    //@JsonIgnoreProperties("orders")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private Customer customer;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
+    private Car car;
+
+
+    public Order() {
+    }
+
+
 
 
     public int getId() {
@@ -91,5 +102,21 @@ public class Order {                //Anna
 
     public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

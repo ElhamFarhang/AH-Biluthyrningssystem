@@ -9,7 +9,7 @@ import java.util.Date;
 public class Order {                //Anna
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int order_id;
     @Column(length = 12, nullable = false)
     private Date dateCreated;
     @Column(length = 12, nullable = false)
@@ -29,7 +29,7 @@ public class Order {                //Anna
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "customer_id", nullable = false)
     private Car car;
 
 
@@ -40,11 +40,11 @@ public class Order {                //Anna
 
 
     public int getId() {
-        return id;
+        return order_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.order_id = id;
     }
 
     public Date getDateCreated() {

@@ -22,10 +22,11 @@ public class Order {                //Anna
     private boolean canceled=false;
     @Column(length = 10, nullable = false)
     private Integer totalCost = 0;
-    //@JsonIgnoreProperties("orders")
+    @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "customer_id", nullable = false)
     private Customer customer;
+    @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "car_id", nullable = true)
     private Car car;

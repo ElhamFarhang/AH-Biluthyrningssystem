@@ -10,7 +10,8 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column (name = "Customer-id")
+    private Integer id;
     @Column (length = 30, nullable = false)
     private String first_name;
     @Column (length = 30, nullable = false)
@@ -23,8 +24,7 @@ public class Customer {
     private String email;
     @Column (length = 14, nullable = true)
     private String phone_number;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders ;
 
     public Customer() {

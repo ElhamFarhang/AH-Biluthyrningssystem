@@ -1,4 +1,4 @@
-package com.example.Enterprise.Java.Individuell.laboration.ne.Exceptions;
+package com.example.ahbiluthyrningssystem.controllers;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;

@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
     //  Wille
-    @GetMapping("/cars")
+    @GetMapping({"/cars", "/admin/cars"})
     public ResponseEntity<List<Car>> getAvailableCars() {
         return null;
     }

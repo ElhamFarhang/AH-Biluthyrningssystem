@@ -6,46 +6,43 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "`order`")
+@Table(name = "ORDERS")
 public class Order {                //Anna
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int order_id;
+    @Column(name = "order_id")
+    private Integer id;
     @Column(length = 12, nullable = false)
     private Date dateCreated;
     @Column(length = 12, nullable = false)
     private Date dateStart;
     @Column(length = 12, nullable = false)
     private Date dateEnd;
-    @Column(length = 12, nullable = false)
-    private int daysTotal;                      //behövs?
     @Column(length = 10, nullable = false)
     private boolean active;
     @Column(length = 10, nullable = false)
     private boolean canceled=false;
     @Column(length = 10, nullable = false)
-    private int totalCost;
+    private Integer totalCost = 0;
     //@JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
+    //@JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "customer_id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = true)
     private Car car;
 
 
     public Order() {
     }
 
-
-
-
-    public int getId() {
-        return order_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId(int id) {
-        this.order_id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getDateCreated() {
@@ -72,14 +69,6 @@ public class Order {                //Anna
         this.dateEnd = dateEnd;
     }
 
-    public int getDaysTotal() {
-        return daysTotal;
-    }
-
-    public void setDaysTotal(int daysTotal) {
-        this.daysTotal = daysTotal;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -96,11 +85,11 @@ public class Order {                //Anna
         this.canceled = canceled;
     }
 
-    public int getTotalCost() {
+    public Integer getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(Integer totalCost) {
         this.totalCost = totalCost;
     }
 

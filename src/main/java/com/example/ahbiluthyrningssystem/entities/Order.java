@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "ORDERS")
 public class Order {                //Anna
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +25,11 @@ public class Order {                //Anna
     private Integer totalCost = 0;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "customer_id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "car_id", nullable = true)
+    @JoinColumn(referencedColumnName = "id", nullable = true)
     private Car car;
 
 

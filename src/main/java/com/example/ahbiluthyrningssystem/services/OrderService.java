@@ -24,21 +24,27 @@ public class OrderService implements OrderServiceInterface {        //Anna
 
     @Override
     public Order getOrderById(Integer id) {
-        return null;
+        orderRepository.findById(id).orElseThrow(); //TODO skapa exception
+        return orderRepository.findById(id).get();
     }
+
 
     @Override
     public Order updateOrder(Integer id, Order order) {
-        return null;
+        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
+        return orderRepository.save(order);
     }
 
     @Override
     public Order addOrder(Order order) {
-        return null;
+        return orderRepository.save(order);
+
     }
 
     @Override
     public void deleteOrder(Integer id) {
+        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
+        orderRepository.deleteById(id);
 
     }
 

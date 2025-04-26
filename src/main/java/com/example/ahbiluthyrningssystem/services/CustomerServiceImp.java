@@ -83,7 +83,7 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new BadRequestException("Email");
         if (customer.getAddress() == null)
             throw new BadRequestException("Address");
-        if (customerToUpdate.get().getPersonal_number() != customer.getPersonal_number())
+        if (!(customerToUpdate.get().getPersonal_number().equals(customer.getPersonal_number()) ))
             throw new NotAcceptableException(customer.getPersonal_number());
         customer.setCustomer_id(id);
         return customerRepository.save(customer);

@@ -32,7 +32,6 @@ public class CustomerServiceImp implements CustomerServiceInterface {
         this.orderRepository = orderRepository;
     }
 
-
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();

@@ -28,7 +28,6 @@ public class OrderService implements OrderServiceInterface {        //Anna
         return orderRepository.findById(id).get();
     }
 
-
     @Override
     public Order updateOrder(Integer id, Order order) {
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception

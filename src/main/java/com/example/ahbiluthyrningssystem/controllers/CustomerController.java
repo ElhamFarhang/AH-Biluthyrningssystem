@@ -30,6 +30,13 @@ public class CustomerController {
         return ResponseEntity.ok(customerServiceImp.getAllCars());
     }
 
+//
+//    @GetMapping("/custs")
+//    public ResponseEntity<List<Customer>> getAvailableCustomers() {
+//        return ResponseEntity.ok(customerServiceImp.getAllCust());
+//    }
+
+
     //  Wille & Elham
     @PostMapping("/addorder")
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
@@ -60,4 +67,5 @@ public class CustomerController {
     public ResponseEntity<Customer> updateInfo(@PathVariable("id") Integer id, @RequestBody Customer customer) {
         return ResponseEntity.ok(customerServiceImp.updateInfo(id, customer));
     }
+
 }

@@ -50,7 +50,7 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new ResourceNotFoundException("Order", "id", id);
         else {
             Order order = orderToCancel.get();
-            order.setActive(false);
+            order.setCanceled(true);
             orderRepository.save(order);
         }
     }

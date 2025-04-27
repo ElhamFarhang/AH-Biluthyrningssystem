@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;

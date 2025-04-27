@@ -10,7 +10,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column (length = 30, nullable = false)
     private String first_name;
     @Column (length = 30, nullable = false)
@@ -29,11 +29,11 @@ public class Customer {
     public Customer() {
     }
 
-    public int getCustomer_id() {
+    public Integer getCustomer_id() {
         return id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public void setCustomer_id(Integer customer_id) {
         this.id = customer_id;
     }
 
@@ -107,3 +107,4 @@ public class Customer {
                 ']';
     }
 }
+//--------------------- Elham - class Customer --------------

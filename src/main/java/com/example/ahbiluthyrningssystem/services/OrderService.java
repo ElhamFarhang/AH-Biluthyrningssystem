@@ -1,16 +1,23 @@
 package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService implements OrderServiceInterface {        //Anna
 
     private final OrderRepository orderRepository;
+    //private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
@@ -36,6 +43,7 @@ public class OrderService implements OrderServiceInterface {        //Anna
 
     @Override
     public Order addOrder(Order order) {
+        FUNCTIONALITY_LOGGER.info("Order nr {} added", order.getId());
         return orderRepository.save(order);
 
     }
@@ -45,6 +53,32 @@ public class OrderService implements OrderServiceInterface {        //Anna
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception
         orderRepository.deleteById(id);
 
+    }
+
+    // Elham - cancelOrder
+    @Override
+    public void cancelOrder(Integer id) {
+        Optional<Order> orderToCancel = orderRepository.findById(id);
+        if (!orderToCancel.isPresent())
+            throw new ResourceNotFoundException("Order", "id", id);
+        else {
+            Order order = orderToCancel.get();
+            order.setActive(false);
+            orderRepository.save(order);
+        }
+    }
+
+    // Elham - getActiveOrders
+    @Override
+    public List<Order> getActiveOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<Order> activeOrders = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.isActive() == true) {
+                activeOrders.add(order);
+            }
+        }
+        return activeOrders;
     }
 
 

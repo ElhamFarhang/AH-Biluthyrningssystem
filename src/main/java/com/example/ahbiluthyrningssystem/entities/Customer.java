@@ -23,8 +23,7 @@ public class Customer {
     private String email;
     @Column (length = 14, nullable = true)
     private String phone_number;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders ;
 
     public Customer() {

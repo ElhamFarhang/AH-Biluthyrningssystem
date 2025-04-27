@@ -11,6 +11,8 @@ public interface OrderServiceInterface {
     Order updateOrder(Integer id, Order order);
     Order addOrder(Order order);
     void deleteOrder(Integer id);
+    void cancelOrder(Integer id);
+    List<Order> getActiveOrders();
 
    /*
 ---customer

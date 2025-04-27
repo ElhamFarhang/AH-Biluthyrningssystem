@@ -1,0 +1,37 @@
+<!--Applikationen ska logga händelser till en loggfil när något skapas, ändras eller-->
+<!--        tas bort. Det ska framgå vem som gjort vad.-->
+<!--        Valfritt att även skriva ut dessa loggar i konsolen.-->
+
+
+<Configuration status="info">
+
+<properties>
+    <property name="layout">%d [%t] %-5level %logger - %m%n</property>
+</properties>
+
+<Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+        <PatternLayout pattern="${layout}" />
+    </Console>
+
+    <File name="LogFile" fileName="logs/app.log">
+        <PatternLayout pattern="${layout}" />
+    </File>
+
+
+    <File name="FunctionalityLog" fileName="logs/functionality.log">
+        <PatternLayout pattern="${layout}"/>
+    </File>
+</Appenders>
+
+<Loggers>
+    <Root level="info">
+        <AppenderRef ref="Console" />
+        <AppenderRef ref="LogFile" />
+    </Root>
+
+    <Logger name="functionality" level="info" additivity="false">
+        <AppenderRef ref="FunctionalityLog"/>
+    </Logger>
+</Loggers>
+</Configuration>

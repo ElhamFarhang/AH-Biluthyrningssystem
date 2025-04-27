@@ -3,8 +3,6 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
-import com.example.ahbiluthyrningssystem.repositories.CarRepository;
-import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.services.CarService;
 import com.example.ahbiluthyrningssystem.services.CustomerServiceImp;
 import com.example.ahbiluthyrningssystem.services.OrderService;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 //--------------------- Wille & Elham - NotAcceptableException --------------
 @RestController
@@ -31,8 +30,8 @@ public class CustomerController {
 
     //  Wille & Elham
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAvailableCars() {
-        return ResponseEntity.ok(carService.getAllCars());
+    public ResponseEntity<List<Car>> getAvailableCars(Integer id) {
+        return ResponseEntity.ok(carService.getAvailableCars());
     }
 
     // Elham

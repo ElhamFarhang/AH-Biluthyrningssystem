@@ -23,8 +23,19 @@ public class CustomerServiceImp implements CustomerServiceInterface {
         this.customerRepository = customerRepository;
     }
 
+    @Override
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer getCustomerById(int id) {
+        return null;
+    }
+
+    @Override
+    public Customer addCustomer(Customer customer) {
+        return null;
     }
 
     @Override
@@ -42,6 +53,11 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new NotAcceptableException(customer.getPersonal_number());
         customer.setCustomer_id(id);
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer deleteCustomer(Integer id) {
+        return null;
     }
 
 }

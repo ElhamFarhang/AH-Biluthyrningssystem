@@ -2,6 +2,8 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 public class OrderService implements OrderServiceInterface {        //Anna
 
     private final OrderRepository orderRepository;
+    private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
@@ -36,6 +40,7 @@ public class OrderService implements OrderServiceInterface {        //Anna
 
     @Override
     public Order addOrder(Order order) {
+        FUNCTIONALITY_LOGGER.info("Order nr {} added", order.getId());
         return orderRepository.save(order);
 
     }

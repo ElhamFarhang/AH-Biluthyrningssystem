@@ -1,18 +1,14 @@
-<!--Applikationen ska logga händelser till en loggfil när något skapas, ändras eller-->
-<!--        tas bort. Det ska framgå vem som gjort vad.-->
-<!--        Valfritt att även skriva ut dessa loggar i konsolen.-->
-
-
+<!--Anna-->
 <Configuration status="info">
 
 <properties>
-    <property name="layout">%d [%t] %-5level %logger - %m%n</property>
+    <property name="layout"> %d %-5level - %m%n </property>
 </properties>
 
 <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
         <PatternLayout disableAnsi="false"
-                       pattern="%highlight{[%d] - %msg%n}{FATAL=red, ERROR=blue, WARN=yellow, INFO=green,}"/>
+                       pattern="%highlight{[%d] %-5level - %msg%n}{FATAL=brown, ERROR=red, WARN=yellow, INFO=green}"/>
     </Console>
 
     <File name="LogFile" fileName="logs/app.log">

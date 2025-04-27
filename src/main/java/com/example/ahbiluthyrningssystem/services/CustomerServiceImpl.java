@@ -14,12 +14,12 @@ import java.util.Optional;
 
 //--------------------- Elham - class CustomerServiceImp --------------
 @Service
-public class CustomerServiceImp implements CustomerServiceInterface {
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerServiceImp(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

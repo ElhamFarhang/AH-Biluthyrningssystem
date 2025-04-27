@@ -40,6 +40,25 @@ public class CustomerController {
         return ResponseEntity.ok(customerServiceImp.getAllCustomers());
     }
 
+    // Elham
+    @GetMapping("/admin/customer/{id}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(customerServiceImp.getCustomerById(id));
+    }
+
+    // Elham
+    @PostMapping("/admin/addcustomer")
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+        return ResponseEntity.ok(customerServiceImp.addCustomer(customer));
+    }
+
+    // Elham
+    @DeleteMapping("/admin/removecustomer/{id}")
+    public ResponseEntity<String> deleteCustomerById(@PathVariable("id") Integer id) {
+        customerServiceImp.deleteCustomerById(id);
+        return ResponseEntity.ok("Customer with Id:" + id + " has been successfully deleted.");
+    }
+
     //  Wille & Elham
     @PostMapping("/addorder")
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
@@ -50,7 +69,7 @@ public class CustomerController {
     @PutMapping("/cancelorder/{id}")
     public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id) {
         orderService.cancelOrder(id);
-        return ResponseEntity.ok("Order with ID \" + id + \" has been successfully cancelled.");
+        return ResponseEntity.ok("Order with Id: " + id + " has been successfully cancelled.");
     }
 
     //  Wille & Elham

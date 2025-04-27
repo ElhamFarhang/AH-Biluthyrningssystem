@@ -1,9 +1,7 @@
 package com.example.ahbiluthyrningssystem.services;
 
 
-import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
-import com.example.ahbiluthyrningssystem.entities.Order;
 
 import java.util.List;
 
@@ -14,5 +12,5 @@ public interface CustomerServiceInterface {
     Customer getCustomerById(Integer id);
     Customer addCustomer(Customer customer);
     Customer updateInfo(Integer id,Customer customer);
-    Customer deleteCustomer(Integer id);
+    void deleteCustomerById(Integer id);
 }

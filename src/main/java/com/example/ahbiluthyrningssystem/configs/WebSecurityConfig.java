@@ -23,27 +23,24 @@ public class WebSecurityConfig {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/v1/cars").hasRole("CUSTOMER")
-//                        .requestMatchers("/api/v1/addorder").hasRole("CUSTOMER")
-//                        .requestMatchers("/api/v1/cancelorder/**").hasRole("CUSTOMER")
-//                        .requestMatchers("/api/v1/activeorders").hasRole("CUSTOMER")
-//                        .requestMatchers("/api/v1/orders").hasRole("CUSTOMER")
-//                        .requestMatchers("/api/v1/updateinfo/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/cars").hasRole("USER")
+                        .requestMatchers("/api/v1/addorder").hasRole("USER")
+                        .requestMatchers("/api/v1/cancelorder/**").hasRole("USER")
+                        .requestMatchers("/api/v1/activeorders").hasRole("USER")
+                        .requestMatchers("/api/v1/orders").hasRole("USER")
+                        .requestMatchers("/api/v1/updateinfo/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/cars").hasRole("ADMIN")
-//
-//
-//                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-
-
-
+                        .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/cars").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/allcars").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/addcars").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/updatecar").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/removecar").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/orders").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/removeorders").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/removeorders-beforedate/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf-> csrf.disable());
@@ -58,37 +55,37 @@ public class WebSecurityConfig {
                 .roles("ADMIN")
                 .build();
 
-//        UserDetails Anna = User
-//                .withUsername("Anna")
-//                .password("{noop}1234")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails Erik = User
-//                .withUsername("Erik")
-//                .password("{noop}5678")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails Maria = User
-//                .withUsername("Maria")
-//                .password("{noop}9101")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails Johan = User
-//                .withUsername("Johan")
-//                .password("{noop}3456")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails Elin = User
-//                .withUsername("Elin")
-//                .password("{noop}7890")
-//                .roles("USER")
-//                .build();
+        UserDetails Anna = User
+                .withUsername("Anna")
+                .password("{noop}1234")
+                .roles("USER")
+                .build();
 
-        return new InMemoryUserDetailsManager(admin);
+        UserDetails Erik = User
+                .withUsername("Erik")
+                .password("{noop}5678")
+                .roles("USER")
+                .build();
+
+        UserDetails Maria = User
+                .withUsername("Maria")
+                .password("{noop}9101")
+                .roles("USER")
+                .build();
+
+        UserDetails Johan = User
+                .withUsername("Johan")
+                .password("{noop}3456")
+                .roles("USER")
+                .build();
+
+        UserDetails Elin = User
+                .withUsername("Elin")
+                .password("{noop}7890")
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, Anna, Erik, Maria, Johan, Elin);
     }
 
 }

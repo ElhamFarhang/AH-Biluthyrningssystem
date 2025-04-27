@@ -3,8 +3,6 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
-import com.example.ahbiluthyrningssystem.repositories.CarRepository;
-import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.services.CarService;
 import com.example.ahbiluthyrningssystem.services.CustomerServiceImp;
 import com.example.ahbiluthyrningssystem.services.OrderService;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 //--------------------- Wille & Elham - NotAcceptableException --------------
 @RestController
@@ -29,16 +28,11 @@ public class CustomerController {
         this.customerServiceImp = customerServiceImp;
     }
 
+
     //  Wille & Elham
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAvailableCars() {
-        return ResponseEntity.ok(carService.getAllCars());
-    }
-
-    // Elham
-    @GetMapping("/admin/customers")
-    public ResponseEntity<List<Customer>> getAvailableCustomers() {
-        return ResponseEntity.ok(customerServiceImp.getAllCustomers());
+    public ResponseEntity<List<Car>> getAvailableCars(Integer id) {
+        return ResponseEntity.ok(carService.getAvailableCars());
     }
 
     //  Wille & Elham
@@ -51,7 +45,7 @@ public class CustomerController {
     @PutMapping("/cancelorder/{id}")
     public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id) {
         orderService.cancelOrder(id);
-        return ResponseEntity.ok("Order with ID \" + id + \" has been successfully cancelled.");
+        return ResponseEntity.ok("Order with Id: " + id + " has been successfully cancelled.");
     }
 
     //  Wille & Elham

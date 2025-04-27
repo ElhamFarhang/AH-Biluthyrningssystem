@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-//--------------------- Elham - CustomerServiceImp --------------
+//--------------------- Elham - class CustomerServiceImp --------------
 @Service
 public class CustomerServiceImp implements CustomerServiceInterface {
 
@@ -23,8 +23,30 @@ public class CustomerServiceImp implements CustomerServiceInterface {
         this.customerRepository = customerRepository;
     }
 
+    @Override
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer getCustomerById(Integer id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (!customer.isPresent())
+            throw new ResourceNotFoundException("Customer", "id", id);
+        return customer.get();
+    }
+
+    @Override
+    public Customer addCustomer(Customer customer) {
+        if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty())
+            throw new BadRequestException("FirstName and lastName");
+        if (customer.getPersonal_number() == null)
+            throw new BadRequestException("Personal_number");
+        if (customer.getAddress() == null)
+            throw new BadRequestException("Address_Id");
+        if (customer.getEmail().isEmpty())
+            throw new BadRequestException("Email");
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -38,10 +60,18 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new BadRequestException("Email");
         if (customer.getAddress().isEmpty())
             throw new BadRequestException("Address");
-        if (!(customerToUpdate.get().getPersonal_number().equals(customer.getPersonal_number()) ))
+        if (!(customerToUpdate.get().getPersonal_number().equals(customer.getPersonal_number())))
             throw new NotAcceptableException(customer.getPersonal_number());
         customer.setCustomer_id(id);
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public void deleteCustomerById(Integer id) {
+        if (!customerRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Customer", "id", id);
+        }
+        customerRepository.deleteById(id);
     }
 
 }

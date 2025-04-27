@@ -8,7 +8,7 @@
 <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
         <PatternLayout disableAnsi="false"
-                       pattern="%highlight{[%d] %-5level - %msg%n}{FATAL=brown, ERROR=red, WARN=yellow, INFO=green}"/>
+                       pattern="%highlight{[%d] %-5level - %msg%n}{FATAL=blue, ERROR=red, WARN=yellow, INFO=green}"/>
     </Console>
 
     <File name="LogFile" fileName="logs/app.log">

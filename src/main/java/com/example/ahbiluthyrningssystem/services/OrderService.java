@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderService implements OrderServiceInterface {        //Anna
 
     private final OrderRepository orderRepository;
-    private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
+    //private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired

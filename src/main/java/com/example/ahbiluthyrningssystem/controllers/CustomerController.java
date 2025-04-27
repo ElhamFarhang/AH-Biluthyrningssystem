@@ -28,7 +28,6 @@ public class CustomerController {
         this.customerServiceImp = customerServiceImp;
     }
 
-
     //  Wille & Elham
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAvailableCars(Integer id) {

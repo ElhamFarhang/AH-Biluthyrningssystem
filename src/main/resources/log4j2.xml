@@ -11,7 +11,8 @@
 
 <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-        <PatternLayout pattern="${layout}" />
+        <PatternLayout disableAnsi="false"
+                       pattern="%highlight{[%d] - %msg%n}{FATAL=red, ERROR=blue, WARN=yellow, INFO=green,}"/>
     </Console>
 
     <File name="LogFile" fileName="logs/app.log">

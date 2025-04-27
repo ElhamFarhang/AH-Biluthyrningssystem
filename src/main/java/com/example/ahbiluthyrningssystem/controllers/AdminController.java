@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 
+
+//--------------------- Wille & Elham - class AdminController --------------
 @RestController
 @RequestMapping("/api/v1/admin")
 public class AdminController {

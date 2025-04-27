@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-//--------------------- Wille & Elham - NotAcceptableException --------------
+//--------------------- Wille & Elham - class CustomerController --------------
 @RestController
 @RequestMapping("/api/v1")
 public class CustomerController {

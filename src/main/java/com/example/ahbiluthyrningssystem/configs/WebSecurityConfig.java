@@ -87,5 +87,5 @@ public class WebSecurityConfig {
 
         return new InMemoryUserDetailsManager(admin, Anna, Erik, Maria, Johan, Elin);
     }
-
 }
+//--------------------- Elham - class WebSecurityConfig --------------

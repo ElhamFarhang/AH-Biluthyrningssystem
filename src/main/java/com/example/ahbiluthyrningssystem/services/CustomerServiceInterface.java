@@ -10,12 +10,7 @@ import java.util.List;
 //--------------------- Elham - CustomerServiceInterface --------------
 public interface CustomerServiceInterface {
 
-    List<Car> getAllCars();
-    //
-    Order addOrder(Order order);
-    void cancelOrder(Integer id);
-    List<Order> getActiveOrders();
-    //
-    List<Order> getAllOrders();
+
+
     Customer updateInfo(Integer id,Customer customer);
 }

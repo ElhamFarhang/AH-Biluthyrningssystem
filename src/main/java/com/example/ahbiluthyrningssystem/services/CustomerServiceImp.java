@@ -29,7 +29,7 @@ public class CustomerServiceImp implements CustomerServiceInterface {
     }
 
     @Override
-    public Customer getCustomerById(int id) {
+    public Customer getCustomerById(Integer id) {
         return null;
     }
 

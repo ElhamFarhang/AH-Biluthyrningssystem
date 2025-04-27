@@ -50,7 +50,7 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new ResourceNotFoundException("Order", "id", id);
         else {
             Order order = orderToCancel.get();
-            order.setCanceled(true);
+            order.setActive(false);
             orderRepository.save(order);
         }
     }
@@ -81,11 +81,15 @@ public class CustomerServiceImp implements CustomerServiceInterface {
             throw new BadRequestException("FirstName and lastName");
         if (customer.getEmail().isEmpty())
             throw new BadRequestException("Email");
-        if (customer.getAddress() == null)
+        if (customer.getAddress().isEmpty())
             throw new BadRequestException("Address");
         if (!(customerToUpdate.get().getPersonal_number().equals(customer.getPersonal_number()) ))
             throw new NotAcceptableException(customer.getPersonal_number());
         customer.setCustomer_id(id);
         return customerRepository.save(customer);
     }
+
+//    public List<Customer> getAllCust() {
+//        return customerRepository.findAll();
+//    }
 }

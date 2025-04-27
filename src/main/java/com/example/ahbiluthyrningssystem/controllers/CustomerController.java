@@ -28,35 +28,11 @@ public class CustomerController {
         this.customerServiceImp = customerServiceImp;
     }
 
+
     //  Wille & Elham
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAvailableCars(Integer id) {
         return ResponseEntity.ok(carService.getAvailableCars());
-    }
-
-    // Elham
-    @GetMapping("/admin/customers")
-    public ResponseEntity<List<Customer>> getAvailableCustomers() {
-        return ResponseEntity.ok(customerServiceImp.getAllCustomers());
-    }
-
-    // Elham
-    @GetMapping("/admin/customer/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(customerServiceImp.getCustomerById(id));
-    }
-
-    // Elham
-    @PostMapping("/admin/addcustomer")
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-        return ResponseEntity.ok(customerServiceImp.addCustomer(customer));
-    }
-
-    // Elham
-    @DeleteMapping("/admin/removecustomer/{id}")
-    public ResponseEntity<String> deleteCustomerById(@PathVariable("id") Integer id) {
-        customerServiceImp.deleteCustomerById(id);
-        return ResponseEntity.ok("Customer with Id:" + id + " has been successfully deleted.");
     }
 
     //  Wille & Elham

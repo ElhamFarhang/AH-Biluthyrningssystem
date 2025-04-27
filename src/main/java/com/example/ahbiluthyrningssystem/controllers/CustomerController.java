@@ -24,7 +24,7 @@ public class CustomerController {
     }
 
     //  Wille & Elham
-    @GetMapping("/cars")
+    @GetMapping({"/cars", "/admin/cars"})
     public ResponseEntity<List<Car>> getAvailableCars() {
         return ResponseEntity.ok(customerServiceImp.getAllCars());
     }

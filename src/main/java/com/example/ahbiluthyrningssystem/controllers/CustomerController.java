@@ -3,9 +3,9 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
-import com.example.ahbiluthyrningssystem.services.CarService;
-import com.example.ahbiluthyrningssystem.services.CustomerServiceImp;
-import com.example.ahbiluthyrningssystem.services.OrderService;
+import com.example.ahbiluthyrningssystem.services.CarServiceImpl;
+import com.example.ahbiluthyrningssystem.services.CustomerServiceImpl;
+import com.example.ahbiluthyrningssystem.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +18,13 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    private CustomerServiceImp customerServiceImp;
-    private CarService carService;
-    private OrderService orderService;
+    private CustomerServiceImpl customerServiceImp;
+    private CarServiceImpl carService;
+    private OrderServiceImpl orderService;
 
     // Elham
     @Autowired
-    public CustomerController(CustomerServiceImp customerServiceImp) {
+    public CustomerController(CustomerServiceImpl customerServiceImp) {
         this.customerServiceImp = customerServiceImp;
     }
 

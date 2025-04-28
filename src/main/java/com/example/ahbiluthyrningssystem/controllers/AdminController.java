@@ -3,9 +3,9 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 import java.util.List;
 
-import com.example.ahbiluthyrningssystem.services.CarService;
-import com.example.ahbiluthyrningssystem.services.CustomerServiceImp;
-import com.example.ahbiluthyrningssystem.services.OrderService;
+import com.example.ahbiluthyrningssystem.services.CarServiceImpl;
+import com.example.ahbiluthyrningssystem.services.CustomerServiceImpl;
+import com.example.ahbiluthyrningssystem.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
-    private CustomerServiceImp customerServiceImp;
-    private CarService carService;
-    private OrderService orderService;
+    private CustomerServiceImpl customerServiceImp;
+    private CarServiceImpl carService;
+    private OrderServiceImpl orderService;
 
     @Autowired
-    public AdminController(CustomerServiceImp customerServiceImp, CarService carService, OrderService orderService) {
+    public AdminController(CustomerServiceImpl customerServiceImp, CarServiceImpl carService, OrderServiceImpl orderService) {
         this.customerServiceImp = customerServiceImp;
         this.carService = carService;
         this.orderService = orderService;

@@ -22,15 +22,19 @@ public class CustomerController {
     private CarService carService;
     private OrderService orderService;
 
+    public CustomerController(CustomerServiceImp customerServiceImp, CarService carService, OrderService orderService) {
+        this.customerServiceImp = customerServiceImp;
+        this.carService = carService;
+        this.orderService = orderService;
+    }
+
     // Elham
     @Autowired
-    public CustomerController(CustomerServiceImp customerServiceImp) {
-        this.customerServiceImp = customerServiceImp;
-    }
+
 
     //  Wille & Elham
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAvailableCars(Integer id) {
+    public ResponseEntity<List<Car>> getAvailableCars(){
         return ResponseEntity.ok(carService.getAvailableCars());
     }
 

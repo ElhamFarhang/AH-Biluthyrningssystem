@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class CarService implements CarServiceInterface {
 
     private final CarRepository carRepository;
 
+    @Autowired
     public CarService(CarRepository carRepository) {
         this.carRepository = carRepository;
     }

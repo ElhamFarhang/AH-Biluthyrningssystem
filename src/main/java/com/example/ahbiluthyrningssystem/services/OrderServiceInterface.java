@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderServiceInterface {
@@ -11,26 +12,9 @@ public interface OrderServiceInterface {
     Order updateOrder(Integer id, Order order);
     Order addOrder(Order order);
     void deleteOrder(Integer id);
+    void deleteAllOrdersBeforeDate(Date date);
     void cancelOrder(Integer id);
     List<Order> getActiveOrders();
+    List<Order> getOldOrders(Integer customerId);
 
-   /*
----customer
-    /addorder
-cancelorder
-activeorders
-orders
-
-admin
-----
-activeorders
-orders-historiska
-DELETE /api/v1/admin/removeorder- Ta bort bokning från systemet
- • DELETE /api/v1/admin/removeorders-beforedate/{date}
-  vanligaste hyresperiod (antal dagar)
-  genomsnittlig
-kostnad per hyresorder.
-
-
-    */
 }

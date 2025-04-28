@@ -1,85 +1,36 @@
 package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
-import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
-import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class OrderService implements OrderServiceInterface {        //Anna
+public interface OrderService {
 
-    private final OrderRepository orderRepository;
-    //private static final Logger LOGGER = LogManager.getLogger(OrderService.class);
-    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
+    List<Order> getAllOrders();
+    Order getOrderById(Integer id);
+    Order updateOrder(Integer id, Order order);
+    Order addOrder(Order order);
+    void deleteOrder(Integer id);
+    void cancelOrder(Integer id);
+    List<Order> getActiveOrders();
 
-    @Autowired
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+   /*
+---customer
+    /addorder
+cancelorder
+activeorders
+orders
 
-    @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Order getOrderById(Integer id) {
-        orderRepository.findById(id).orElseThrow(); //TODO skapa exception
-        return orderRepository.findById(id).get();
-    }
-
-    @Override
-    public Order updateOrder(Integer id, Order order) {
-        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Order addOrder(Order order) {
-        FUNCTIONALITY_LOGGER.info("Order nr {} added", order.getId());
-        return orderRepository.save(order);
-
-    }
-
-    @Override
-    public void deleteOrder(Integer id) {
-        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        orderRepository.deleteById(id);
-
-    }
-
-    // Elham - cancelOrder
-    @Override
-    public void cancelOrder(Integer id) {
-        Optional<Order> orderToCancel = orderRepository.findById(id);
-        if (!orderToCancel.isPresent())
-            throw new ResourceNotFoundException("Order", "id", id);
-        else {
-            Order order = orderToCancel.get();
-            order.setActive(false);
-            orderRepository.save(order);
-        }
-    }
-
-    // Elham - getActiveOrders
-    @Override
-    public List<Order> getActiveOrders() {
-        List<Order> orders = orderRepository.findAll();
-        List<Order> activeOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.isActive() == true) {
-                activeOrders.add(order);
-            }
-        }
-        return activeOrders;
-    }
+admin
+----
+activeorders
+orders-historiska
+DELETE /api/v1/admin/removeorder- Ta bort bokning från systemet
+ • DELETE /api/v1/admin/removeorders-beforedate/{date}
+  vanligaste hyresperiod (antal dagar)
+  genomsnittlig
+kostnad per hyresorder.
 
 
+    */
 }

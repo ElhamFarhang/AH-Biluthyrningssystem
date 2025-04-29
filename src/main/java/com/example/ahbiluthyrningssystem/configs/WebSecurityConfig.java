@@ -41,6 +41,7 @@ public class WebSecurityConfig {
 //                        .requestMatchers("/api/v1/admin/orders").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/admin/removeorders").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/admin/removeorders-beforedate/**").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/statistics/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf-> csrf.disable());

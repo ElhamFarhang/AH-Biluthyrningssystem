@@ -5,7 +5,7 @@ import java.util.List;
 
 
 //--------------------- Elham - CustomerServiceInterface --------------
-public interface CustomerServiceInterface {
+public interface CustomerService {
     List<Customer> getAllCustomers();
     Customer getCustomerById(Integer id);
     Customer addCustomer(Customer customer);

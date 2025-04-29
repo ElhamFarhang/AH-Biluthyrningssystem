@@ -2,17 +2,19 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CarService implements CarServiceInterface {
+public class CarServiceImpl implements CarServiceInterface {
 
     private final CarRepository carRepository;
 
-    public CarService(CarRepository carRepository) {
+    @Autowired
+    public CarServiceImpl(CarRepository carRepository) {
         this.carRepository = carRepository;
     }
 

@@ -1,6 +1,7 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
 
+import java.security.Principal;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.services.CarService;
@@ -19,6 +20,7 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
+    private Principal principal;
     private CustomerServiceImp customerServiceImp;
     private CarService carService;
     private OrderService orderService;

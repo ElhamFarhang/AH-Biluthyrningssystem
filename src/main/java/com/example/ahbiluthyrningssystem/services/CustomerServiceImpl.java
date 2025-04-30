@@ -6,8 +6,10 @@ import com.example.ahbiluthyrningssystem.exceptions.NotAcceptableException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +19,14 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+ //   private Principal principal;
+
 
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+ //       principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+ //       Integer id = getCustomerByFirstName(principal.getName());
     }
 
     @Override

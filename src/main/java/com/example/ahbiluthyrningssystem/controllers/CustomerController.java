@@ -8,8 +8,10 @@ import com.example.ahbiluthyrningssystem.services.CustomerServiceImpl;
 import com.example.ahbiluthyrningssystem.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -22,16 +24,12 @@ public class CustomerController {
     private CarServiceImpl carServiceImpl;
     private OrderServiceImpl orderServiceImpl;
 
+    // Elham
+    @Autowired
     public CustomerController(CustomerServiceImpl customerServiceImpl, CarServiceImpl carServiceImpl, OrderServiceImpl orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carServiceImpl;
         this.orderServiceImpl = orderServiceImpl;
-    }
-
-    // Elham
-    @Autowired
-    public CustomerController(CustomerServiceImpl customerServiceImpl) {
-        this.customerServiceImpl = customerServiceImpl;
     }
 
     //  Wille & Elham
@@ -67,8 +65,13 @@ public class CustomerController {
 
     //  Wille & Elham
     @PutMapping("/updateinfo/{id}")
-    public ResponseEntity<Customer> updateInfo(@PathVariable("id") Integer id, @RequestBody Customer customer) {
+    public ResponseEntity<Customer> updateInfo(@PathVariable("id") Integer id, @RequestBody Customer customer, Principal principal) {
         return ResponseEntity.ok(customerServiceImpl.updateInfo(id, customer));
     }
 
+    //Elham
+    @GetMapping("/authenticated")
+    public String authenticated(Principal principal) {
+        return "You are logged as: " + principal.getName();
+    }
 }

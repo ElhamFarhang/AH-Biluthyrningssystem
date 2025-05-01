@@ -4,9 +4,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 import java.security.Principal;
 import java.util.List;
 
-import com.example.ahbiluthyrningssystem.services.CarServiceImpl;
-import com.example.ahbiluthyrningssystem.services.CustomerServiceImpl;
-import com.example.ahbiluthyrningssystem.services.OrderServiceImpl;
+import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,21 +18,15 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
-    private CustomerServiceImpl customerServiceImpl;
-    private CarServiceImpl carServiceImpl;
-    private OrderServiceImpl orderServiceImpl;
+    private CustomerService customerServiceImpl;
+    private CarServiceInterface carServiceImpl;
+    private OrderService orderServiceImpl;
 
     @Autowired
-    public AdminController(CustomerServiceImpl customerServiceImpl, CarServiceImpl carService, OrderServiceImpl orderService) {
+    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
-    }
-
-    //  Wille & Elham
-    @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAvailableCars() {
-        return ResponseEntity.ok(carServiceImpl.getAvailableCars());
     }
 
     //  Wille & Elham
@@ -59,16 +51,32 @@ public class AdminController {
     @DeleteMapping("/removecustomer/{id}")
     public ResponseEntity<String> deleteCustomerById(@PathVariable("id") Integer id) {
         customerServiceImpl.deleteCustomerById(id);
-        return ResponseEntity.ok("Customer with Id:" + id + " has been successfully deleted.");
+        return ResponseEntity.ok("Customer with Id: " + id + " has been successfully deleted.");
+    }
+
+    //  Wille
+    @GetMapping("/allcars")
+    public ResponseEntity<List<Car>> getAllCars() {
+        return ResponseEntity.ok(carServiceImpl.getAllCars());
     }
 
     //  Wille
     @PutMapping("/updatecar")
-    public ResponseEntity<Car> updateCar() {return null;}
+    public ResponseEntity<Car> updateCar(@RequestBody Car car) {
+        return ResponseEntity.ok(carServiceImpl.updateCar(car));
+    }
 
-    //Elham
-    @GetMapping("/authenticated")
-    public String authenticated(Principal principal) {
-        return "You are logged as: " + principal.getName();
+    //  Wille
+    @PostMapping("/addcar")
+    public ResponseEntity<Car> addCar(@RequestBody Car car) {
+        return ResponseEntity.ok(carServiceImpl.addCar(car));
+    }
+
+    //  Wille
+    @DeleteMapping("/removecar")
+    public ResponseEntity<String> deleteCar(@RequestBody Car car) {
+        Car foundCar = carServiceImpl.getCarById(car.getId());
+        carServiceImpl.deleteCar(foundCar);
+        return ResponseEntity.ok("Car with reg num: " + foundCar.getRegistrationNumber() + " has been successfully deleted.");
     }
 }

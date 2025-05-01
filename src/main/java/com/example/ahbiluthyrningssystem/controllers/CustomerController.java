@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -55,7 +56,9 @@ public class CustomerController {
 
     //  Wille & Elham
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrders() {
+    public ResponseEntity<List<Order>> getOrders(Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
+        System.out.println("Name: "+principal.getName());
         return ResponseEntity.ok(orderServiceImpl.getAllOrders());
     }
 

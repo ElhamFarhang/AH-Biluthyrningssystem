@@ -1,6 +1,7 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
 
+import java.security.Principal;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.services.CarServiceImpl;
@@ -64,4 +65,10 @@ public class AdminController {
     //  Wille
     @PutMapping("/updatecar")
     public ResponseEntity<Car> updateCar() {return null;}
+
+    //Elham
+    @GetMapping("/authenticated")
+    public String authenticated(Principal principal) {
+        return "You are logged as: " + principal.getName();
+    }
 }

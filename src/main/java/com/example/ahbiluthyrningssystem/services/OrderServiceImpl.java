@@ -28,6 +28,12 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
 
+    @Override
+    public void setPrinciple(Principal principal) {
+        this.principal = principal;
+    }
+
+
 /*    @Override
     public List<Order> getAllOrders() {
         if(orderRepository.findAll().isEmpty()) {
@@ -60,10 +66,6 @@ public class OrderServiceImpl implements OrderService {        //Anna
         return orderRepository.save(order);
     }*/
 
-    @Override
-    public void setPrinciple(Principal principal) {
-        this.principal = principal;
-    }
 
     @Override
     public Order addOrder(Order order) {

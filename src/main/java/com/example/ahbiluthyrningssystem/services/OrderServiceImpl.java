@@ -112,5 +112,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         return List.of();
     }
 
-
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
 }

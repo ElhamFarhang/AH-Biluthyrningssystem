@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface OrderService {
     void cancelOrder(Integer id);
     List<Order> getActiveOrders();
     List<Order> getOldOrders(Integer customerId);
-
+    void setPrincipal(Principal principal);
 }

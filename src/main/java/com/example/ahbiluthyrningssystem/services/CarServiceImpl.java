@@ -42,11 +42,9 @@ public class CarServiceImpl implements CarServiceInterface {
 
     @Override
     public Car addCar(Car car) {
-        checkIfCarExists(car);
         if(car.getId() != 0) {
             car.setId(0);
         }
-        System.out.println(car.getModel());
         return carRepository.save(car);
     }
 

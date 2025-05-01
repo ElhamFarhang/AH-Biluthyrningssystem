@@ -10,9 +10,6 @@ public interface OrderService {
 
     void setPrinciple(Principal principal);
 
-
-    //public Principal getCurrentUser();
-
     //List<Order> getAllOrders();
     //Order getOrderById(Integer id);
     //Order updateOrder(Integer id, Order order);

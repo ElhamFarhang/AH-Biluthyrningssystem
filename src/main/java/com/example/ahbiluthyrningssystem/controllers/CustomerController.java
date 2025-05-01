@@ -22,16 +22,12 @@ public class CustomerController {
     private CarServiceImpl carServiceImpl;
     private OrderServiceImpl orderServiceImpl;
 
+    // Elham
+    @Autowired
     public CustomerController(CustomerServiceImpl customerServiceImpl, CarServiceImpl carServiceImpl, OrderServiceImpl orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carServiceImpl;
         this.orderServiceImpl = orderServiceImpl;
-    }
-
-    // Elham
-    @Autowired
-    public CustomerController(CustomerServiceImpl customerServiceImpl) {
-        this.customerServiceImpl = customerServiceImpl;
     }
 
     //  Wille & Elham

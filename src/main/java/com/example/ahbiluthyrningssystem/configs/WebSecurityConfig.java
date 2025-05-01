@@ -18,12 +18,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    //  Elham & Wille
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/cars").hasRole("USER")
+                        .requestMatchers("/api/v1/cars").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/v1/addorder").hasRole("USER")
                         .requestMatchers("/api/v1/cancelorder/**").hasRole("USER")
                         .requestMatchers("/api/v1/activeorders").hasRole("USER")
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/cars").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/admin/allcars").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/admin/addcars").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/admin/updatecar").hasRole("ADMIN")

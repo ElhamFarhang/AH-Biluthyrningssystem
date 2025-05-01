@@ -29,6 +29,7 @@ public class Customer {
     private List<Order> orders ;
 
     public Customer() {
+
     }
 
     public Integer getCustomer_id() {

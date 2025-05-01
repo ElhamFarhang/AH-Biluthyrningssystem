@@ -33,7 +33,7 @@ public class AdminController {
 
     //  Wille & Elham
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAvailableCars(Integer id) {
+    public ResponseEntity<List<Car>> getAvailableCars() {
         return ResponseEntity.ok(carServiceImpl.getAvailableCars());
     }
 

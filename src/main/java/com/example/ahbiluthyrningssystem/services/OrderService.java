@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface OrderService {
 
-    void setPrinciple(Principal principal);
+
+    //void setPrinciple(Principal principal);
 
     //List<Order> getAllOrders();
     //Order getOrderById(Integer id);
@@ -17,7 +18,7 @@ public interface OrderService {
 
     Order addOrder(Order order);
     void cancelOrder(Integer id);
-    List<Order> getActiveOrdersCustomer();
+    List<Order> getActiveOrdersCustomer(Integer id);
     List<Order> getOldOrdersCustomer(Integer customerId);
 
     List<Order> getActiveOrdersAdmin();

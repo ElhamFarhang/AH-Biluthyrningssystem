@@ -6,7 +6,7 @@ INSERT INTO CUSTOMER (first_name, last_name, personal_number, address, email, ph
 INSERT INTO CUSTOMER (first_name, last_name, personal_number, address, email, phone_number) VALUES ('Johan', 'Karlsson', '19881122-3456', 'Malmö', 'Johan@mail.com', null );
 INSERT INTO CUSTOMER (first_name, last_name, personal_number, address, email, phone_number) VALUES ('Elin', 'Andersson', '19950505-7890', 'Stockholm', 'Elin@mail.com', '0832565850');
 --------------------- Anna---ORDERS---------------
-INSERT INTO ORDERS (DATE_CREATED, DATE_START, DATE_END, CUSTOMER_ID, CAR_ID, ACTIVE, CANCELED, TOTAL_COST)  VALUES ('2025-01-01', '2025-02-01','2025-07-01',1, null, true, false, 2000);
+INSERT INTO ORDERS (DATE_CREATED, DATE_START, DATE_END, CUSTOMER_ID, CAR_ID, ACTIVE, CANCELED, TOTAL_COST)  VALUES ('2025-01-01', '2025-02-01','2025-07-01',1, null, false, false, 2000);
 INSERT INTO ORDERS (DATE_CREATED, DATE_START, DATE_END, CUSTOMER_ID, CAR_ID, ACTIVE, CANCELED, TOTAL_COST)  VALUES ('2025-01-01', '2025-02-01','2025-05-01',2, null, false, true, 4000);
 INSERT INTO ORDERS (DATE_CREATED, DATE_START, DATE_END, CUSTOMER_ID, CAR_ID, ACTIVE, CANCELED, TOTAL_COST)  VALUES ('2025-02-01', '2025-06-01','2025-07-01',1, null, true, false, 2000);
 INSERT INTO ORDERS (DATE_CREATED, DATE_START, DATE_END, CUSTOMER_ID, CAR_ID, ACTIVE, CANCELED, TOTAL_COST)  VALUES ('2025-01-01', '2025-02-01','2025-04-01',3, null, false, false, 7000);

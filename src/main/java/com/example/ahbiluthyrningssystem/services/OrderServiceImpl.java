@@ -6,6 +6,8 @@ import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -19,18 +21,15 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {        //Anna
 
     private Principal principal;
+
+Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
     private final OrderRepository orderRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-    }
-
-
-    @Override
-    public void setPrinciple(Principal principal) {
-        this.principal = principal;
     }
 
 
@@ -69,7 +68,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public Order addOrder(Order order) {
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", order.getId());             //TODO Lägga in admin /username
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", order.getId(),authentication.getName());             //TODO Lägga in admin /username
         //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
         //Kod för att uppdatera priset
         return orderRepository.save(order);
@@ -79,14 +78,14 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public void deleteOrder(Integer id) {
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by {}", id, principal.getName());             //TODO Lägga in admin /username
+        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by ---", id);             //TODO Lägga in admin /username
         orderRepository.deleteById(id);
 
     }
 
     @Override
     public void deleteAllOrdersBeforeDate(Date date) {
-
+        orderRepository.deleteByDateEndBefore(date);
     }
 
     // Elham - cancelOrder
@@ -103,37 +102,24 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public List<Order> getActiveOrdersCustomer() {
-        return List.of();
+    public List<Order> getActiveOrdersCustomer(Integer customerId) {
+        return orderRepository.findByCustomerIdAndActiveTrue(customerId);
     }
 
     @Override
     public List<Order> getOldOrdersCustomer(Integer customerId) {
-        return List.of();
+        return orderRepository.findByCustomerIdAndActiveFalse(customerId);
     }
 
     @Override
     public List<Order> getActiveOrdersAdmin() {
         LocalDate today = LocalDate.now();
-        return List.of();
+        return orderRepository.findByActiveTrue();
     }
 
     @Override
     public List<Order> getOldOrdersAdmin() {
-        return List.of();
+        return orderRepository.findByActiveFalse();
     }
-
-/*    // Elham - getActiveOrders
-    @Override
-    public List<Order> getActiveOrders() {
-        List<Order> orders = orderRepository.findAll();
-        List<Order> activeOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.isActive() == true) {
-                activeOrders.add(order);
-            }
-        }
-        return activeOrders;
-    }*/
 
 }

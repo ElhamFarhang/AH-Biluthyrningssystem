@@ -54,13 +54,13 @@ public class CustomerController {
     //  Wille & Elham
     @GetMapping("/activeorders")
     public ResponseEntity<List<Order>> getActiveOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
+        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer(1)); //TODO
     }
 
     //  Wille & Elham
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersCustomer(1)); //TODO
     }
 
     //  Wille & Elham

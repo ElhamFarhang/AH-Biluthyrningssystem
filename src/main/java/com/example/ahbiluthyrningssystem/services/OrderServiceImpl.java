@@ -134,6 +134,14 @@ public class OrderServiceImpl implements OrderService {        //Anna
             }
         }
         return activeOrders;
-    }*/
+    }
 
+    @Override
+    public List<Order> getOldOrders(Integer customerId) {
+        return List.of();
+    }
+
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
 }

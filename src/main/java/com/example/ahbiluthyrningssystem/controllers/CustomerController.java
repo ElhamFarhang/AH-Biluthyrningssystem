@@ -57,8 +57,10 @@ public class CustomerController {
 
     //  Wille & Elham
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
+    public ResponseEntity<List<Order>> getOrders(Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
+        System.out.println("Name: "+principal.getName());
+        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
     }
 
     //  Wille & Elham

@@ -35,11 +35,13 @@ public class CarServiceImpl implements CarServiceInterface {
         return cars.stream().filter(c -> !c.isBooked()).toList();
     }
 
+    //  Wille
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
-
+    
+    //  Wille
     @Override
     public Car addCar(Car car) {
         if(car.getId() != 0) {
@@ -48,12 +50,14 @@ public class CarServiceImpl implements CarServiceInterface {
         return carRepository.save(car);
     }
 
+    // Wille
     @Override
     public void deleteCar(Car car) {
         checkIfCarExists(car);
         carRepository.delete(car);
     }
 
+    //  Wille
     @Override
     public Car updateCar(Car car) {
         checkIfCarExists(car);
@@ -65,11 +69,18 @@ public class CarServiceImpl implements CarServiceInterface {
         return carRepository.save(car);
     }
 
+    //  Wille
     @Override
     public Car getCarById(int id) {
         return carRepository.findById(id).get();
     }
 
+    //  Wille
+    private void validateCar(Car car){
+        //  TODO
+    }
+
+    //  Wille
     private void checkIfCarExists(Car car){
         if (!carRepository.existsById(car.getId())) {
             throw new ResourceNotFoundException("car", "id", car.getId());

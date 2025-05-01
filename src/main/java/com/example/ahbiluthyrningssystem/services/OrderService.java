@@ -19,12 +19,11 @@ public interface OrderService {
     void cancelOrder(Integer id);
     List<Order> getActiveOrdersCustomer();
     List<Order> getOldOrdersCustomer(Integer customerId);
-
+    List<Order> getAllOrders();
     List<Order> getActiveOrdersAdmin();
     List<Order> getOldOrdersAdmin();
     void deleteOrder(Integer id);
     void deleteAllOrdersBeforeDate(Date date);
-    void cancelOrder(Integer id);
     List<Order> getActiveOrders();
     List<Order> getOldOrders(Integer customerId);
     void setPrincipal(Principal principal);

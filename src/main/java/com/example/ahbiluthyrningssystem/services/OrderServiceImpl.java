@@ -89,6 +89,21 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     }
 
+    @Override
+    public List<Order> getActiveOrders() {
+        return List.of();
+    }
+
+    @Override
+    public List<Order> getOldOrders(Integer customerId) {
+        return List.of();
+    }
+
+    @Override
+    public void setPrincipal(Principal principal) {
+
+    }
+
     // Elham - cancelOrder
     @Override
     public void cancelOrder(Integer id) {
@@ -109,6 +124,11 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getOldOrdersCustomer(Integer customerId) {
+        return List.of();
+    }
+
+    @Override
+    public List<Order> getAllOrders() {
         return List.of();
     }
 
@@ -144,4 +164,5 @@ public class OrderServiceImpl implements OrderService {        //Anna
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
+ */
 }

@@ -39,7 +39,7 @@ public class CustomerController {
     //  Wille & Elham
     @PostMapping("/addorder")
     public ResponseEntity<Order> addOrder(@RequestBody Order order, Principal principal) {
-        orderServiceImpl.setPrinciple(principal);
+        orderServiceImpl.setPrincipal(principal);
         return ResponseEntity.ok(orderServiceImpl.addOrder(order));
     }
 
@@ -60,7 +60,7 @@ public class CustomerController {
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders(Principal principal) {
         orderServiceImpl.setPrincipal(principal);
-        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersCustomer());
     }
 
     //  Wille & Elham

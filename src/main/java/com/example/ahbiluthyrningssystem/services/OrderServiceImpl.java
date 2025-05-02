@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.services;
 
-import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
@@ -11,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -24,18 +20,16 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
     }
 
 
     @Override
-    public void setPrinciple(Principal principal) {
+    public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
 
@@ -73,7 +67,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }*/
 
 
-    //  Wille
+
+
+    //  Wille & Anna
     @Override
     public Order addOrder(Order order) {
         Order newOrder = orderRepository.save(order);
@@ -87,30 +83,17 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public void deleteOrder(Integer id) {
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by {}", id, principal.getName());             //TODO Lägga in admin /username
+        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by ---", id);             //TODO Lägga in admin /username
         orderRepository.deleteById(id);
 
     }
 
     @Override
     public void deleteAllOrdersBeforeDate(Date date) {
-
+        orderRepository.deleteByDateEndBefore(date);
     }
 
-    @Override
-    public List<Order> getActiveOrders() {
-        return List.of();
-    }
 
-    @Override
-    public List<Order> getOldOrders(Integer customerId) {
-        return List.of();
-    }
-
-    @Override
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
 
     // Elham - cancelOrder
     @Override
@@ -127,15 +110,19 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getActiveOrdersCustomer() {
-        return List.of();
+        Date today = new Date();
+        //kod för att hitta användaren
+        return orderRepository.findByCustomerIdAndCanceledFalseAndDateEndAfter(1, today);
     }
 
     @Override
-    public List<Order> getOldOrdersCustomer(Integer customerId) {
-        return List.of();
+    public List<Order> getOldOrdersCustomer() {
+        Date today = new Date();
+        //kod för att hitta användaren
+        return orderRepository.findByCustomerIdAndCanceledTrueOrDateEndBefore(1, today);
     }
 
-    // Elham & Wille
+/*    // Elham & Wille
     @Override
     public List<Order> getAllOrders() {
         List<Customer> customers = customerRepository.findAll();
@@ -144,44 +131,35 @@ public class OrderServiceImpl implements OrderService {        //Anna
         if(customer != null)
             return customer.getOrders();
         return null;
+    }*/
+
+
+    @Override
+    public List<Order> getActiveOrdersAdmin() {
+        Date today = new Date();
+        return orderRepository.findByCanceledFalseAndDateEndAfter(today);
     }
 
+/*
     //  Elham & Wille
     @Override
     public List<Order> getActiveOrdersAdmin() {
+        LocalDate today = LocalDate.now();
+        return orderRepository.findByActiveTrue();
         List<Order> orders = new ArrayList<>();
         for(Customer customer : customerRepository.findAll()) {
             orders.addAll(customer.getOrders().stream().filter(Order::isActive).toList());
         }
 //        LocalDate today = LocalDate.now();
         return orders;
-    }
+    }*/
+
+
 
     @Override
     public List<Order> getOldOrdersAdmin() {
-        return List.of();
+        Date today = new Date();
+        return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
-/*    // Elham - getActiveOrders
-    @Override
-    public List<Order> getActiveOrders() {
-        List<Order> orders = orderRepository.findAll();
-        List<Order> activeOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.isActive() == true) {
-                activeOrders.add(order);
-            }
-        }
-        return activeOrders;
-    }
-
-    @Override
-    public List<Order> getOldOrders(Integer customerId) {
-        return List.of();
-    }
-
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
- */
 }

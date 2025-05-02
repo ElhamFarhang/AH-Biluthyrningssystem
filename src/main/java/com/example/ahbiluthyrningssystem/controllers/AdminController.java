@@ -90,8 +90,8 @@ public class AdminController {
 
     //  Wille
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+    public ResponseEntity<List<Order>> getOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersAdmin());
     }
 
     //  Wille

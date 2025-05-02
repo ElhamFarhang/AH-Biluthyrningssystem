@@ -11,10 +11,11 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {   //Anna
 
-    List<Order> findByCustomerIdAndActiveTrue(Integer customerId);
-    List<Order> findByCustomerIdAndActiveFalse(Integer customerId);
-    List<Order> findByActiveTrue();
-    List<Order> findByActiveFalse();
+    List<Order> findByCustomerIdAndCanceledFalseAndDateEndAfter(Integer customerId, Date date);
+    List<Order> findByCustomerIdAndCanceledTrueOrDateEndBefore(Integer customerId, Date date);
+
+    List<Order> findByCanceledFalseAndDateEndAfter(Date dateEndAfter);
+    List<Order> findByCanceledTrueOrDateEndBefore(Date dateEndBefore);
     void deleteByDateEndBefore(Date cutOffDate);
 
 }

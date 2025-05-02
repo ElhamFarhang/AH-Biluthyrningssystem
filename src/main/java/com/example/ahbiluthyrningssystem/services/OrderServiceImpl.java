@@ -41,6 +41,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
         FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), principal.getName());             //TODO Lägga in admin /username
         //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
         //Kod för att uppdatera priset
+
+
+
         return newOrder;
     }
 
@@ -90,8 +93,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public void deleteOrder(Integer id) {
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
         orderRepository.deleteById(id);
+        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
+
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.List;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,15 +96,15 @@ public class AdminController {
     }
 
     //  Wille
-    @DeleteMapping("/deleteorder/{id}")
+    @DeleteMapping("/removeorder/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
         orderServiceImpl.deleteOrder(id);
         return ResponseEntity.ok(String.format("Order with Id: %s has been successfully deleted.", id));
     }
 
-    //  Wille
-    @DeleteMapping("/deleteorders-beforedate")
-    public ResponseEntity<String> deleteOrdersBefore(@RequestParam Date date) {
+    //  Wille & Anna
+    @DeleteMapping("removeorders-beforedate/{date}")
+    public ResponseEntity<String> deleteOrdersBefore(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         orderServiceImpl.deleteAllOrdersBeforeDate(date);
         return ResponseEntity.ok(String.format("Orders before date: %s", date));
     }

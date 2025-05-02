@@ -19,8 +19,6 @@ public class Order {                //Anna
     @Column(length = 12, nullable = false)
     private Date dateEnd;
     @Column(length = 10, nullable = false)
-    private boolean active;
-    @Column(length = 10, nullable = false)
     private boolean canceled=false;
     @Column(length = 10, nullable = false)
     private Integer totalCost = 0;
@@ -67,14 +65,6 @@ public class Order {                //Anna
 
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public boolean isCanceled() {

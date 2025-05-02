@@ -91,7 +91,7 @@ public class AdminController {
     //  Wille
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersAdmin());
     }
 
     //  Wille

@@ -8,17 +8,13 @@ import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -75,7 +71,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }*/
 
 
-    //  Wille
+
+
+    //  Wille & Anna
     @Override
     public Order addOrder(Order order) {
         Order newOrder = orderRepository.save(order);
@@ -104,10 +102,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         return List.of();
     }
 
-    @Override
-    public List<Order> getOldOrders(Integer customerId) {
-        return List.of();
-    }
+
 
     @Override
     public void setPrincipal(Principal principal) {
@@ -128,16 +123,18 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public List<Order> getActiveOrdersCustomer(Integer customerId) {
-        return orderRepository.findByCustomerIdAndActiveTrue(customerId);
+    public List<Order> getActiveOrdersCustomer() {
+        //kod för att
+        return orderRepository.findByCustomerIdAndActiveTrue(1);
     }
 
     @Override
-    public List<Order> getOldOrdersCustomer(Integer customerId) {
-        return orderRepository.findByCustomerIdAndActiveFalse(customerId);
+    public List<Order> getOldOrdersCustomer() {
+        //kod för att filtrera
+        return orderRepository.findByCustomerIdAndActiveFalse(1);
     }
 
-    // Elham & Wille
+/*    // Elham & Wille
     @Override
     public List<Order> getAllOrders() {
         List<Customer> customers = customerRepository.findAll();
@@ -146,8 +143,16 @@ public class OrderServiceImpl implements OrderService {        //Anna
         if(customer != null)
             return customer.getOrders();
         return null;
+    }*/
+
+
+    @Override
+    public List<Order> getActiveOrdersAdmin() {
+        LocalDate today = LocalDate.now();
+        return orderRepository.findByActiveTrue();
     }
 
+/*
     //  Elham & Wille
     @Override
     public List<Order> getActiveOrdersAdmin() {
@@ -159,7 +164,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
         }
 //        LocalDate today = LocalDate.now();
         return orders;
-    }
+    }*/
+
+
 
     @Override
     public List<Order> getOldOrdersAdmin() {

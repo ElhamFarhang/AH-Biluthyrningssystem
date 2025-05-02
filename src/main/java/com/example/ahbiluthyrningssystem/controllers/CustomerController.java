@@ -60,7 +60,7 @@ public class CustomerController {
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders(Principal principal) {
         orderServiceImpl.setPrincipal(principal);
-        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
     }
 
     //  Wille & Elham

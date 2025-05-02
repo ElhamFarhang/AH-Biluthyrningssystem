@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public List<Order> getOldOrdersCustomer() {
         Date today = new Date();
-        //kod för att hitta användar-id
+        //kod för att hitta användarId
         FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", principal.getName());
         return orderRepository.findByCustomerIdAndCanceledTrueOrDateEndBefore(1, today);
     }

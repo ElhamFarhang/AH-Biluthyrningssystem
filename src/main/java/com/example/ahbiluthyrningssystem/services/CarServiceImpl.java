@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.exceptions.ResourceMissingDataException;
@@ -24,15 +25,15 @@ public class CarServiceImpl implements CarServiceInterface {
     @Override
     public List<Car> getAvailableCars() {
         List<Car> cars = carRepository.findAll();
-        // List<Car> availableCars = new ArrayList<>();
-        // for (Car car : cars) {
-        // if (car.isBooked() == false)
-        // availableCars.add(car);
-        // }
-        // return availableCars;
+         List<Car> availableCars = new ArrayList<>();
+         for (Car car : cars) {
+         if (!car.isBooked())
+             availableCars.add(car);
+         }
+         return availableCars;
 
         // Simplified
-        return cars.stream().filter(c -> !c.isBooked()).toList();
+//        return cars.stream().filter(c -> !c.isBooked()).toList();
     }
 
     //  Wille

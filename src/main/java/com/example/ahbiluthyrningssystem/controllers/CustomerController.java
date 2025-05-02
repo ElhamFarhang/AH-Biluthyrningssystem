@@ -3,9 +3,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
-import com.example.ahbiluthyrningssystem.services.CarServiceImpl;
-import com.example.ahbiluthyrningssystem.services.CustomerServiceImpl;
-import com.example.ahbiluthyrningssystem.services.OrderServiceImpl;
+import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -20,27 +18,28 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    private CustomerServiceImpl customerServiceImpl;
-    private CarServiceImpl carServiceImpl;
-    private OrderServiceImpl orderServiceImpl;
+    private CustomerService customerServiceImpl;
+    private CarServiceInterface carServiceImpl;
+    private OrderService orderServiceImpl;
 
-    // Elham
+    //  Elham & Wille
     @Autowired
-    public CustomerController(CustomerServiceImpl customerServiceImpl, CarServiceImpl carServiceImpl, OrderServiceImpl orderServiceImpl) {
+    public CustomerController(CustomerService customerServiceImpl, CarServiceInterface carServiceImpl, OrderService orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carServiceImpl;
         this.orderServiceImpl = orderServiceImpl;
     }
 
     //  Wille & Elham
-    @GetMapping("/cars")
+    @GetMapping({"/cars", "/admin/cars"})
     public ResponseEntity<List<Car>> getAvailableCars(){
         return ResponseEntity.ok(carServiceImpl.getAvailableCars());
     }
 
     //  Wille & Elham
     @PostMapping("/addorder")
-    public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@RequestBody Order order, Principal principal) {
+        orderServiceImpl.setPrinciple(principal);
         return ResponseEntity.ok(orderServiceImpl.addOrder(order));
     }
 
@@ -59,8 +58,10 @@ public class CustomerController {
 
     //  Wille & Elham
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrders() {
-        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
+    public ResponseEntity<List<Order>> getOrders(Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
+        System.out.println("Name: "+principal.getName());
+        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
     }
 
     //  Wille & Elham

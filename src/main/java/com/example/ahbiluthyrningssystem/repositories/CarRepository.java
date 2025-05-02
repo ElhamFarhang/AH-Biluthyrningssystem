@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 //--------------------- Elham - CarRepository --------------
 @Repository
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, Integer> {
 }

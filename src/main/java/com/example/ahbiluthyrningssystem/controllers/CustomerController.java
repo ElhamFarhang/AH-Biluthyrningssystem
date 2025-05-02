@@ -60,7 +60,6 @@ public class CustomerController {
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders(Principal principal) {
         orderServiceImpl.setPrincipal(principal);
-        System.out.println("Name: "+principal.getName());
         return ResponseEntity.ok(orderServiceImpl.getAllOrders());
     }
 
@@ -70,9 +69,5 @@ public class CustomerController {
         return ResponseEntity.ok(customerServiceImpl.updateInfo(id, customer));
     }
 
-    //Elham
-    @GetMapping("/authenticated")
-    public String authenticated(Principal principal) {
-        return "You are logged as: " + principal.getName();
-    }
+
 }

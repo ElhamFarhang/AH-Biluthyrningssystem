@@ -21,17 +21,85 @@ public class OrderServiceImpl implements OrderService {        //Anna
     private Principal principal;
     private final OrderRepository orderRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
+    private String userName;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
     }
 
-
     @Override
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
+
+
+    //  Wille & Anna
+    @Override
+    public Order addOrder(Order order) {
+        Order newOrder = orderRepository.save(order);
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), principal.getName());             //TODO Lägga in admin /username
+        //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
+        //Kod för att uppdatera priset
+        return newOrder;
+    }
+
+    // Elham - cancelOrder
+    @Override
+    public void cancelOrder(Integer id) {
+        Optional<Order> orderToCancel = orderRepository.findById(id);
+        if (!orderToCancel.isPresent())
+            throw new ResourceNotFoundException("Order", "id", id);
+        else {
+            Order order = orderToCancel.get();
+            order.setCanceled(true);
+            orderRepository.save(order);
+        }
+    }
+
+    @Override
+    public List<Order> getActiveOrdersCustomer() {
+        Date today = new Date();
+        userName = principal.getName();
+        FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", userName);
+        return orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(userName, today);
+    }
+
+    @Override
+    public List<Order> getOldOrdersCustomer() {
+        Date today = new Date();
+        userName = principal.getName();
+        FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
+        return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
+    }
+
+    @Override
+    public List<Order> getActiveOrdersAdmin() {
+        Date today = new Date();
+        FUNCTIONALITY_LOGGER.info("All active orders retrieved by admin");
+        return orderRepository.findByCanceledFalseAndDateEndAfter(today);
+    }
+
+    @Override
+    public List<Order> getOldOrdersAdmin() {
+        Date today = new Date();
+        FUNCTIONALITY_LOGGER.info("All old orders retrieved by admin");
+        return orderRepository.findByCanceledTrueOrDateEndBefore(today);
+    }
+
+    @Override
+    public void deleteOrder(Integer id) {
+        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
+        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
+        orderRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllOrdersBeforeDate(Date date) {
+        orderRepository.deleteByDateEndBefore(date);
+        FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
+    }
+
 
 
 /*    @Override
@@ -66,61 +134,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         return orderRepository.save(order);
     }*/
 
-
-
-
-    //  Wille & Anna
-    @Override
-    public Order addOrder(Order order) {
-        Order newOrder = orderRepository.save(order);
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), principal.getName());             //TODO Lägga in admin /username
-        //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
-        //Kod för att uppdatera priset
-        return newOrder;
-
-    }
-
-    @Override
-    public void deleteOrder(Integer id) {
-        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by ---", id);             //TODO Lägga in admin /username
-        orderRepository.deleteById(id);
-
-    }
-
-    @Override
-    public void deleteAllOrdersBeforeDate(Date date) {
-        orderRepository.deleteByDateEndBefore(date);
-    }
-
-
-
-    // Elham - cancelOrder
-    @Override
-    public void cancelOrder(Integer id) {
-        Optional<Order> orderToCancel = orderRepository.findById(id);
-        if (!orderToCancel.isPresent())
-            throw new ResourceNotFoundException("Order", "id", id);
-        else {
-            Order order = orderToCancel.get();
-            order.setCanceled(true);
-            orderRepository.save(order);
-        }
-    }
-
-    @Override
-    public List<Order> getActiveOrdersCustomer() {
-        Date today = new Date();
-        //kod för att hitta användaren
-        return orderRepository.findByCustomerIdAndCanceledFalseAndDateEndAfter(1, today);
-    }
-
-    @Override
-    public List<Order> getOldOrdersCustomer() {
-        Date today = new Date();
-        //kod för att hitta användaren
-        return orderRepository.findByCustomerIdAndCanceledTrueOrDateEndBefore(1, today);
-    }
+}
 
 /*    // Elham & Wille
     @Override
@@ -132,34 +146,3 @@ public class OrderServiceImpl implements OrderService {        //Anna
             return customer.getOrders();
         return null;
     }*/
-
-
-    @Override
-    public List<Order> getActiveOrdersAdmin() {
-        Date today = new Date();
-        return orderRepository.findByCanceledFalseAndDateEndAfter(today);
-    }
-
-/*
-    //  Elham & Wille
-    @Override
-    public List<Order> getActiveOrdersAdmin() {
-        LocalDate today = LocalDate.now();
-        return orderRepository.findByActiveTrue();
-        List<Order> orders = new ArrayList<>();
-        for(Customer customer : customerRepository.findAll()) {
-            orders.addAll(customer.getOrders().stream().filter(Order::isActive).toList());
-        }
-//        LocalDate today = LocalDate.now();
-        return orders;
-    }*/
-
-
-
-    @Override
-    public List<Order> getOldOrdersAdmin() {
-        Date today = new Date();
-        return orderRepository.findByCanceledTrueOrDateEndBefore(today);
-    }
-
-}

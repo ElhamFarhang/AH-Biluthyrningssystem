@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.services;
 
-import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,18 +20,16 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
     }
 
 
     @Override
-    public void setPrinciple(Principal principal) {
+    public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
 
@@ -97,17 +93,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         orderRepository.deleteByDateEndBefore(date);
     }
 
-    @Override
-    public List<Order> getActiveOrders() {
-        return List.of();
-    }
 
-
-
-    @Override
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
 
     // Elham - cancelOrder
     @Override
@@ -124,14 +110,16 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getActiveOrdersCustomer() {
-        //kod för att
-        return orderRepository.findByCustomerIdAndActiveTrue(1);
+        Date today = new Date();
+        //kod för att hitta användaren
+        return orderRepository.findByCustomerIdAndCanceledFalseAndDateEndAfter(1, today);
     }
 
     @Override
     public List<Order> getOldOrdersCustomer() {
-        //kod för att filtrera
-        return orderRepository.findByCustomerIdAndActiveFalse(1);
+        Date today = new Date();
+        //kod för att hitta användaren
+        return orderRepository.findByCustomerIdAndCanceledTrueOrDateEndBefore(1, today);
     }
 
 /*    // Elham & Wille
@@ -148,8 +136,8 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getActiveOrdersAdmin() {
-        LocalDate today = LocalDate.now();
-        return orderRepository.findByActiveTrue();
+        Date today = new Date();
+        return orderRepository.findByCanceledFalseAndDateEndAfter(today);
     }
 
 /*
@@ -170,7 +158,8 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getOldOrdersAdmin() {
-        return orderRepository.findByActiveFalse();
+        Date today = new Date();
+        return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
 }

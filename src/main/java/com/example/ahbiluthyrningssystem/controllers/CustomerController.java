@@ -45,14 +45,16 @@ public class CustomerController {
 
     //  Wille & Elham
     @PutMapping("/cancelorder/{id}")
-    public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id) {
+    public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id, Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
         orderServiceImpl.cancelOrder(id);
         return ResponseEntity.ok("Order with Id: " + id + " has been successfully cancelled.");
     }
 
     //  Wille & Elham
     @GetMapping("/activeorders")
-    public ResponseEntity<List<Order>> getActiveOrders() {
+    public ResponseEntity<List<Order>> getActiveOrders(Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
         return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
     }
 

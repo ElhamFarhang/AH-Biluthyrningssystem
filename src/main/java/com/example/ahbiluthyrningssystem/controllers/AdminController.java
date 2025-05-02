@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
@@ -85,5 +86,33 @@ public class AdminController {
     @GetMapping("/activeorders")
     public ResponseEntity<List<Order>> getActiveOrders() {
         return ResponseEntity.ok(orderServiceImpl.getActiveOrdersAdmin());
+    }
+
+    //  Wille
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+    }
+
+    //  Wille
+    @DeleteMapping("/deleteorder/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
+        orderServiceImpl.deleteOrder(id);
+        return ResponseEntity.ok(String.format("Order with Id: %s has been successfully deleted.", id));
+    }
+
+    //  Wille
+    @DeleteMapping("/deleteorders-beforedate")
+    public ResponseEntity<String> deleteOrdersBefore(@RequestParam Date date) {
+        orderServiceImpl.deleteAllOrdersBeforeDate(date);
+        return ResponseEntity.ok(String.format("Orders before date: %s", date));
+    }
+
+    //  Wille
+    @GetMapping("/statistics")
+    public ResponseEntity<Integer> getStatistics() {
+        //  TODO
+        //  Returna som vad?...
+        return ResponseEntity.ok(null);
     }
 }

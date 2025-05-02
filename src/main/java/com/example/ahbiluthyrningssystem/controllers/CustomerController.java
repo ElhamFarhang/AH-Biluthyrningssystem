@@ -38,7 +38,8 @@ public class CustomerController {
 
     //  Wille & Elham
     @PostMapping("/addorder")
-    public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> addOrder(@RequestBody Order order, Principal principal) {
+        orderServiceImpl.setPrinciple(principal);
         return ResponseEntity.ok(orderServiceImpl.addOrder(order));
     }
 

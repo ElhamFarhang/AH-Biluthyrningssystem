@@ -4,6 +4,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 import java.security.Principal;
 import java.util.List;
 
+import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -78,5 +79,11 @@ public class AdminController {
         Car foundCar = carServiceImpl.getCarById(car.getId());
         carServiceImpl.deleteCar(foundCar);
         return ResponseEntity.ok("Car with reg num: " + foundCar.getRegistrationNumber() + " has been successfully deleted.");
+    }
+
+    // Wille
+    @GetMapping("/activeorders")
+    public ResponseEntity<List<Order>> getActiveOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersAdmin());
     }
 }

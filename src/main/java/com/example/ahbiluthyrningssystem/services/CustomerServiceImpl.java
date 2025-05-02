@@ -41,6 +41,16 @@ public class CustomerServiceImpl implements CustomerService {
         return customer.get();
     }
 
+    //  Wille
+    @Override
+    public Customer getCustomerBySSN(String ssn) {
+        List<Customer> customers = customerRepository.findAll();
+        Customer loggedInUser = customers.stream().filter(c -> c.getPersonal_number().equals(principal.getName())).findFirst().orElse(null);
+        if(loggedInUser == null)
+            throw new ResourceNotFoundException("Customer", "ssn", ssn);
+        return loggedInUser;
+    }
+
     @Override
     public Customer addCustomer(Customer customer) {
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {

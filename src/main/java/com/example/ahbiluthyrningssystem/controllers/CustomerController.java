@@ -6,7 +6,6 @@ import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -64,10 +63,9 @@ public class CustomerController {
     }
 
     //  Wille & Elham
-    @PutMapping("/updateinfo/{id}")
-    public ResponseEntity<Customer> updateInfo(@PathVariable("id") Integer id, @RequestBody Customer customer, Principal principal) {
-        return ResponseEntity.ok(customerServiceImpl.updateInfo(id, customer));
+    @PutMapping("/updateinfo")
+    public ResponseEntity<Customer> updateInfo(@RequestBody Customer customer, Principal principal) {
+        System.out.println("Received customer for update: " + customer);
+        return ResponseEntity.ok(customerServiceImpl.updateInfo(customer, principal));
     }
-
-
 }

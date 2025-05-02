@@ -8,6 +8,7 @@ import java.util.List;
 public interface CustomerService {
     List<Customer> getAllCustomers();
     Customer getCustomerById(Integer id);
+    Customer getCustomerBySSN(String ssn);
     Customer addCustomer(Customer customer);
     Customer updateInfo(Integer id,Customer customer);
     void deleteCustomerById(Integer id);

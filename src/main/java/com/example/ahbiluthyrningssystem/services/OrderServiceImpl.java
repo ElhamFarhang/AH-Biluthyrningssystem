@@ -1,7 +1,9 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
+import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,24 +14,31 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 public class OrderServiceImpl implements OrderService {        //Anna
 
     private Principal principal;
-
-Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
     private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+    }
+
+
+    @Override
+    public void setPrinciple(Principal principal) {
+        this.principal = principal;
     }
 
 
@@ -66,12 +75,14 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
     }*/
 
 
+    //  Wille
     @Override
     public Order addOrder(Order order) {
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", order.getId(),authentication.getName());             //TODO Lägga in admin /username
+        Order newOrder = orderRepository.save(order);
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), principal.getName());             //TODO Lägga in admin /username
         //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
         //Kod för att uppdatera priset
-        return orderRepository.save(order);
+        return newOrder;
 
     }
 
@@ -86,6 +97,21 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
     @Override
     public void deleteAllOrdersBeforeDate(Date date) {
         orderRepository.deleteByDateEndBefore(date);
+    }
+
+    @Override
+    public List<Order> getActiveOrders() {
+        return List.of();
+    }
+
+    @Override
+    public List<Order> getOldOrders(Integer customerId) {
+        return List.of();
+    }
+
+    @Override
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
     }
 
     // Elham - cancelOrder
@@ -111,10 +137,28 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
         return orderRepository.findByCustomerIdAndActiveFalse(customerId);
     }
 
+    // Elham & Wille
+    @Override
+    public List<Order> getAllOrders() {
+        List<Customer> customers = customerRepository.findAll();
+        Customer customer = customers.stream().filter(c -> c.getFirst_name().equals(principal.getName())).findFirst().get();
+        FUNCTIONALITY_LOGGER.info("Customer {} checked orders", customer.getFirst_name());
+        if(customer != null)
+            return customer.getOrders();
+        return null;
+    }
+
+    //  Elham & Wille
     @Override
     public List<Order> getActiveOrdersAdmin() {
         LocalDate today = LocalDate.now();
         return orderRepository.findByActiveTrue();
+        List<Order> orders = new ArrayList<>();
+        for(Customer customer : customerRepository.findAll()) {
+            orders.addAll(customer.getOrders().stream().filter(Order::isActive).toList());
+        }
+//        LocalDate today = LocalDate.now();
+        return orders;
     }
 
     @Override

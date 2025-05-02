@@ -21,6 +21,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     private Principal principal;
     private final OrderRepository orderRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
+    private String userName;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
@@ -59,17 +60,17 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public List<Order> getActiveOrdersCustomer() {
         Date today = new Date();
-        //kod för att hitta användar-id
-        FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", principal.getName());
-        return orderRepository.findByCustomerIdAndCanceledFalseAndDateEndAfter(1, today);
+        userName = principal.getName();
+        FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", userName);
+        return orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(userName, today);
     }
 
     @Override
     public List<Order> getOldOrdersCustomer() {
         Date today = new Date();
-        //kod för att hitta användarId
-        FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", principal.getName());
-        return orderRepository.findByCustomerIdAndCanceledTrueOrDateEndBefore(1, today);
+        userName = principal.getName();
+        FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
+        return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
     }
 
     @Override

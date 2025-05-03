@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -105,7 +106,7 @@ public class AdminController {
 
     //  Wille & Anna
     @DeleteMapping("removeorders-beforedate/{date}")
-    public ResponseEntity<String> deleteOrdersBefore(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    public ResponseEntity<String> deleteOrdersBefore(@PathVariable LocalDate date) {
         orderServiceImpl.deleteAllOrdersBeforeDate(date);
         return ResponseEntity.ok(String.format("Orders before date: %s", date));
     }

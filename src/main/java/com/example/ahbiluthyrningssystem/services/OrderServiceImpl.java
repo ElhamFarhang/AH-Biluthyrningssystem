@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,10 +56,10 @@ public class OrderServiceImpl implements OrderService {        //Anna
             //kasta
         }
         newOrder.setCanceled(false);
-        newOrder.setDateCreated(new Date()); //TODO Local?
+        newOrder.setDateCreated(LocalDate.now()); //TODO Local?
         Customer thisCustomer = customerRepository.findByPersonalnumber(userName).orElseThrow(); //TODO kasta?
         newOrder.setCustomer(thisCustomer);
-        int days = newOrder.getDateEnd().getDay() - newOrder.getDateStart().getDay();
+        long days = ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
         System.out.println("total days: " + days);
 //        newOrder.setTotalCost(newOrder.getCar().getPricePerDay());
         orderRepository.save(newOrder);
@@ -81,7 +82,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getActiveOrdersCustomer() {
-        Date today = new Date();
+        LocalDate today = LocalDate.now();
         userName = principal.getName();
         FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", userName);
         return orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(userName, today);
@@ -89,7 +90,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getOldOrdersCustomer() {
-        Date today = new Date();
+        LocalDate today = LocalDate.now();
         userName = principal.getName();
         FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
         return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
@@ -97,14 +98,14 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     @Override
     public List<Order> getActiveOrdersAdmin() {
-        Date today = new Date();
+        LocalDate today = LocalDate.now();
         FUNCTIONALITY_LOGGER.info("All active orders retrieved by admin");
         return orderRepository.findByCanceledFalseAndDateEndAfter(today);
     }
 
     @Override
     public List<Order> getOldOrdersAdmin() {
-        Date today = new Date();
+        LocalDate today = LocalDate.now();
         FUNCTIONALITY_LOGGER.info("All old orders retrieved by admin");
         return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
@@ -118,7 +119,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public void deleteAllOrdersBeforeDate(Date date) {
+    public void deleteAllOrdersBeforeDate(LocalDate date) {
         orderRepository.deleteByDateEndBefore(date);
         FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
     }

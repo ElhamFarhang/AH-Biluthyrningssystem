@@ -1,5 +1,7 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import com.example.ahbiluthyrningssystem.entities.Car;
+import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
@@ -20,12 +22,15 @@ public class OrderServiceImpl implements OrderService {        //Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
+    private CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private String userName;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
+        Car car = new Car(); //TODO ta bort
+        car.setPricePerDay(500); //TODO ta bort
     }
 
     @Override
@@ -37,10 +42,24 @@ public class OrderServiceImpl implements OrderService {        //Anna
     //  Wille & Anna
     @Override
     public Order addOrder(Order order) {
-        Order newOrder = orderRepository.save(order);
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), principal.getName());             //TODO Lägga in admin /username
-        //Kod för att kontrollera nya ordern                                     //TODO kontrollera nya ordern
-        //Kod för att uppdatera priset
+        Order newOrder = order;
+        userName = principal.getName();
+        if (newOrder.getDateStart()==null){
+            //kasta
+        }
+        if (newOrder.getDateEnd()==null){
+            //kasta
+        }
+        if (newOrder.getCar()==null){
+            //kasta
+        }
+        newOrder.setCanceled(false);
+        newOrder.setDateCreated(new Date()); //TODO Local?
+//        Customer thisCustomer = customerRepository.findByPersonalnumber(userName).orElseThrow(); //TODO kasta?
+//        newOrder.setCustomer(thisCustomer);
+//        newOrder.setTotalCost(newOrder.getCar().getPricePerDay());
+        orderRepository.save(newOrder);
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);             //TODO Lägga in admin /username
         return newOrder;
     }
 
@@ -90,8 +109,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
     @Override
     public void deleteOrder(Integer id) {
         orderRepository.findById(id).orElseThrow();  //TODO skapa exception
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
         orderRepository.deleteById(id);
+        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
+
     }
 
     @Override

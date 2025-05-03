@@ -19,7 +19,7 @@ public class Order {                //Anna
     @Column(length = 12, nullable = false)
     private Date dateEnd;
     @Column(length = 10, nullable = false)
-    private boolean canceled=false;
+    private boolean canceled;
     @Column(length = 10, nullable = false)
     private Integer totalCost = 0;
     @JsonIgnoreProperties("orders")

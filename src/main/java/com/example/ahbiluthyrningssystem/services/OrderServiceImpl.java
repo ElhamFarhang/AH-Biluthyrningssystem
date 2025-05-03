@@ -65,6 +65,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         orderRepository.save(newOrder);
         FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);             //TODO Lägga in admin /username
         return newOrder;
+
     }
 
     // Elham - cancelOrder

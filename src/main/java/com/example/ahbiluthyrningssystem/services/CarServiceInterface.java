@@ -10,6 +10,6 @@ public interface CarServiceInterface {
     Car addCar(Car car);
     void deleteCar(Car car);
     Car updateCar(Car car);
-    Car getCarById(int id);
+    Car getCarById(Integer id);
 
 }

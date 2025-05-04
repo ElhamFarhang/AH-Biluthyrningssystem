@@ -86,9 +86,21 @@ public class OrderServiceImpl implements OrderService {        //Anna
             throw new ResourceNotFoundException("Order", "id", id);
         else {
             Order order = orderToCancel.get();
-            order.setCanceled(true);
+            updateCanceledOrder(order);
             orderRepository.save(order);
         }
+    }
+
+    private void updateCanceledOrder(Order order) {
+        order.setCanceled(true);
+        order.setCar(null);
+        int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
+        int newCost;
+        if (daysBeforeStart <= 7)
+            newCost = (int) (order.getTotalCost()*0.5);
+        else
+            newCost = 0;
+        order.setTotalCost(newCost);
     }
 
     @Override

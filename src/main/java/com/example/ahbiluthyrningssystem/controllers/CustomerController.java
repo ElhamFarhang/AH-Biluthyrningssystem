@@ -17,11 +17,11 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
-    private OrderService orderServiceImpl;
+    private final CustomerService customerServiceImpl;
+    private final CarServiceInterface carServiceImpl;
+    private final OrderService orderServiceImpl;
 
-    //  Elham & Wille
+    //  Elham
     @Autowired
     public CustomerController(CustomerService customerServiceImpl, CarServiceInterface carServiceImpl, OrderService orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;

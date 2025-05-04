@@ -3,6 +3,7 @@ package com.example.ahbiluthyrningssystem.services;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
@@ -26,13 +27,13 @@ public class OrderServiceImpl implements OrderService {        //Anna
     private CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private String userName;
+    private Car car = new Car();            //TODO ta bort rad 30 + 36 + 78
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
-        Car car = new Car(); //TODO ta bort
-        car.setPricePerDay(500); //TODO ta bort
+        car.setPricePerDay(500);            //TODO ta bort
     }
 
     @Override
@@ -46,26 +47,35 @@ public class OrderServiceImpl implements OrderService {        //Anna
     public Order addOrder(Order order) {
         Order newOrder = order;
         userName = principal.getName();
-        if (newOrder.getDateStart()==null){
-            //kasta
-        }
-        if (newOrder.getDateEnd()==null){
-            //kasta
-        }
-        if (newOrder.getCar()==null){
-            //kasta
-        }
-        newOrder.setCanceled(false);
-        newOrder.setDateCreated(LocalDate.now()); //TODO Local?
-        Customer thisCustomer = customerRepository.findByPersonalnumber(userName).orElseThrow(); //TODO kasta?
-        newOrder.setCustomer(thisCustomer);
-        long days = ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
-        System.out.println("total days: " + days);
-//        newOrder.setTotalCost(newOrder.getCar().getPricePerDay());
+        newOrderCheckAndSetDetails(newOrder);
         orderRepository.save(newOrder);
         FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);             //TODO Lägga in admin /username
         return newOrder;
+    }
 
+    private void newOrderCheckAndSetDetails(Order newOrder){        //Anna
+        if (newOrder.getDateStart()==null){
+            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a start date", userName);
+            throw new BadRequestException("Start date");
+        }
+        if (newOrder.getDateEnd()==null){
+            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out an end date", userName);
+            throw new BadRequestException("End date");
+        }
+        if (newOrder.getCar()==null){
+            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a car", userName);
+            throw new BadRequestException("Car");
+        }
+        newOrder.setCanceled(false);
+        newOrder.setDateCreated(LocalDate.now());
+        Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
+        if (thisCustomer.isEmpty()) {
+            FUNCTIONALITY_LOGGER.warn("A not logged in user tried to add a order");
+            throw new ResourceNotFoundException("Customer", "Personal_number", userName);
+       }
+        newOrder.setCustomer(thisCustomer.get());
+        int days = (int) ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
+        newOrder.setTotalCost(days*car.getPricePerDay());       //TODO fixa car till car.getPrice
     }
 
     // Elham - cancelOrder
@@ -82,7 +92,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public List<Order> getActiveOrdersCustomer() {
+    public List<Order> getActiveOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
         userName = principal.getName();
         FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", userName);
@@ -90,7 +100,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public List<Order> getOldOrdersCustomer() {
+    public List<Order> getOldOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
         userName = principal.getName();
         FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
@@ -98,29 +108,31 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
     @Override
-    public List<Order> getActiveOrdersAdmin() {
+    public List<Order> getActiveOrdersAdmin() {        //Anna
         LocalDate today = LocalDate.now();
         FUNCTIONALITY_LOGGER.info("All active orders retrieved by admin");
         return orderRepository.findByCanceledFalseAndDateEndAfter(today);
     }
 
     @Override
-    public List<Order> getOldOrdersAdmin() {
+    public List<Order> getOldOrdersAdmin() {        //Anna
         LocalDate today = LocalDate.now();
         FUNCTIONALITY_LOGGER.info("All old orders retrieved by admin");
         return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
     @Override
-    public void deleteOrder(Integer id) {
-        orderRepository.findById(id).orElseThrow();  //TODO skapa exception
+    public void deleteOrder(Integer id) {        //Anna
+        Optional<Order> orderToDelete = orderRepository.findById(id);
+        if (!orderToDelete.isPresent())
+            throw new ResourceNotFoundException("Order", "id", id);
         orderRepository.deleteById(id);
         FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
 
     }
 
     @Override
-    public void deleteAllOrdersBeforeDate(LocalDate date) {
+    public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
         orderRepository.deleteByDateEndBefore(date);
         FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
     }

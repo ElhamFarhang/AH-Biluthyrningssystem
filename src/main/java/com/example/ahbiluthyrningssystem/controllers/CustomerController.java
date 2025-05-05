@@ -6,7 +6,6 @@ import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,11 +17,11 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerController {
 
-    private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
-    private OrderService orderServiceImpl;
+    private final CustomerService customerServiceImpl;
+    private final CarServiceInterface carServiceImpl;
+    private final OrderService orderServiceImpl;
 
-    //  Elham & Wille
+    //  Elham
     @Autowired
     public CustomerController(CustomerService customerServiceImpl, CarServiceInterface carServiceImpl, OrderService orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
@@ -39,20 +38,22 @@ public class CustomerController {
     //  Wille & Elham
     @PostMapping("/addorder")
     public ResponseEntity<Order> addOrder(@RequestBody Order order, Principal principal) {
-        orderServiceImpl.setPrinciple(principal);
+        orderServiceImpl.setPrincipal(principal);
         return ResponseEntity.ok(orderServiceImpl.addOrder(order));
     }
 
     //  Wille & Elham
     @PutMapping("/cancelorder/{id}")
-    public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id) {
+    public ResponseEntity<String> cancelOrder(@PathVariable("id") Integer id, Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
         orderServiceImpl.cancelOrder(id);
         return ResponseEntity.ok("Order with Id: " + id + " has been successfully cancelled.");
     }
 
     //  Wille & Elham
     @GetMapping("/activeorders")
-    public ResponseEntity<List<Order>> getActiveOrders() {
+    public ResponseEntity<List<Order>> getActiveOrders(Principal principal) {
+        orderServiceImpl.setPrincipal(principal);
         return ResponseEntity.ok(orderServiceImpl.getActiveOrdersCustomer());
     }
 
@@ -60,19 +61,13 @@ public class CustomerController {
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders(Principal principal) {
         orderServiceImpl.setPrincipal(principal);
-        System.out.println("Name: "+principal.getName());
-        return ResponseEntity.ok(orderServiceImpl.getAllOrders());
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersCustomer());
     }
 
     //  Wille & Elham
-    @PutMapping("/updateinfo/{id}")
-    public ResponseEntity<Customer> updateInfo(@PathVariable("id") Integer id, @RequestBody Customer customer, Principal principal) {
-        return ResponseEntity.ok(customerServiceImpl.updateInfo(id, customer));
-    }
-
-    //Elham
-    @GetMapping("/authenticated")
-    public String authenticated(Principal principal) {
-        return "You are logged as: " + principal.getName();
+    @PutMapping("/updateinfo")
+    public ResponseEntity<Customer> updateInfo(@RequestBody Customer customer, Principal principal) {
+        System.out.println("Received customer for update: " + customer);
+        return ResponseEntity.ok(customerServiceImpl.updateInfo(customer, principal));
     }
 }

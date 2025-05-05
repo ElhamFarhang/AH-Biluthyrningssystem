@@ -2,11 +2,14 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,7 @@ public class AdminController {
     private CarServiceInterface carServiceImpl;
     private OrderService orderServiceImpl;
 
+    //Elham
     @Autowired
     public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
         this.customerServiceImpl = customerServiceImpl;
@@ -85,5 +89,33 @@ public class AdminController {
     @GetMapping("/activeorders")
     public ResponseEntity<List<Order>> getActiveOrders() {
         return ResponseEntity.ok(orderServiceImpl.getActiveOrdersAdmin());
+    }
+
+    //  Wille
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>> getOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersAdmin());
+    }
+
+    //  Wille
+    @DeleteMapping("/removeorder/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
+        orderServiceImpl.deleteOrder(id);
+        return ResponseEntity.ok(String.format("Order with Id: %s has been successfully deleted.", id));
+    }
+
+    //  Wille & Anna
+    @DeleteMapping("removeorders-beforedate/{date}")
+    public ResponseEntity<String> deleteOrdersBefore(@PathVariable LocalDate date) {
+        orderServiceImpl.deleteAllOrdersBeforeDate(date);
+        return ResponseEntity.ok(String.format("Orders before date: %s", date));
+    }
+
+    //  Wille
+    @GetMapping("/statistics")
+    public ResponseEntity<Integer> getStatistics() {
+        //  TODO
+        //  Returna som vad?...
+        return ResponseEntity.ok(null);
     }
 }

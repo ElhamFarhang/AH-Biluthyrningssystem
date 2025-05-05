@@ -1,18 +1,12 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
-
-import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 
@@ -118,4 +112,18 @@ public class AdminController {
         //  Returna som vad?...
         return ResponseEntity.ok(null);
     }
+
+
+//
+//    @GetMapping("/statistics")
+//    public ResponseEntity<String> getStatistics(@RequestBody Date)) {
+//        String text;
+//        Visa statistik såsom mest hyrda bilmärke under en viss period.
+//        Antal gånger varje bil hyrts ut,
+//        vanligaste hyresperiod (antal dagar)
+//        genomsnittlig kostnad per hyresorder.
+//        Total intäkt per bil.
+//        Total intäkt under en viss tidsperiod.
+//        return ResponseEntity.ok(text);
+//    }
 }

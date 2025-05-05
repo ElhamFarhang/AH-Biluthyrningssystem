@@ -1,7 +1,6 @@
 package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,4 +22,5 @@ public interface OrderService {
     void deleteAllOrdersBeforeDate(LocalDate date);;
 
     void setPrincipal(Principal principal);
+
 }

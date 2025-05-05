@@ -2,11 +2,9 @@ package com.example.ahbiluthyrningssystem.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.example.ahbiluthyrningssystem.exceptions.ResourceMissingDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;

@@ -3,7 +3,6 @@ package com.example.ahbiluthyrningssystem.repositories;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,5 +15,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {   //Ann
     List<Order> findByCanceledFalseAndDateEndAfter(LocalDate dateEndAfter);
     List<Order> findByCanceledTrueOrDateEndBefore(LocalDate dateEndBefore);
     void deleteByDateEndBefore(LocalDate cutOffDate);
+
 
 }

@@ -148,8 +148,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
     }
 
 
-
-/*    @Override
+    /*    @Override
     public List<Order> getAllOrders() {
         if(orderRepository.findAll().isEmpty()) {
             FUNCTIONALITY_LOGGER.info("@{}: There are no orders in the system",principal.getName()); //TODO testa admin /username

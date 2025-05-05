@@ -27,13 +27,11 @@ public class OrderServiceImpl implements OrderService {        //Anna
     private CustomerRepository customerRepository;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private String userName;
-    private Car car = new Car();            //TODO ta bort rad 30 + 36 + 78
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
-        car.setPricePerDay(500);            //TODO ta bort
     }
 
     @Override
@@ -75,7 +73,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
        }
         newOrder.setCustomer(thisCustomer.get());
         int days = (int) ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
-        newOrder.setTotalCost(days*car.getPricePerDay());       //TODO fixa car till car.getPrice
+        newOrder.setTotalCost(days*newOrder.getCar().getPricePerDay());
     }
 
     // Elham - cancelOrder

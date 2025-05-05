@@ -38,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getAllCustomers() {
+        FUNCTIONALITY_LOGGER.info("Retrieving all customers from the database.");
         return customerRepository.findAll();
     }
 
@@ -46,6 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent())
             throw new ResourceNotFoundException("Customer", "id", id);
+        FUNCTIONALITY_LOGGER.info("Retrieving customer with ID: {}", id);
         return customer.get();
     }
 

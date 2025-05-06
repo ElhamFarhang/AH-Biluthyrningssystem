@@ -17,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {   //Ann
     List<Order> findByCanceledTrueOrDateEndBefore(LocalDate dateEndBefore);
     void deleteByDateEndBefore(LocalDate cutOffDate);
 
+    List<Order> findByCarRegistrationNumber(String carRegistrationNumber);
+
 }

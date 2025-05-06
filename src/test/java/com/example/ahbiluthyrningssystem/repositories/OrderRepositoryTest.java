@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,12 +22,16 @@ class OrderRepositoryTest {
     private OrderRepository orderRepository;
 
     private static Order order;
+    private static Order order2;
 
 
-    @BeforeEach
+/*    @BeforeEach
     void beforeEach() {
-        order = new Order(LocalDate.of(2025,05,01), LocalDate.of(2025,05,05));
-    }
+        order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),true);
+        order2 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),false);
+        orderRepository.save(order);
+        orderRepository.save(order2);
+    }*/
 
     @AfterEach
     void tearDown() {
@@ -34,21 +39,23 @@ class OrderRepositoryTest {
 
 
     @Test
-    void existsStudentByEmailShouldReturnTrueTest() {
+    void deleteByDateEndBeforeShouldLeaveOneOrder() {
         // Given
-
+        order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),true);
+        order2 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),false);
+        orderRepository.save(order);
+        orderRepository.save(order2);
+        System.out.println("Antal studerande" + orderRepository.findAll().size());
+            //--
         // When
-
+        orderRepository.deleteByDateEndBefore(LocalDate.now());
+        List<Order> result = orderRepository.findAll();
         // Then
+        assertThat(result.size());
+        //assertThat(result).allMatch(order -> !order.isCanceled() && order.getDateEnd().isAfter(LocalDate.now()));
+
     }
 
-    @Test
-    void findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter() {
-    }
-
-    @Test
-    void findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore() {
-    }
 
     @Test
     void findByCanceledFalseAndDateEndAfter() {

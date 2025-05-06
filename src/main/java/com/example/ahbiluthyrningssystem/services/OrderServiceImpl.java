@@ -47,8 +47,9 @@ public class OrderServiceImpl implements OrderService {        //Anna
         userName = principal.getName();
         newOrderCheckAndSetDetails(newOrder);
         orderRepository.save(newOrder);
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);             //TODO Lägga in admin /username
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);
         return newOrder;
+
     }
 
     private void newOrderCheckAndSetDetails(Order newOrder){        //Anna

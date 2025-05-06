@@ -35,11 +35,11 @@ public class Order {                //Anna
     public Order() {
     }
 
-    public Order(LocalDate dateStart, LocalDate dateEnd) {
-        this.dateStart = LocalDate.now();
+    public Order(LocalDate dateStart, LocalDate dateEnd, boolean canceled) {
+        this.dateCreated = LocalDate.now();
+        this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.customer = new Customer();
-        this.car = new Car();
+        this.canceled = canceled;
     }
 
     public Integer getId() {

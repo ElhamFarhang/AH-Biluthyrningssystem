@@ -25,6 +25,7 @@ public class StatisticsService {
         this.orderRepo = orderRepo;
     }
 
+    //Wille
     public Map<String, Integer> mostRentedMake(LocalDate start, LocalDate End){
         Map<String, Integer> mostRented = new HashMap<>();
         List<Order> orders = orderRepo.findAll();
@@ -35,7 +36,9 @@ public class StatisticsService {
         return mostRented;
     }
 
-/*
+
+
+/*  //Theo
     public List<Map<String, Integer>> timesCarRented() {
         List<Map<String, Integer>>
         timesRented.put("registrationNumber", null);
@@ -43,31 +46,32 @@ public class StatisticsService {
     }
 */
 
-    public int mostCommonPeriod() {
+    //Elham
+    public int mostCommonPeriodInDays() {
         int days = 0;
         return days;
     }
 
 
-
-    public int averageOrderCost() {
-        int cost = 0;
+    //Elham
+    public double averageOrderCost() {
+        double cost = 0;
         return cost;
     }
 
 
 
-
-    public int totalIncomeCar() {
-        int cost = 0;
-        return cost;
+/*  // Anna
+    public List<Map<String, Integer>> totalIncomeCar() {
+        List<Map<String, Integer>>
+        timesRented.put("registrationNumber", null);
+        return timesRented;
     }
+*/
 
-
-
-
-    public int totalIncomePeriod(LocalDate start, LocalDate End) {
-        int cost = 0;
+    //Anna
+    public double totalIncomePeriod(LocalDate start, LocalDate End) {
+        double cost = 0;
         return cost;
     }
 

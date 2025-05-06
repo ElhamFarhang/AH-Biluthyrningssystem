@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -38,7 +40,6 @@ public class OrderServiceImpl implements OrderService {        //Anna
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
-
 
     //  Wille & Anna
     @Override
@@ -74,19 +75,6 @@ public class OrderServiceImpl implements OrderService {        //Anna
         newOrder.setCustomer(thisCustomer.get());
         int days = (int) ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
         newOrder.setTotalCost(days*newOrder.getCar().getPricePerDay());
-    }
-
-    // Elham - cancelOrder
-    @Override
-    public void cancelOrder(Integer id) {
-        Optional<Order> orderToCancel = orderRepository.findById(id);
-        if (!orderToCancel.isPresent())
-            throw new ResourceNotFoundException("Order", "id", id);
-        else {
-            Order order = orderToCancel.get();
-            updateCanceledOrder(order);
-            orderRepository.save(order);
-        }
     }
 
     private void updateCanceledOrder(Order order) {
@@ -146,6 +134,58 @@ public class OrderServiceImpl implements OrderService {        //Anna
         orderRepository.deleteByDateEndBefore(date);
         FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
     }
+
+    // Elham - cancelOrder
+    @Override
+    public void cancelOrder(Integer id) {
+        Optional<Order> orderToCancel = orderRepository.findById(id);
+        if (!orderToCancel.isPresent())
+            throw new ResourceNotFoundException("Order", "id", id);
+        else {
+            Order order = orderToCancel.get();
+            updateCanceledOrder(order);
+            orderRepository.save(order);
+        }
+    }
+
+    //Elham - calculateAverageOrderCost
+    @Override
+    public double calculateAverageOrderCost() {
+        List<Order> allOrders = orderRepository.findAll();
+        double sum = 0;
+        if (allOrders.isEmpty()) {
+            return 0.0;
+        }
+        for (Order order : allOrders) {
+            sum = sum + order.getTotalCost();
+        }
+        return (sum / allOrders.size());
+    }
+
+    //Elham - getMostCommonRentalPeriodInDays
+    @Override
+    public int getMostCommonRentalPeriodInDays() {
+        int numberOfDays = 0;
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        List<Order> allOrders = orderRepository.findAll();
+        if (allOrders.isEmpty()) {
+            return 0;
+        }
+        for (Order order : allOrders) {
+            numberOfDays = (int) ChronoUnit.DAYS.between(order.getDateStart(), order.getDateEnd());
+            frequencyMap.put(numberOfDays, frequencyMap.getOrDefault(numberOfDays, 0) + 1);
+        }
+        int mostCommonRentalPeriod=0;
+        int highestCount = 0;
+        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() > highestCount) {
+                highestCount = entry.getValue();
+                mostCommonRentalPeriod = entry.getKey();
+            }
+        }
+        return mostCommonRentalPeriod;
+    }
+
 
 
 

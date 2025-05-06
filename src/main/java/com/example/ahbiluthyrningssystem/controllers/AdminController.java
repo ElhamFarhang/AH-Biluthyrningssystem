@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,13 +26,15 @@ public class AdminController {
     private CustomerService customerServiceImpl;
     private CarServiceInterface carServiceImpl;
     private OrderService orderServiceImpl;
+    private StatisticsService statisticsService;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
+    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsService statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
+        this.statisticsService = statisticsService;
     }
 
     //  Wille & Elham
@@ -113,9 +116,10 @@ public class AdminController {
 
     //  Wille
     @GetMapping("/statistics")
-    public ResponseEntity<Integer> getStatistics() {
+    public ResponseEntity<Stats> getStatistics() {
         //  TODO
         //  Returna som vad?...
-        return ResponseEntity.ok(null);
+
+        return ResponseEntity.ok(statisticsService.getStats(LocalDate.of(2025, 02, 02), LocalDate.now()));
     }
 }

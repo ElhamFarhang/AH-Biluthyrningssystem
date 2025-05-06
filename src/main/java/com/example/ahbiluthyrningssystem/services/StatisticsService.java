@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class StatisticsService {
         this.orderRepo = orderRepo;
     }
 
+    public Stats getStats(LocalDate start, LocalDate End) {
+        Stats stats = new Stats();
+/*        stats.setMostRentedMake(mostRentedMake(start, End));
+        stats.setTimesCarRented(timesCarRented());
+        stats.setMostCommonPeriodInDays(mostCommonPeriodInDays());
+        stats.setAverageOrderCost(averageOrderCost());*/
+        stats.setTotalIncomeEveryCar(totalIncomeEveryCar());
+        stats.setTotalIncomePeriod(totalIncomePeriod(start, End));
+        return stats;
+    }
+/*
+
     //Wille
     public Map<String, Integer> mostRentedMake(LocalDate start, LocalDate End){
         Map<String, Integer> mostRented = new HashMap<>();
@@ -39,13 +52,12 @@ public class StatisticsService {
 
 
 
-/*  //Theo
-    public List<Map<String, Integer>> timesCarRented() {
-        List<Map<String, Integer>>
+  //Theo
+    public Map<String, Integer> timesCarRented() {
+        Map<String, Integer> timesRented = new HashMap<>();
         timesRented.put("registrationNumber", null);
         return timesRented;
     }
-*/
 
     //Elham
     public int mostCommonPeriodInDays() {
@@ -59,6 +71,7 @@ public class StatisticsService {
         double cost = 0;
         return cost;
     }
+*/
 
 
 

@@ -18,5 +18,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {   //Ann
     void deleteByDateEndBefore(LocalDate cutOffDate);
 
     List<Order> findByCarRegistrationNumber(String carRegistrationNumber);
-
+    List<Order> findByDateEndBetween(LocalDate dateEndAfter, LocalDate dateEndBefore);
 }

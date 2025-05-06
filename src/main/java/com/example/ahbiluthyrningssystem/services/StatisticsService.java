@@ -79,10 +79,15 @@ public class StatisticsService {
         return totalIncomeEveryCarMap;
     }
 
-    //Anna
-    public double totalIncomePeriod(LocalDate start, LocalDate End) {
-        double cost = 0;
-        return cost;
+    //Anna - Baseras på att kunden betalar vid återlämnandet av bilen.
+    //Total intäkt under en viss tidsperiod.  --- behöver start/slut-datum
+    public int totalIncomePeriod(LocalDate start, LocalDate End) {
+        List<Order> orders = orderRepo.findByDateEndBetween(start, End);
+        int totalIncomeThisPeriod = 0;
+        for (Order order : orders) {
+            totalIncomeThisPeriod += order.getTotalCost();
+        }
+        return totalIncomeThisPeriod;
     }
 
 

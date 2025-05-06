@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,20 +62,28 @@ public class StatisticsService {
 
 
 
-/*  // Anna
-    public List<Map<String, Integer>> totalIncomeCar() {
-        List<Map<String, Integer>>
-        timesRented.put("registrationNumber", null);
-        return timesRented;
+  // Anna
+    //Total intäkt per bil
+    public Map<String, Integer> totalIncomeEveryCar() {
+        List<Car> cars = carRepo.findAll();
+        Map<String, Integer> totalIncomeEveryCarMap = new HashMap<>();
+        int totalIncomeThisCar;
+        for (Car car : cars) {
+            totalIncomeThisCar = 0;
+            List<Order> orders = orderRepo.findByCarRegistrationNumber(car.getRegistrationNumber());
+            for (Order order : orders) {
+                totalIncomeThisCar += order.getTotalCost();
+            }
+            totalIncomeEveryCarMap.put(car.getRegistrationNumber(), totalIncomeThisCar);
+        }
+        return totalIncomeEveryCarMap;
     }
-*/
 
     //Anna
     public double totalIncomePeriod(LocalDate start, LocalDate End) {
         double cost = 0;
         return cost;
     }
-
 
 
 }

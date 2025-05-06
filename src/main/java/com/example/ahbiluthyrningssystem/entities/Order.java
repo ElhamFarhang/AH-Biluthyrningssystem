@@ -35,6 +35,16 @@ public class Order {                //Anna
     public Order() {
     }
 
+    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, Customer customer, Car car, boolean canceled, Integer totalCost) {
+        this.dateCreated = dateCreated;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.customer = customer;
+        this.car = car;
+        this.canceled = canceled;
+        this.totalCost = totalCost;
+    }
+
     public Integer getId() {
         return id;
     }

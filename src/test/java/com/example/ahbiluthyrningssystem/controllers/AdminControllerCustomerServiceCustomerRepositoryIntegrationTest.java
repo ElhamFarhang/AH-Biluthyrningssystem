@@ -18,6 +18,8 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+//--------------------- Elham - class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest --------------
 @SpringBootTest
 @Transactional
 @Rollback
@@ -48,7 +50,7 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
     void getAllCustomersShouldReturnAllCustomers() {
         ResponseEntity<List<Customer>> response = adminController.getAllCustomers();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isEqualTo(5);
+        assertThat(response.getBody().size()).isEqualTo(customerService.getAllCustomers().size());
     }
 
     // Elham
@@ -88,7 +90,7 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         Integer id = testCustomer.getId();
         adminController.deleteCustomerById(id);
         ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(id));
-        assertThat(result.getMessage()).isEqualTo("Customer with id '6' not found");
+        assertThat(result.getMessage()).isEqualTo("Customer with id '"+id+"' not found");
     }
     // Elham
     @Test
@@ -100,3 +102,4 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     }
 }
+

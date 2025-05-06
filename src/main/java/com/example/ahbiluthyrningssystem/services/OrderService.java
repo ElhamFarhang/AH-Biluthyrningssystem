@@ -23,4 +23,7 @@ public interface OrderService {
     void deleteAllOrdersBeforeDate(LocalDate date);;
 
     void setPrincipal(Principal principal);
+
+    double calculateAverageOrderCost();
+    int getMostCommonRentalPeriodInDays();
 }

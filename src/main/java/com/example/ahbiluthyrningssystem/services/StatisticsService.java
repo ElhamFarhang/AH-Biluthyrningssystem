@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,19 +48,41 @@ public class StatisticsService {
     }
 */
 
-    //Elham
-    public int mostCommonPeriodInDays() {
-        int days = 0;
-        return days;
+    //Elham - Flyttat till OrderServiceImpl
+    public int getMostCommonRentalPeriodInDays() {
+        int numberOfDays = 0;
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        List<Order> allOrders = orderRepo.findAll();
+        if (allOrders.isEmpty()) {
+            return 0;
+        }
+        for (Order order : allOrders) {
+            numberOfDays = (int) ChronoUnit.DAYS.between(order.getDateStart(), order.getDateEnd());
+            frequencyMap.put(numberOfDays, frequencyMap.getOrDefault(numberOfDays, 0) + 1);
+        }
+        int mostCommonRentalPeriod=0;
+        int highestCount = 0;
+        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() > highestCount) {
+                highestCount = entry.getValue();
+                mostCommonRentalPeriod = entry.getKey();
+            }
+        }
+        return mostCommonRentalPeriod;
     }
 
-
-    //Elham
-    public double averageOrderCost() {
-        double cost = 0;
-        return cost;
+    //Elham - Flyttat till OrderServiceImpl
+    public double calculateAverageOrderCost() {
+        List<Order> allOrders = orderRepo.findAll();
+        double sum = 0;
+        if (allOrders.isEmpty()) {
+            return 0.0;
+        }
+        for (Order order : allOrders) {
+            sum = sum + order.getTotalCost();
+        }
+        return (sum / allOrders.size());
     }
-
 
 
   // Anna

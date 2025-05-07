@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,13 +26,15 @@ public class AdminController {
     private CustomerService customerServiceImpl;
     private CarServiceInterface carServiceImpl;
     private OrderService orderServiceImpl;
+    private StatisticsService statisticsServiceImpl;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
+    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsService statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
+        this.statisticsServiceImpl = statisticsService;
     }
 
     //  Wille & Elham
@@ -111,12 +114,10 @@ public class AdminController {
         return ResponseEntity.ok(String.format("Orders before date: %s", date));
     }
 
-    //  Wille
-    @GetMapping("/statistics")
-    public ResponseEntity<Integer> getStatistics() {
-        //  TODO
-        //  Returna som vad?...
-        return ResponseEntity.ok(null);
+    //  Wille & Anna
+    @GetMapping("/statistics/{startDate}/{endDate}")
+    public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+           return ResponseEntity.ok(statisticsServiceImpl.getStats(startDate, endDate));
     }
 
 

@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.services;
 
-import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
@@ -20,7 +19,7 @@ import java.util.Optional;
 
 
 @Service
-public class OrderServiceImpl implements OrderService {        //Anna
+public class OrderServiceImpl implements OrderService {        // Det mesta Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
@@ -38,7 +37,6 @@ public class OrderServiceImpl implements OrderService {        //Anna
     public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
-
 
     //  Wille & Anna
     @Override
@@ -77,28 +75,15 @@ public class OrderServiceImpl implements OrderService {        //Anna
         newOrder.setTotalCost(days*newOrder.getCar().getPricePerDay());
     }
 
-    // Elham - cancelOrder
-    @Override
-    public void cancelOrder(Integer id) {
-        Optional<Order> orderToCancel = orderRepository.findById(id);
-        if (!orderToCancel.isPresent())
-            throw new ResourceNotFoundException("Order", "id", id);
-        else {
-            Order order = orderToCancel.get();
-            updateCanceledOrder(order);
-            orderRepository.save(order);
-        }
-    }
-
     private void updateCanceledOrder(Order order) {
         order.setCanceled(true);
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
-        int newCost;
+        Double newCost;
         if (daysBeforeStart <= 7)
-            newCost = (int) (order.getTotalCost()*0.5);
+            newCost = order.getTotalCost()*0.5;
         else
-            newCost = 0;
+            newCost = 0.0;
         order.setTotalCost(newCost);
     }
 
@@ -148,49 +133,17 @@ public class OrderServiceImpl implements OrderService {        //Anna
         FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
     }
 
-
-
-/*    @Override
-    public List<Order> getAllOrders() {
-        if(orderRepository.findAll().isEmpty()) {
-            FUNCTIONALITY_LOGGER.info("@{}: There are no orders in the system",principal.getName()); //TODO testa admin /username
-            throw new RuntimeException();                                       //TODO skapa bättre exception
+    // Elham - cancelOrder
+    @Override
+    public void cancelOrder(Integer id) {
+        Optional<Order> orderToCancel = orderRepository.findById(id);
+        if (!orderToCancel.isPresent())
+            throw new ResourceNotFoundException("Order", "id", id);
+        else {
+            Order order = orderToCancel.get();
+            updateCanceledOrder(order);
+            orderRepository.save(order);
         }
-        FUNCTIONALITY_LOGGER.info("{} retrieved all orders",principal.getName());                   //TODO testa admin /username
-        return orderRepository.findAll();
-    }*/
-
-/*    @Override
-    public Order getOrderById(Integer id) {
-        orderRepository.findById(id).orElseThrow(()-> {
-            FUNCTIONALITY_LOGGER.info("Order nr {} requested by: {} does not exist", id, principal.getName());  //TODO testa admin /username
-            return new ResourceNotFoundException("Order", "id", id);
-        });
-        FUNCTIONALITY_LOGGER.info("Order nr {} retrieved by: {}", id,principal.getName());               //TODO testa admin /username
-        return orderRepository.findById(id).get();
-    }*/
-
-/*    @Override
-    public Order updateOrder(Integer id, Order order) {
-        orderRepository.findById(id).orElseThrow(()-> {
-            FUNCTIONALITY_LOGGER.info("Order nr {} requested by: {} for updating does not exist", id,principal.getName());  //TODO Lägga in admin /username
-            return new ResourceNotFoundException("Order", "id", id);
-        });
-        //Kod för att kontrollera uppdateringen                                     //TODO kontrollera uppdatering
-        //Kod för att uppdatera priset
-        FUNCTIONALITY_LOGGER.info("Order nr {} updated by: {}", id, principal.getName());               //TODO Lägga in admin /username
-        return orderRepository.save(order);
-    }*/
+    }
 
 }
-
-/*    // Elham & Wille
-    @Override
-    public List<Order> getAllOrders() {
-        List<Customer> customers = customerRepository.findAll();
-        Customer customer = customers.stream().filter(c -> c.getFirst_name().equals(principal.getName())).findFirst().get();
-        FUNCTIONALITY_LOGGER.info("Customer {} checked orders", customer.getFirst_name());
-        if(customer != null)
-            return customer.getOrders();
-        return null;
-    }*/

@@ -116,11 +116,10 @@ public class AdminController {
 
     //  Wille
     @GetMapping("/statistics")
-    public ResponseEntity<String> getStatistics() {
-        String text;
-        double averageOrderCost = orderServiceImpl.calculateAverageOrderCost();
-        int mostCommonRentalPeriod = orderServiceImpl.getMostCommonRentalPeriodInDays();
-        text = "Average Order Cost: "+ averageOrderCost + "\nMost Common Rental Period In Days: "+ mostCommonRentalPeriod;
-        return ResponseEntity.ok(String.format(text));
+    public ResponseEntity<Stats> getStatistics() {
+        //  TODO
+        //  Returna som vad?...
+
+        return ResponseEntity.ok(statisticsServiceImpl.getStats(LocalDate.of(2025, 02, 02), LocalDate.now()));
     }
 }

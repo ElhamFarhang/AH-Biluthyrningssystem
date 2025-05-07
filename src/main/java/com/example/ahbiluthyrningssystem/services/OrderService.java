@@ -24,6 +24,4 @@ public interface OrderService {
 
     void setPrincipal(Principal principal);
 
-    double calculateAverageOrderCost();
-    int getMostCommonRentalPeriodInDays();
 }

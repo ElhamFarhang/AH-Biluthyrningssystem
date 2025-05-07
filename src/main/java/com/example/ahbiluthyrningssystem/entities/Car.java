@@ -13,7 +13,7 @@ public class Car {
     private Integer id;
 
     @Column(length = 15, nullable = false)
-    private int pricePerDay;
+    private Double pricePerDay;
 
     @Column(length = 30, nullable = false)
     private String make;
@@ -38,11 +38,11 @@ public class Car {
         this.id = id;
     }
 
-    public int getPricePerDay() {
+    public Double getPricePerDay() {
         return pricePerDay;
     }
 
-    public void setPricePerDay(int pricePerDay) {
+    public void setPricePerDay(Double pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
 

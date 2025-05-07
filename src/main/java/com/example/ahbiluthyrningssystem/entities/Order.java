@@ -24,7 +24,7 @@ public class Order {                //Anna
     private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = true)//TODO sätt som false
     private Customer customer;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -40,6 +40,16 @@ public class Order {                //Anna
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.canceled = canceled;
+    }
+
+    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, boolean canceled, Double totalCost, Customer customer, Car car) {
+        this.dateCreated = dateCreated;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.canceled = canceled;
+        this.totalCost = totalCost;
+        this.customer = customer;
+        this.car = car;
     }
 
     public Integer getId() {

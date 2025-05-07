@@ -21,10 +21,10 @@ public class Order {                //Anna
     @Column(length = 10, nullable = false)
     private boolean canceled;
     @Column(length = 10, nullable = false)
-    private Integer totalCost = 0;
+    private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id", nullable = true) //TODO null = false
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -75,11 +75,11 @@ public class Order {                //Anna
         this.canceled = canceled;
     }
 
-    public Integer getTotalCost() {
+    public Double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Integer totalCost) {
+    public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
     }
 

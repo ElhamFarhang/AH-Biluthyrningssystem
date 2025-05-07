@@ -100,12 +100,12 @@ public class StatisticsService {
 
   // Anna
     //Total intäkt per bil
-    public Map<String, Integer> totalIncomeEveryCar() {
+    public Map<String, Double> totalIncomeEveryCar() {
         List<Car> cars = carRepo.findAll();
-        Map<String, Integer> totalIncomeEveryCarMap = new HashMap<>();
-        int totalIncomeThisCar;
+        Map<String, Double> totalIncomeEveryCarMap = new HashMap<>();
+        Double totalIncomeThisCar;
         for (Car car : cars) {
-            totalIncomeThisCar = 0;
+            totalIncomeThisCar = 0.0;
             List<Order> orders = orderRepo.findByCarRegistrationNumber(car.getRegistrationNumber());
             for (Order order : orders) {
                 totalIncomeThisCar += order.getTotalCost();
@@ -117,9 +117,9 @@ public class StatisticsService {
 
     //Anna - Baseras på att kunden betalar vid återlämnandet av bilen.
     //Total intäkt under en viss tidsperiod.  --- behöver start/slut-datum
-    public int totalIncomePeriod(LocalDate start, LocalDate End) {
+    public Double totalIncomePeriod(LocalDate start, LocalDate End) {
         List<Order> orders = orderRepo.findByDateEndBetween(start, End);
-        int totalIncomeThisPeriod = 0;
+        Double totalIncomeThisPeriod = 0.0;
         for (Order order : orders) {
             totalIncomeThisPeriod += order.getTotalCost();
         }

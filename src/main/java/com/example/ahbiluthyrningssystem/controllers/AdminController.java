@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,15 @@ public class AdminController {
     private CustomerService customerServiceImpl;
     private CarServiceInterface carServiceImpl;
     private OrderService orderServiceImpl;
+    private StatisticsService statisticsServiceImpl;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
+    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsService statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
+        this.statisticsServiceImpl = statisticsService;
     }
 
     //  Wille & Elham
@@ -109,11 +112,10 @@ public class AdminController {
 
     //  Wille
     @GetMapping("/statistics")
-    public ResponseEntity<String> getStatistics() {
-        String text;
-        double averageOrderCost = orderServiceImpl.calculateAverageOrderCost();
-        int mostCommonRentalPeriod = orderServiceImpl.getMostCommonRentalPeriodInDays();
-        text = "Average Order Cost: "+ averageOrderCost + "\nMost Common Rental Period In Days: "+ mostCommonRentalPeriod;
-        return ResponseEntity.ok(String.format(text));
+    public ResponseEntity<Stats> getStatistics() {
+        //  TODO
+        //  Returna som vad?...
+
+        return ResponseEntity.ok(statisticsServiceImpl.getStats(LocalDate.of(2025, 02, 02), LocalDate.now()));
     }
 }

@@ -110,12 +110,9 @@ public class AdminController {
         return ResponseEntity.ok(String.format("Orders before date: %s", date));
     }
 
-    //  Wille
-    @GetMapping("/statistics")
-    public ResponseEntity<Stats> getStatistics() {
-        //  TODO
-        //  Returna som vad?...
-
-        return ResponseEntity.ok(statisticsServiceImpl.getStats(LocalDate.of(2025, 02, 02), LocalDate.now()));
+    //  Wille & Anna
+    @GetMapping("/statistics/{startDate}/{endDate}")
+    public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+           return ResponseEntity.ok(statisticsServiceImpl.getStats(startDate, endDate));
     }
 }

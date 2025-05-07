@@ -32,8 +32,8 @@ public class StatisticsService {
         Stats stats = new Stats();
 /*        stats.setMostRentedMake(mostRentedMake(start, End));
         stats.setTimesCarRented(timesCarRented());
-        stats.setMostCommonPeriodInDays(mostCommonPeriodInDays());
-        stats.setAverageOrderCost(averageOrderCost());*/
+      */  stats.setMostCommonPeriodInDays(mostCommonRentalPeriodInDays());
+        stats.setAverageOrderCost(calculateAverageOrderCost());
         stats.setTotalIncomeEveryCar(totalIncomeEveryCar());
         stats.setTotalIncomePeriod(totalIncomePeriod(start, End));
         return stats;
@@ -59,9 +59,9 @@ public class StatisticsService {
         timesRented.put("registrationNumber", null);
         return timesRented;
     }
-
+*/
     //Elham - Flyttat till OrderServiceImpl
-    public int getMostCommonRentalPeriodInDays() {
+    public int mostCommonRentalPeriodInDays() {
         int numberOfDays = 0;
         Map<Integer, Integer> frequencyMap = new HashMap<>();
         List<Order> allOrders = orderRepo.findAll();
@@ -95,7 +95,7 @@ public class StatisticsService {
         }
         return (sum / allOrders.size());
     }
-*/
+
 
 
   // Anna

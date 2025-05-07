@@ -11,25 +11,25 @@ public class Stats {
     private Map<String, Integer> timesCarRented;
     private int mostCommonPeriodInDays;
     private double averageOrderCost;
-    private Map<String, Integer> totalIncomeEveryCar;
-    int totalIncomePeriod;
+    private Map<String, Double> totalIncomeEveryCar;
+    Double totalIncomePeriod;
 
     public Stats() {
     }
 
-    public int getTotalIncomePeriod() {
+    public Double getTotalIncomePeriod() {
         return totalIncomePeriod;
     }
 
-    public void setTotalIncomePeriod(int totalIncomePeriod) {
+    public void setTotalIncomePeriod(Double totalIncomePeriod) {
         this.totalIncomePeriod = totalIncomePeriod;
     }
 
-    public Map<String, Integer> getTotalIncomeEveryCar() {
+    public Map<String, Double> getTotalIncomeEveryCar() {
         return totalIncomeEveryCar;
     }
 
-    public void setTotalIncomeEveryCar(Map<String, Integer> totalIncomeEveryCar) {
+    public void setTotalIncomeEveryCar(Map<String, Double> totalIncomeEveryCar) {
         this.totalIncomeEveryCar = totalIncomeEveryCar;
     }
 

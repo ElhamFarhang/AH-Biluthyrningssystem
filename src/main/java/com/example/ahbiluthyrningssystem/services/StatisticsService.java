@@ -30,14 +30,27 @@ public class StatisticsService {
 
     public Stats getStats(LocalDate start, LocalDate End) {
         Stats stats = new Stats();
-/*        stats.setMostRentedMake(mostRentedMake(start, End));
-        stats.setTimesCarRented(timesCarRented());
+       stats.setMostRentedMake(mostRentedMake(start, End));
+  /*       stats.setTimesCarRented(timesCarRented());
       */  stats.setMostCommonPeriodInDays(mostCommonRentalPeriodInDays());
         stats.setAverageOrderCost(calculateAverageOrderCost());
         stats.setTotalIncomeEveryCar(totalIncomeEveryCar());
         stats.setTotalIncomePeriod(totalIncomePeriod(start, End));
         return stats;
     }
+
+
+    public Map<String, Integer> mostRentedMake(LocalDate start, LocalDate End){
+        List<Order> orders = orderRepo.findAll();
+        Map<String, Integer> makeCount = new HashMap<>();
+        for (Order order : orders) {
+            makeCount.put(order.getCar().getMake(), makeCount.getOrDefault(order.getCar().getMake(), 0) + 1);
+        }
+        Map<String, Integer> mapToReturn = new HashMap<>();
+
+        return mapToReturn;
+    }
+
 /*
 
     //Wille

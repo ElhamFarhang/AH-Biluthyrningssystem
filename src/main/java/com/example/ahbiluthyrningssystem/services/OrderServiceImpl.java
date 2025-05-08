@@ -24,13 +24,15 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
     private Principal principal;
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
+    private LoggerService logger;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private String userName;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, LoggerService logger) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
+        this.logger = logger;
     }
 
     @Override

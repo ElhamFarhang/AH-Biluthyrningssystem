@@ -16,10 +16,12 @@ import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
+    private final LoggerService LOG;
 
     @Autowired
-    public CarServiceImpl(CarRepository carRepository) {
+    public CarServiceImpl(CarRepository carRepository, LoggerService LOG) {
         this.carRepository = carRepository;
+        this.LOG = LOG;
     }
 
     // Elham - getAvailableCars
@@ -81,6 +83,7 @@ public class CarServiceImpl implements CarService {
 
     //  Wille
     private void validateCar(Car car){
+
         //  TODO
     }
 

@@ -3,6 +3,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.entities.Stats;
@@ -21,13 +22,13 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 public class AdminController {
 
     private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
+    private CarService carServiceImpl;
     private OrderService orderServiceImpl;
     private StatisticsServiceImpl statisticsServiceImpl;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsServiceImpl statisticsService) {
+    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsServiceImpl statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;

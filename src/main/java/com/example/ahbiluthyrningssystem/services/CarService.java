@@ -4,7 +4,7 @@ import com.example.ahbiluthyrningssystem.entities.Car;
 
 import java.util.List;
 
-public interface CarServiceInterface {
+public interface CarService {
     List<Car> getAllCars();
     List<Car> getAvailableCars();
     Car addCar(Car car);

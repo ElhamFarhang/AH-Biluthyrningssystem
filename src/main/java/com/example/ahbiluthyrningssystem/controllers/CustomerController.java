@@ -18,12 +18,12 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerServiceImpl;
-    private final CarServiceInterface carServiceImpl;
+    private final CarService carServiceImpl;
     private final OrderService orderServiceImpl;
 
     //  Elham
     @Autowired
-    public CustomerController(CustomerService customerServiceImpl, CarServiceInterface carServiceImpl, OrderService orderServiceImpl) {
+    public CustomerController(CustomerService customerServiceImpl, CarService carServiceImpl, OrderService orderServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carServiceImpl;
         this.orderServiceImpl = orderServiceImpl;

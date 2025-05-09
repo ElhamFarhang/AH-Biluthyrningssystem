@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {   //Anna
 
     List<Order> findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(String customer, LocalDate date);
-    List<Order> findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(String customer, LocalDate date);
+    List<Order> findByCustomerPersonalnumberAndCanceledTrueOrCustomerPersonalnumberAndDateEndBefore(String customer, LocalDate date);
 
     List<Order> findByCanceledFalseAndDateEndAfter(LocalDate dateEndAfter);
     List<Order> findByCanceledTrueOrDateEndBefore(LocalDate dateEndBefore);

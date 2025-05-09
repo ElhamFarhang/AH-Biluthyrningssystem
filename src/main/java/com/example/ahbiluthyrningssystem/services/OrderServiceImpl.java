@@ -1,9 +1,11 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
+import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.apache.logging.log4j.LogManager;
@@ -19,20 +21,24 @@ import java.util.Optional;
 
 
 @Service
-public class OrderServiceImpl implements OrderService {        // Det mesta Anna
+public class OrderServiceImpl implements OrderService {
+    private final CarServiceImpl carServiceImpl;        // Det mesta Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
+    private CarRepository carRepository;
     private LoggerService logger;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private String userName;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, LoggerService logger) {
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, CarRepository carRepository, LoggerService logger, CarServiceImpl carServiceImpl) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
+        this.carRepository = carRepository;
         this.logger = logger;
+        this.carServiceImpl = carServiceImpl;
     }
 
     @Override
@@ -64,9 +70,18 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
             FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a car", userName);
             throw new BadRequestException("Car");
         }
+        Optional<Car> optionalCar = carRepository.findById(newOrder.getCar().getId());
+        if (optionalCar.isEmpty()) {
+            FUNCTIONALITY_LOGGER.warn("{} tried to add a non-existing car with id: {} to the order.", principal.getName(), newOrder.getCar().getId());
+            throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
+        }
+        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
+            FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
+            //TODO skriv nytt exeption
+        }
+        newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
-        newOrder.setCar(newOrder.getCar());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
         if (thisCustomer.isEmpty()) {
             FUNCTIONALITY_LOGGER.warn("A not logged in user tried to add a order");
@@ -77,17 +92,6 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
         newOrder.setTotalCost(days*newOrder.getCar().getPricePerDay());
     }
 
-    private void updateCanceledOrder(Order order) {
-        order.setCanceled(true);
-        order.setCar(null);
-        int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
-        Double newCost;
-        if (daysBeforeStart <= 7)
-            newCost = order.getTotalCost()*0.5;
-        else
-            newCost = 0.0;
-        order.setTotalCost(newCost);
-    }
 
     @Override
     public List<Order> getActiveOrdersCustomer() {        //Anna
@@ -146,6 +150,19 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
             updateCanceledOrder(order);
             orderRepository.save(order);
         }
+    }
+
+    private void updateCanceledOrder(Order order) {
+        order.setCanceled(true);
+/*        order.getCar().*/ //TODO ta bort datum från bilens isBooked
+        order.setCar(null);
+        int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
+        Double newCost;
+        if (daysBeforeStart <= 7)
+            newCost = order.getTotalCost()*0.5;
+        else
+            newCost = 0.0;
+        order.setTotalCost(newCost);
     }
 
 }

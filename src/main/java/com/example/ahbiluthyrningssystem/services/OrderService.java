@@ -9,10 +9,6 @@ import java.util.List;
 public interface OrderService {
 
 
-    //List<Order> getAllOrders();
-    //Order getOrderById(Integer id);
-    //Order updateOrder(Integer id, Order order);
-
     Order addOrder(Order order);
     void cancelOrder(Integer id);
     List<Order> getActiveOrdersCustomer();

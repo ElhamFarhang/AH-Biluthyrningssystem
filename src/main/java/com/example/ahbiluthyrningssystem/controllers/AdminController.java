@@ -1,16 +1,14 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
 
-import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +22,13 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 public class AdminController {
 
     private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
+    private CarService carServiceImpl;
     private OrderService orderServiceImpl;
     private StatisticsService statisticsService;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsService statisticsService) {
+    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsServiceImpl statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;

@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 
 @Service
-public class CarServiceImpl implements CarServiceInterface {
+public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
 
@@ -71,6 +72,11 @@ public class CarServiceImpl implements CarServiceInterface {
     @Override
     public Car getCarById(Integer id) {
         return carRepository.findById(id).get();
+    }
+
+    @Override
+    public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
+        return null;
     }
 
     //  Wille

@@ -8,7 +8,6 @@ import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
-import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
         FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
 
     }
-    @Transactional
+
     @Override
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
         orderRepository.deleteByDateEndBefore(date);

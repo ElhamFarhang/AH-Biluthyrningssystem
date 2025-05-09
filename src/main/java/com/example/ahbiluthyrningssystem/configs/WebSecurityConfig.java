@@ -18,30 +18,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    //  Elham & Wille
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/cars").hasRole("USER")
+                        .requestMatchers("/api/v1/cars").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/v1/addorder").hasRole("USER")
                         .requestMatchers("/api/v1/cancelorder/**").hasRole("USER")
                         .requestMatchers("/api/v1/activeorders").hasRole("USER")
                         .requestMatchers("/api/v1/orders").hasRole("USER")
                         .requestMatchers("/api/v1/updateinfo/**").hasRole("USER")
+                        .requestMatchers("/api/v1/authenticated").hasRole("USER")
                         .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/cars").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/allcars").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/addcars").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/updatecar").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/removecar").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/orders").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/removeorders").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/removeorders-beforedate/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/admin/statistics/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf-> csrf.disable());
@@ -57,31 +51,31 @@ public class WebSecurityConfig {
                 .build();
 
         UserDetails Anna = User
-                .withUsername("Anna")
+                .withUsername("19850101-1234")
                 .password("{noop}1234")
                 .roles("USER")
                 .build();
 
         UserDetails Erik = User
-                .withUsername("Erik")
+                .withUsername("19900215-5678")
                 .password("{noop}5678")
                 .roles("USER")
                 .build();
 
         UserDetails Maria = User
-                .withUsername("Maria")
+                .withUsername("19751230-9101")
                 .password("{noop}9101")
                 .roles("USER")
                 .build();
 
         UserDetails Johan = User
-                .withUsername("Johan")
+                .withUsername("19881122-3456")
                 .password("{noop}3456")
                 .roles("USER")
                 .build();
 
         UserDetails Elin = User
-                .withUsername("Elin")
+                .withUsername("19950505-7890")
                 .password("{noop}7890")
                 .roles("USER")
                 .build();

@@ -17,25 +17,26 @@ public class Customer {
     @Column (length = 30, nullable = false)
     private String last_name;
     @Column (length = 15, nullable = false, unique = true)
-    private String personal_number;
+    private String personalnumber;
     @Column (length = 30, nullable = false)
     private String address;
     @Column (length = 50, nullable = false)
     private String email;
     @Column (length = 14, nullable = true)
     private String phone_number;
+    @JsonIgnoreProperties("customer")
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders ;
 
     public Customer() {
     }
 
-    public Integer getCustomer_id() {
+    public Integer getId() {
         return id;
     }
 
-    public void setCustomer_id(Integer customer_id) {
-        this.id = customer_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirst_name() {
@@ -54,12 +55,12 @@ public class Customer {
         this.last_name = last_name;
     }
 
-    public String getPersonal_number() {
-        return personal_number;
+    public String getPersonalnumber() {
+        return personalnumber;
     }
 
-    public void setPersonal_number(String personal_number) {
-        this.personal_number = personal_number;
+    public void setPersonalnumber(String personalnumber) {
+        this.personalnumber = personalnumber;
     }
 
     public String getAddress() {
@@ -97,14 +98,14 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer[" +
-                "customer_id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", personal_number='" + personal_number + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", phone_number='" + phone_number + '\'' +
-                ", order_id=" + orders +
+                "customer_id:" + id +
+                ", first_name:'" + first_name + '\'' +
+                ", last_name:'" + last_name + '\'' +
+                ", personal_number:'" + personalnumber + '\'' +
+                ", address:'" + address + '\'' +
+                ", email:'" + email + '\'' +
+                ", phone_number:'" + phone_number + '\'' +
+                ", order_id:" + orders +
                 ']';
     }
 }

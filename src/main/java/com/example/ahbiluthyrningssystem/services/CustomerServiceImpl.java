@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getAllCustomers() {
+        FUNCTIONALITY_LOGGER.info("Retrieving all customers from the database.");
         return customerRepository.findAll();
     }
 
@@ -36,8 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent())
             throw new ResourceNotFoundException("Customer", "id", id);
+        FUNCTIONALITY_LOGGER.info("Retrieving customer with ID: {}", id);
         return customer.get();
     }
+
 
     @Override
     public Customer addCustomer(Customer customer) {
@@ -45,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
             FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
             throw new BadRequestException("FirstName and lastName");
         }
-        if (customer.getPersonal_number().isEmpty()) {
+        if (customer.getPersonalnumber().isEmpty()) {
             FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
             throw new BadRequestException("Personal_number");
         }
@@ -62,12 +66,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateInfo(Integer id, Customer customer) {
-        Optional<Customer> customerToUpdate = customerRepository.findById(id);
-        if (!customerToUpdate.isPresent()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
-            throw new ResourceNotFoundException("Customer", "id", id);
+    public Customer updateInfo(Customer customer, Principal principal) {
+        Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(principal.getName());
+        if (optionalCustomer.isEmpty()) {
+            FUNCTIONALITY_LOGGER.warn("User tried to update a non-existent customer with personal number: {}", principal.getName());
+            throw new ResourceNotFoundException("Customer", "Personal_number", principal.getName());
         }
+        Customer customerToUpdate = optionalCustomer.get();
+        customer.setId(customerToUpdate.getId());
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
             FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
             throw new BadRequestException("FirstName and lastName");
@@ -80,12 +86,12 @@ public class CustomerServiceImpl implements CustomerService {
             FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
             throw new BadRequestException("Address");
         }
-        if (!(customerToUpdate.get().getPersonal_number().equals(customer.getPersonal_number()))) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
-            throw new NotAcceptableException(customer.getPersonal_number());
+        if (!(customer.getPersonalnumber().equals(principal.getName()))) {
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with a mismatched personal number.");
+            throw new NotAcceptableException(customer.getPersonalnumber());
         }
-        customer.setCustomer_id(id);
-        FUNCTIONALITY_LOGGER.info("Customer by the id:{} updated", customer.getCustomer_id());
+        customerToUpdate.setPersonalnumber(principal.getName());
+        FUNCTIONALITY_LOGGER.info("Customer by the id:{} updated", customer.getId());
         return customerRepository.save(customer);
     }
 

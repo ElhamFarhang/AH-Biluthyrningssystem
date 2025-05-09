@@ -3,7 +3,7 @@ package com.example.ahbiluthyrningssystem.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "ORDERS")
@@ -13,23 +13,21 @@ public class Order {                //Anna
     @Column(name = "order_id")
     private Integer id;
     @Column(length = 12, nullable = false)
-    private Date dateCreated;
+    private LocalDate dateCreated;
     @Column(length = 12, nullable = false)
-    private Date dateStart;
+    private LocalDate dateStart;
     @Column(length = 12, nullable = false)
-    private Date dateEnd;
+    private LocalDate dateEnd;
     @Column(length = 10, nullable = false)
-    private boolean active;
+    private boolean canceled;
     @Column(length = 10, nullable = false)
-    private boolean canceled=false;
-    @Column(length = 10, nullable = false)
-    private Integer totalCost = 0;
+    private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = true)
     private Car car;
 
@@ -45,36 +43,28 @@ public class Order {                //Anna
         this.id = id;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public Date getDateStart() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDate dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDate getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public boolean isCanceled() {
@@ -85,11 +75,11 @@ public class Order {                //Anna
         this.canceled = canceled;
     }
 
-    public Integer getTotalCost() {
+    public Double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Integer totalCost) {
+    public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
     }
 

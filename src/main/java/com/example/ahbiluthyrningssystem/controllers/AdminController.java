@@ -1,8 +1,11 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
+import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +21,17 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 public class AdminController {
 
     private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
+    private CarService carServiceImpl;
     private OrderService orderServiceImpl;
+    private StatisticsService statisticsService;
 
+    //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService) {
+    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsServiceImpl statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
+        this.statisticsService = statisticsService;
     }
 
     //  Wille & Elham
@@ -77,5 +83,37 @@ public class AdminController {
         Car foundCar = carServiceImpl.getCarById(car.getId());
         carServiceImpl.deleteCar(foundCar);
         return ResponseEntity.ok("Car with reg num: " + foundCar.getRegistrationNumber() + " has been successfully deleted.");
+    }
+
+    // Wille
+    @GetMapping("/activeorders")
+    public ResponseEntity<List<Order>> getActiveOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getActiveOrdersAdmin());
+    }
+
+    //  Wille
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>> getOrders() {
+        return ResponseEntity.ok(orderServiceImpl.getOldOrdersAdmin());
+    }
+
+    //  Wille
+    @DeleteMapping("/removeorder/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Integer id) {
+        orderServiceImpl.deleteOrder(id);
+        return ResponseEntity.ok(String.format("Order with Id: %s has been successfully deleted.", id));
+    }
+
+    //  Wille & Anna
+    @DeleteMapping("removeorders-beforedate/{date}")
+    public ResponseEntity<String> deleteOrdersBefore(@PathVariable LocalDate date) {
+        orderServiceImpl.deleteAllOrdersBeforeDate(date);
+        return ResponseEntity.ok(String.format("Orders before date: %s", date));
+    }
+
+    //  Wille & Anna
+    @GetMapping("/statistics/{startDate}/{endDate}")
+    public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+           return ResponseEntity.ok(statisticsService.getStats(startDate, endDate));
     }
 }

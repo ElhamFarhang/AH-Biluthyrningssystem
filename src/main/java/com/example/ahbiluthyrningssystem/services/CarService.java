@@ -11,7 +11,7 @@ public interface CarService {
     Car addCar(Car car);
     void deleteCar(Car car);
     Car updateCar(Car car);
-    Car getCarById(int id);
+    Car getCarById(Integer id);
     Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate);
 
 }

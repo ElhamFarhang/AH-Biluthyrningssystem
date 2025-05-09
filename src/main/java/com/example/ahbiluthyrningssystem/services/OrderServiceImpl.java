@@ -52,7 +52,6 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
     }
 
     private void newOrderCheckAndSetDetails(Order newOrder){        //Anna
-        System.out.println("hittttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
         if (newOrder.getDateStart()==null){
             FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a start date", userName);
             throw new BadRequestException("Start date");

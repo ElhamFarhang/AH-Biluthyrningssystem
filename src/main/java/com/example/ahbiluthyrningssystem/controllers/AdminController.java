@@ -24,7 +24,7 @@ public class AdminController {
     private CustomerService customerServiceImpl;
     private CarService carServiceImpl;
     private OrderService orderServiceImpl;
-    private StatisticsServiceImpl statisticsServiceImpl;
+    private StatisticsService statisticsService;
 
     //Elham
     @Autowired
@@ -32,7 +32,7 @@ public class AdminController {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
-        this.statisticsServiceImpl = statisticsService;
+        this.statisticsService = statisticsService;
     }
 
     //  Wille & Elham
@@ -115,6 +115,6 @@ public class AdminController {
     //  Wille & Anna
     @GetMapping("/statistics/{startDate}/{endDate}")
     public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
-           return ResponseEntity.ok(statisticsServiceImpl.getStats(startDate, endDate));
+           return ResponseEntity.ok(statisticsService.getStats(startDate, endDate));
     }
 }

@@ -46,9 +46,6 @@ public class CarServiceImpl implements CarService {
     //  Wille
     @Override
     public Car addCar(Car car) {
-        if(car.getId() != 0) {
-            car.setId(0);
-        }
         return carRepository.save(car);
     }
 
@@ -73,7 +70,7 @@ public class CarServiceImpl implements CarService {
 
     //  Wille
     @Override
-    public Car getCarById(int id) {
+    public Car getCarById(Integer id) {
         return carRepository.findById(id).get();
     }
 

@@ -25,7 +25,7 @@ public class Customer {
     @Column (length = 14, nullable = true)
     private String phone_number;
     @JsonIgnoreProperties("customer")
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Order> orders ;
 
     public Customer() {

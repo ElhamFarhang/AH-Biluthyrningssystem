@@ -3,7 +3,6 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
-import com.example.ahbiluthyrningssystem.services.CarServiceInterface;
 import com.example.ahbiluthyrningssystem.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -22,19 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
 //--------------------- Elham - class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest --------------
 @SpringBootTest
 @Transactional
-@Rollback
 class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     private AdminController adminController;
     private CustomerService customerService;
-    private CarServiceInterface carService;
     Customer testCustomer, invalidCustomer;
 
     // Elham
     @Autowired
-    public AdminControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController, CarServiceInterface carService, CustomerService customerService) {
+    public AdminControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController,CustomerService customerService) {
         this.adminController = adminController;
-        this.carService = carService;
         this.customerService = customerService;
     }
 

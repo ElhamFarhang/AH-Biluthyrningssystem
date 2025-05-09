@@ -30,7 +30,7 @@ public class Car {
     public Car() {
     }
 
-    public Car(String make, String model, int pricePerDay, String registrationNumber) {
+    public Car(String make, String model, double pricePerDay, String registrationNumber) {
         this.make = make;
         this.model = model;
         this.pricePerDay = pricePerDay;

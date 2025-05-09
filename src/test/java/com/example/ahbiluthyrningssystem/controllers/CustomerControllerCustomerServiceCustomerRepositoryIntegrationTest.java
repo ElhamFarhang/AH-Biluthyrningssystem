@@ -2,9 +2,6 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.exceptions.NotAcceptableException;
-import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
-import com.example.ahbiluthyrningssystem.services.CarServiceInterface;
-import com.example.ahbiluthyrningssystem.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,18 +26,14 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     private CustomerController customerController;
     private AdminController adminController;
-    private CustomerService customerService;
-    private CarServiceInterface carService;
     Customer testCustomer, invalidCustomer;
     private Principal mockPrincipal;
 
     // Elham
     @Autowired
-    public CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController, CarServiceInterface carService, CustomerController customerController, CustomerService customerService) {
+    public CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController, CustomerController customerController) {
         this.adminController = adminController;
-        this.carService = carService;
         this.customerController = customerController;
-        this.customerService = customerService;
     }
 
     // Elham

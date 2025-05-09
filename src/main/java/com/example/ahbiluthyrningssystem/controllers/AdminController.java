@@ -20,13 +20,13 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 public class AdminController {
 
     private CustomerService customerServiceImpl;
-    private CarServiceInterface carServiceImpl;
+    private CarService carServiceImpl;
     private OrderService orderServiceImpl;
     private StatisticsService statisticsServiceImpl;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarServiceInterface carService, OrderService orderService, StatisticsService statisticsService) {
+    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsService statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;

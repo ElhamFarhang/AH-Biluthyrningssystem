@@ -35,7 +35,7 @@ public class Order {                //Anna
     public Order() {
     }
 
-    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, Customer customer, Car car, boolean canceled, Integer totalCost) {
+    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, Customer customer, Car car, boolean canceled, Double totalCost) {
         this.dateCreated = dateCreated;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;

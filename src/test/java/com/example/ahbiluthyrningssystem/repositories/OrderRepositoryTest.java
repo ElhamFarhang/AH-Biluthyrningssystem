@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.repositories;
 
-
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +30,9 @@ class OrderRepositoryTest {             //Anna
     @BeforeEach
     void beforeEach() {
         orderRepository.deleteAll();
+        System.out.println(orderRepository.count() + "-----------------------------------------------");
+        List<Order> orders = orderRepository.findAll();
+        System.out.println(orders.size());
         order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer);
         order2 = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer2);
         order3 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer);
@@ -39,12 +41,18 @@ class OrderRepositoryTest {             //Anna
         orderRepository.save(order2);
         orderRepository.save(order3);
         orderRepository.save(order4);
+        System.out.println(orderRepository.count() + "----------------------------------------------");
 
     }
 
 
     @Test
     void findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfterShouldLeaveOneOrder() {
+        List <Order> test =  orderRepository.findAll();
+        for (Order order : test) {
+            System.out.println(order);
+
+        }
         List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(customer.getPersonalnumber(),LocalDate.now());
         for (Order order : results) {
             System.out.println("-----------------------------------------------------------------------------------------");
@@ -64,20 +72,9 @@ class OrderRepositoryTest {             //Anna
             System.out.println(order.toString());
         }
         assertThat(results.size() == 1).isTrue();
-    }
-
-
-
-
-
-    @Test
-    void deleteByDateEndBeforeShouldLeaveTwoOrders() {
-        orderRepository.deleteByDateEndBefore(LocalDate.now());
-        List<Order> results = orderRepository.findAll();
-        assertThat(results.size() == 2).isTrue();
-        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
-        assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
-
+        boolean canceled = results.get(0).isCanceled();
+        boolean endDatePassed = LocalDate.now().isBefore(results.get(0).getDateEnd());
+        assertThat(canceled||endDatePassed).isTrue();
     }
 
 
@@ -99,6 +96,49 @@ class OrderRepositoryTest {             //Anna
         assertThat(results.get(1).isCanceled()).isTrue();
         assertThat(results.get(0).getDateEnd()).isBefore(LocalDate.now());
         assertThat(results.get(1).getDateEnd()).isBefore(LocalDate.now());
+    }
+
+
+    @Test
+    void deleteByDateEndBeforeShouldLeaveTwoOrders() {
+        orderRepository.deleteByDateEndBefore(LocalDate.now());
+        List<Order> results = orderRepository.findAll();
+        assertThat(results.size() == 2).isTrue();
+        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
+        assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
+
+    }
+
+
+    @Test
+    void findByCarRegistrationNumber(){ //TODO har ingen car
+
+        List<Order> results = orderRepository.findByCarRegistrationNumber(order.getCar().getRegistrationNumber());
+
+        assertThat(results.size() == 2).isTrue();
+        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
+        assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
+
+    }
+
+    @Test
+    void findByDateEndBetween(){
+        orderRepository.deleteAll();
+        orderRepository.flush();
+        List<Order> results = orderRepository.findByDateEndBetween(LocalDate.now(),LocalDate.now().plusDays(7));
+        System.out.println(results.size());
+        System.out.println(results.get(0).getId());
+ /*       System.out.println(results.get(1).getId());
+        System.out.println(results.get(2).getId());*/
+
+
+        assertThat(results.size() == 0).isTrue();
+
+        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
+        assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
+        assertThat(results.get(0).getDateEnd()).isBefore(LocalDate.now().plusDays(7));
+        assertThat(results.get(1).getDateEnd()).isBefore(LocalDate.now().plusDays(7));
+
     }
 
 }

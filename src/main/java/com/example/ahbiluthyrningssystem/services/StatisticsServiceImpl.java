@@ -52,11 +52,17 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 
   //Theo
-    public Map<String, Integer> timesCarRented() {
-        Map<String, Integer> timesRented = new HashMap<>();
-        timesRented.put("registrationNumber", null);
-        return timesRented;
-    }
+  public Map<String, Integer> timesCarRented() {
+      Map<String, Integer> timesRented = new HashMap<>();
+
+      List<Order> allOrders = orderRepo.findAll();
+      for (Order order : allOrders) {
+          String regNumber = order.getCar().getRegistrationNumber();
+          timesRented.put(regNumber, timesRented.getOrDefault(regNumber, 0) + 1);
+      }
+
+      return timesRented;
+  }
 
 
     //Elham

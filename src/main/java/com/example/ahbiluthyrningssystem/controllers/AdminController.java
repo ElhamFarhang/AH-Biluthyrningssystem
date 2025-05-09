@@ -3,7 +3,6 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.entities.Stats;

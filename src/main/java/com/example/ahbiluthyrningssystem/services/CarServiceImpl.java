@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car getCarById(int id) {
         return carRepository.findById(id).get();
+    }
+
+    @Override
+    public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
+        return null;
     }
 
     //  Wille

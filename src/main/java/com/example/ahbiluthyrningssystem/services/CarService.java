@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Car;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CarService {
@@ -11,5 +12,6 @@ public interface CarService {
     void deleteCar(Car car);
     Car updateCar(Car car);
     Car getCarById(int id);
+    Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate);
 
 }

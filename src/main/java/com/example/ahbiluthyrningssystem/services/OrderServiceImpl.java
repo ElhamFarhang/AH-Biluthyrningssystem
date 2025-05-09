@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
         LocalDate today = LocalDate.now();
         userName = principal.getName();
         FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
-        return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrCustomerPersonalnumberAndDateEndBefore(userName, today);
+        return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
     }
 
     @Override

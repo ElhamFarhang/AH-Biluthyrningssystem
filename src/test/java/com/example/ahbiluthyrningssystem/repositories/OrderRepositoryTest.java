@@ -58,7 +58,7 @@ class OrderRepositoryTest {             //Anna
 
     @Test
     void findByCustomerPersonalnumberAndCanceledTrueOrDateEndBeforeShouldLeaveOneOrder() {
-        List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrCustomerPersonalnumberAndDateEndBefore(customer.getPersonalnumber(),LocalDate.now());
+        List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(customer.getPersonalnumber(),LocalDate.now());
         for (Order order : results) {
             System.out.println("-----------------------------------------------------------------------------------------");
             System.out.println(order.toString());

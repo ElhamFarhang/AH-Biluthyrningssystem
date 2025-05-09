@@ -21,17 +21,33 @@ class OrderRepositoryTest {             //Anna
 
 
     private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com");
+    private Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com");
     private Order order;
     private Order order2;
+    private Order order3;
+    private Order order4;
 
 
     @BeforeEach
     void beforeEach() {
         orderRepository.deleteAll();
         order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer);
-        order2 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer);
+        order2 = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer2);
+        order3 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer);
+        order4 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer2);
         orderRepository.save(order);
         orderRepository.save(order2);
+        orderRepository.save(order3);
+        orderRepository.save(order4);
+    }
+
+
+    @Test
+    void findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter() {
+        orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter("19850101-9999", LocalDate.now());
+        List<Order> results = orderRepository.findAll();
+        assertThat(results.size()==1);
+        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
     }
 
 

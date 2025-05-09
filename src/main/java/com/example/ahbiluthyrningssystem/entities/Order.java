@@ -24,7 +24,7 @@ public class Order {                //Anna
     private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id", nullable = true)//TODO sätt som false
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

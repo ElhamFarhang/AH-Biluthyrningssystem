@@ -52,6 +52,7 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
     }
 
     private void newOrderCheckAndSetDetails(Order newOrder){        //Anna
+        System.out.println("hittttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
         if (newOrder.getDateStart()==null){
             FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a start date", userName);
             throw new BadRequestException("Start date");
@@ -66,6 +67,7 @@ public class OrderServiceImpl implements OrderService {        // Det mesta Anna
         }
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
+        newOrder.setCar(newOrder.getCar());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
         if (thisCustomer.isEmpty()) {
             FUNCTIONALITY_LOGGER.warn("A not logged in user tried to add a order");

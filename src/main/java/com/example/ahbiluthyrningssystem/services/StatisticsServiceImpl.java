@@ -13,6 +13,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,14 +40,19 @@ public class StatisticsServiceImpl implements StatisticsService {
         return stats;
     }
 
-    //Wille
-    public Map<String, Integer> mostRentedMake(LocalDate start, LocalDate End){
-        Map<String, Integer> mostRented = new HashMap<>();
+    //  Wille
+    //  Borde nog vara Map.Entry om vi bara ska ta ut ett märke tbh
+    public Map<String, Integer> mostRentedMake(LocalDate start, LocalDate end){
         List<Order> orders = orderRepo.findAll();
-        String make = "";
-        int times = 0;
-        Map<String, List<Order>> group = orders.stream().collect(Collectors.groupingBy(o -> o.getCar().getMake()));
-        mostRented.put(make, times);
+        Map<String, Integer> group = orders.stream().filter(o -> !o.getDateStart().isBefore(start) && !o.getDateEnd().isAfter(end))
+            .collect(Collectors.groupingBy(o -> o.getCar().getMake(), Collectors.summingInt(o -> 1)));
+
+        Optional<Entry<String, Integer>> entry = group.entrySet().stream().collect(Collectors.maxBy(Map.Entry.comparingByValue()));
+        
+        Map<String, Integer> mostRented = new HashMap<>();
+        if(entry.isPresent())
+            mostRented.put(entry.get().getKey(), entry.get().getValue());
+
         return mostRented;
     }
 

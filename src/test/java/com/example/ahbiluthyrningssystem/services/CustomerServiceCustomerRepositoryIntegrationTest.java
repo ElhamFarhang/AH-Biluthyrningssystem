@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 
 //--------------------- Elham - class CustomerServiceImplIntegrationTest --------------
@@ -23,9 +24,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
 
     private CustomerRepository customerRepository;
     private CustomerServiceImpl customerService;
-    private static Customer customer;
     private static Customer savedCustomer;
-    private Principal mockPrincipal;
+    private Principal mockPrincipal = mock(Principal.class);
 
     @Autowired
     public CustomerServiceCustomerRepositoryIntegrationTest(CustomerRepository customerRepository, CustomerServiceImpl customerService) {
@@ -36,9 +36,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     @BeforeEach
     void beforeEach() {
         customerRepository.deleteAll();
-        customer = new Customer("Sara", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
-        savedCustomer = customerRepository.save(customer);
-        mockPrincipal = ()->customer.getPersonalnumber();
+        savedCustomer = customerRepository.save( new Customer("Sara", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678"));
+        mockPrincipal = ()->savedCustomer.getPersonalnumber();
     }
 
     @Test
@@ -50,7 +49,7 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void getCustomerByIdShouldReturnCustomer() {
         Customer foundCustomer = customerService.getCustomerById(savedCustomer.getId());
-        assertThat(foundCustomer.getPersonalnumber()).isEqualTo(customer.getPersonalnumber());
+        assertThat(foundCustomer.getPersonalnumber()).isEqualTo(savedCustomer.getPersonalnumber());
     }
     @Test
     void getCustomerByIdShouldThrowException() {
@@ -60,26 +59,33 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
 
     @Test
     void addCustomerShouldReturnCustomer() {
-        Customer foundCustomer = customerService.addCustomer(savedCustomer);
-        assertThat(foundCustomer.getPersonalnumber()).isEqualTo(customer.getPersonalnumber());
+        Customer newCustomer = customerService.addCustomer(new Customer("Sten", "Åhlen", "19850512-1879", "Skåne", "Sten@mail.com", "0728645678"));
+        assertThat(newCustomer.getPersonalnumber()).isEqualTo("19850512-1879");
     }
 
     @Test
     void addCustomerShouldThrowException() {
-        customer = new Customer("", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
-        assertThrows(BadRequestException.class, ()-> customerService.addCustomer(customer));
+        Customer newCustomer = new Customer("", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
+        assertThrows(BadRequestException.class, ()-> customerService.addCustomer(newCustomer));
     }
 
     @Test
     void updateInfoShouldReturnCustomer() {
-        Customer foundCustomer = customerService.updateInfo(savedCustomer, mockPrincipal);
-        assertThat(foundCustomer.getPersonalnumber()).isEqualTo(customer.getPersonalnumber());
+        Customer customer= savedCustomer;
+        customer.setFirst_name("Sa");
+        customer.setLast_name("Åh");
+        customer.setAddress("Stockholm");
+        Customer customerToUpdate = customerService.updateInfo(customer, mockPrincipal);
+        assertThat(customerToUpdate.getPersonalnumber()).isEqualTo(savedCustomer.getPersonalnumber());
+        assertThat(customerToUpdate.getFirst_name()).isEqualTo(savedCustomer.getFirst_name());
+        assertThat(customerToUpdate.getLast_name()).isEqualTo(savedCustomer.getLast_name());
+        assertThat(customerToUpdate.getAddress()).isEqualTo(savedCustomer.getAddress());
     }
 
     @Test
     void updateInfoShouldThrowException() {
-        savedCustomer = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
-        assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(savedCustomer, mockPrincipal));
+        Customer customerToUpdate = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
+        assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(customerToUpdate, mockPrincipal));
     }
 
     @Test

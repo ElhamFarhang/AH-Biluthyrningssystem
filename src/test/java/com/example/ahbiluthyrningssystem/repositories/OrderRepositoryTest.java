@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.repositories;
 
+import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,8 @@ class OrderRepositoryTest {             //Anna
 
     private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com");
     private Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com");
+    private Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
+    private Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
     private Order order;
     private Order order2;
     private Order order3;
@@ -32,27 +35,20 @@ class OrderRepositoryTest {             //Anna
     @Transactional
     void beforeEach() {
         orderRepository.deleteAll();
-        order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer);
-        order2 = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer2);
-        order3 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer);
-        order4 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer2);
+        order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
+        order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);
+        order3 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0,customer, car2);
+        order4 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0, customer2, car);
         orderRepository.save(order);
         orderRepository.save(order2);
         orderRepository.save(order3);
         orderRepository.save(order4);
-        List<Order> orders = orderRepository.findAll();
-        System.out.println(orders.size()+"::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-
-    }
+     }
 
 
     @Test
     void findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfterShouldLeaveOneOrder() {
-        List <Order> test =  orderRepository.findAll();
-        System.out.println(test.size()+"---------------------------------------------------------------");
         List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(customer.getPersonalnumber(),LocalDate.now());
-        System.out.println(results.get(0).getId());
-        System.out.println(test.get(0).getId());
         assertThat(results.size() == 1).isTrue();
         assertThat(results.get(0).isCanceled()).isFalse();
         assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
@@ -62,10 +58,6 @@ class OrderRepositoryTest {             //Anna
     @Test
     void findByCustomerPersonalnumberAndCanceledTrueOrDateEndBeforeShouldLeaveOneOrder() {
         List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(customer.getPersonalnumber(),LocalDate.now());
-        for (Order order : results) {
-            System.out.println("-----------------------------------------------------------------------------------------");
-            System.out.println(order.toString());
-        }
         assertThat(results.size() == 1).isTrue();
         boolean canceled = results.get(0).isCanceled();
         boolean endDatePassed = LocalDate.now().isBefore(results.get(0).getDateEnd());
@@ -101,39 +93,25 @@ class OrderRepositoryTest {             //Anna
         assertThat(results.size() == 2).isTrue();
         assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
         assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
-
     }
 
 
     @Test
-    void findByCarRegistrationNumber(){ //TODO har ingen car
-
+    void findByCarRegistrationNumber(){
         List<Order> results = orderRepository.findByCarRegistrationNumber(order.getCar().getRegistrationNumber());
-
         assertThat(results.size() == 2).isTrue();
-        assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
-        assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
-
+        assertThat(results.get(0).getCar().getRegistrationNumber()).isEqualTo(order.getCar().getRegistrationNumber());
+        assertThat(results.get(0).getCar().getRegistrationNumber()).isEqualTo(results.get(1).getCar().getRegistrationNumber());
     }
 
     @Test
     void findByDateEndBetween(){
-        orderRepository.deleteAll();
-        orderRepository.flush();
         List<Order> results = orderRepository.findByDateEndBetween(LocalDate.now(),LocalDate.now().plusDays(7));
-        System.out.println(results.size());
-        System.out.println(results.get(0).getId());
- /*       System.out.println(results.get(1).getId());
-        System.out.println(results.get(2).getId());*/
-
-
-        assertThat(results.size() == 0).isTrue();
-
+        assertThat(results.size() == 2).isTrue();
         assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());
         assertThat(results.get(1).getDateEnd()).isAfter(LocalDate.now());
         assertThat(results.get(0).getDateEnd()).isBefore(LocalDate.now().plusDays(7));
         assertThat(results.get(1).getDateEnd()).isBefore(LocalDate.now().plusDays(7));
-
     }
 
 }

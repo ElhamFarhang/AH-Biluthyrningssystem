@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.services;
 
-import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
@@ -15,14 +14,12 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 @Service
-public class OrderServiceImpl implements OrderService {        //Anna
+public class OrderServiceImpl implements OrderService {        // Det mesta Anna
 
     private Principal principal;
     private final OrderRepository orderRepository;
@@ -48,7 +45,7 @@ public class OrderServiceImpl implements OrderService {        //Anna
         userName = principal.getName();
         newOrderCheckAndSetDetails(newOrder);
         orderRepository.save(newOrder);
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);             //TODO Lägga in admin /username
+        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);
         return newOrder;
     }
 
@@ -81,11 +78,11 @@ public class OrderServiceImpl implements OrderService {        //Anna
         order.setCanceled(true);
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
-        int newCost;
+        Double newCost;
         if (daysBeforeStart <= 7)
-            newCost = (int) (order.getTotalCost()*0.5);
+            newCost = order.getTotalCost()*0.5;
         else
-            newCost = 0;
+            newCost = 0.0;
         order.setTotalCost(newCost);
     }
 

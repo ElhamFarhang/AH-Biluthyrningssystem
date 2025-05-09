@@ -1,9 +1,6 @@
 package com.example.ahbiluthyrningssystem.entities;
 
-import jakarta.persistence.Entity;
-
 import java.util.Map;
-
 
 public class Stats {
 

@@ -20,20 +20,11 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
-    private Principal principal;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-    }
-
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
-
-    public Principal getPrincipal() {
-        return principal;
     }
 
     @Override
@@ -51,15 +42,6 @@ public class CustomerServiceImpl implements CustomerService {
         return customer.get();
     }
 
-    //  Wille
-    @Override
-    public Customer getCustomerBySSN(String ssn) {
-        List<Customer> customers = customerRepository.findAll();
-        Customer loggedInUser = customers.stream().filter(c -> c.getPhone_number().equals(principal.getName())).findFirst().orElse(null);
-        if(loggedInUser == null)
-            throw new ResourceNotFoundException("Customer", "ssn", ssn);
-        return loggedInUser;
-    }
 
     @Override
     public Customer addCustomer(Customer customer) {

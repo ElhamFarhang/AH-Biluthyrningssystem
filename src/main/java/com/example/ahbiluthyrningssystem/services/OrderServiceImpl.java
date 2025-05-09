@@ -75,10 +75,10 @@ public class OrderServiceImpl implements OrderService {
             FUNCTIONALITY_LOGGER.warn("{} tried to add a non-existing car with id: {} to the order.", principal.getName(), newOrder.getCar().getId());
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
-        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
+/*        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
             FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
             //TODO skriv nytt exeption
-        }
+        }*/
         newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());

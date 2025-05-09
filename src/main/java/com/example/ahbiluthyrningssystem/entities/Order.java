@@ -23,11 +23,11 @@ public class Order {                //Anna
     @Column(length = 10, nullable = false)
     private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = true)
     private Car car;
 

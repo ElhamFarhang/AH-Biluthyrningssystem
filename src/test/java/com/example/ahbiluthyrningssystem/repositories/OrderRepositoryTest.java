@@ -2,6 +2,7 @@ package com.example.ahbiluthyrningssystem.repositories;
 
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,9 @@ class OrderRepositoryTest {             //Anna
 
 
     @BeforeEach
+    @Transactional
     void beforeEach() {
         orderRepository.deleteAll();
-        System.out.println(orderRepository.count() + "-----------------------------------------------");
-        List<Order> orders = orderRepository.findAll();
-        System.out.println(orders.size());
         order = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer);
         order2 = new Order(LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, customer2);
         order3 = new Order(LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, customer);
@@ -41,7 +40,8 @@ class OrderRepositoryTest {             //Anna
         orderRepository.save(order2);
         orderRepository.save(order3);
         orderRepository.save(order4);
-        System.out.println(orderRepository.count() + "----------------------------------------------");
+        List<Order> orders = orderRepository.findAll();
+        System.out.println(orders.size()+"::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 
     }
 
@@ -49,15 +49,10 @@ class OrderRepositoryTest {             //Anna
     @Test
     void findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfterShouldLeaveOneOrder() {
         List <Order> test =  orderRepository.findAll();
-        for (Order order : test) {
-            System.out.println(order);
-
-        }
+        System.out.println(test.size()+"---------------------------------------------------------------");
         List<Order> results = orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(customer.getPersonalnumber(),LocalDate.now());
-        for (Order order : results) {
-            System.out.println("-----------------------------------------------------------------------------------------");
-            System.out.println(order.toString());
-        }
+        System.out.println(results.get(0).getId());
+        System.out.println(test.get(0).getId());
         assertThat(results.size() == 1).isTrue();
         assertThat(results.get(0).isCanceled()).isFalse();
         assertThat(results.get(0).getDateEnd()).isAfter(LocalDate.now());

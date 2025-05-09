@@ -8,8 +8,6 @@ import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +26,15 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
     private CarRepository carRepository;
-    private LoggerService logger;
-    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
+    private final LoggerService LOG;
     private String userName;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, CarRepository carRepository, LoggerService logger, CarServiceImpl carServiceImpl) {
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerRepository customerRepository, CarRepository carRepository, LoggerService LOG, CarServiceImpl carServiceImpl) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.carRepository = carRepository;
-        this.logger = logger;
+        this.LOG = LOG;
         this.carServiceImpl = carServiceImpl;
     }
 
@@ -53,30 +50,29 @@ public class OrderServiceImpl implements OrderService {
         userName = principal.getName();
         newOrderCheckAndSetDetails(newOrder);
         orderRepository.save(newOrder);
-        FUNCTIONALITY_LOGGER.info("Order nr {} added by {}", newOrder.getId(), userName);
+        LOG.logInfo("added new order with id " + order.getId());
         return newOrder;
     }
 
     private void newOrderCheckAndSetDetails(Order newOrder){        //Anna
         if (newOrder.getDateStart()==null){
-            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a start date", userName);
+            LOG.logWarn("tried to add an order without a start date");
             throw new BadRequestException("Start date");
         }
         if (newOrder.getDateEnd()==null){
-            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out an end date", userName);
+            LOG.logWarn("tried to add an order without an end date");
             throw new BadRequestException("End date");
         }
         if (newOrder.getCar()==null){
-            FUNCTIONALITY_LOGGER.warn("{} tried to add an order with out a car", userName);
+            LOG.logWarn("tried to add a new order without a car");
             throw new BadRequestException("Car");
         }
         Optional<Car> optionalCar = carRepository.findById(newOrder.getCar().getId());
         if (optionalCar.isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("{} tried to add a non-existing car with id: {} to the order.", principal.getName(), newOrder.getCar().getId());
+            LOG.logWarn(String.format("tried to add a non-existing car with id %s to the order.", newOrder.getCar().getId()));
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
 /*        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
-            FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
             //TODO skriv nytt exeption
         }*/
         newOrder.setCar(optionalCar.get());
@@ -84,7 +80,6 @@ public class OrderServiceImpl implements OrderService {
         newOrder.setDateCreated(LocalDate.now());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
         if (thisCustomer.isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("A not logged in user tried to add a order");
             throw new ResourceNotFoundException("Customer", "Personal_number", userName);
        }
         newOrder.setCustomer(thisCustomer.get());
@@ -97,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getActiveOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
         userName = principal.getName();
-        FUNCTIONALITY_LOGGER.info("Active orders retrieved by {}", userName);
+        LOG.logInfo("retrieved active orders");
         return orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(userName, today);
     }
 
@@ -105,21 +100,21 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOldOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
         userName = principal.getName();
-        FUNCTIONALITY_LOGGER.info("Old orders retrieved by {}", userName);
+        LOG.logInfo("retrieved old orders");
         return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
     }
 
     @Override
     public List<Order> getActiveOrdersAdmin() {        //Anna
         LocalDate today = LocalDate.now();
-        FUNCTIONALITY_LOGGER.info("All active orders retrieved by admin");
+        LOG.logInfo("retrieved all active orders");
         return orderRepository.findByCanceledFalseAndDateEndAfter(today);
     }
 
     @Override
     public List<Order> getOldOrdersAdmin() {        //Anna
         LocalDate today = LocalDate.now();
-        FUNCTIONALITY_LOGGER.info("All old orders retrieved by admin");
+        LOG.logInfo("retrieved old orders");
         return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
@@ -129,14 +124,14 @@ public class OrderServiceImpl implements OrderService {
         if (!orderToDelete.isPresent())
             throw new ResourceNotFoundException("Order", "id", id);
         orderRepository.deleteById(id);
-        FUNCTIONALITY_LOGGER.info("Order nr {} deleted by admin", id );
+        LOG.logInfo("deleted order with id " + id);
 
     }
 
     @Override
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
         orderRepository.deleteByDateEndBefore(date);
-        FUNCTIONALITY_LOGGER.info("Orders ended before: {} deleted by admin", date);
+        LOG.logInfo("deleted orders before " + date);
     }
 
     // Elham - cancelOrder

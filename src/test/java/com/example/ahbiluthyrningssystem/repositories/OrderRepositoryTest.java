@@ -43,6 +43,7 @@ class OrderRepositoryTest {             //Anna
         orderRepository.save(order2);
         orderRepository.save(order3);
         orderRepository.save(order4);
+        System.out.println(order.getDateStart());
      }
 
 

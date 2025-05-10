@@ -24,16 +24,11 @@ public class CarServiceImpl implements CarService {
         this.LOG = LOG;
     }
 
-    // Elham - getAvailableCars
     @Override
     public List<Car> getAvailableCars() {
-        List<Car> cars = carRepository.findAll();
-         List<Car> availableCars = new ArrayList<>();
-         for (Car car : cars) {
-         if (!car.isBooked())
-             availableCars.add(car);
+       
          }
-         return availableCars;
+         return null;
 
         // Simplified
 //        return cars.stream().filter(c -> !c.isBooked()).toList();

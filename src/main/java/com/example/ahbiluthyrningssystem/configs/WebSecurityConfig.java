@@ -24,17 +24,12 @@ public class WebSecurityConfig {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/cars").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/cars/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/v1/addorder").hasRole("USER")
                         .requestMatchers("/api/v1/cancelorder/**").hasRole("USER")
                         .requestMatchers("/api/v1/activeorders").hasRole("USER")
                         .requestMatchers("/api/v1/orders").hasRole("USER")
                         .requestMatchers("/api/v1/updateinfo/**").hasRole("USER")
-                        .requestMatchers("/api/v1/authenticated").hasRole("USER")
-                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

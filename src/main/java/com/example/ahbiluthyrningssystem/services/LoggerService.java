@@ -6,4 +6,5 @@ public interface LoggerService {
     void logInfo(String msg);
     void logWarn(String msg);
     void logErr(String msg);
+    String getLoggedInUser();
 }

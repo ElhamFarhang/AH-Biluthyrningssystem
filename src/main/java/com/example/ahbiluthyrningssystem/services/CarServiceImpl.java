@@ -72,7 +72,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
-        return null;
+        return false;
     }
 
     // Wille

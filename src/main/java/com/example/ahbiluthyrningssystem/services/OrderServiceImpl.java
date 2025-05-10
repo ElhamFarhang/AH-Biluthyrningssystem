@@ -4,6 +4,7 @@ import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
+import com.example.ahbiluthyrningssystem.exceptions.ResourceNotAvailable;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
@@ -11,7 +12,6 @@ import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -19,9 +19,8 @@ import java.util.Optional;
 
 
 @Service
-public class OrderServiceImpl implements OrderService {
-    private final CarServiceImpl carServiceImpl;        // Det mesta Anna
-    private Principal principal;
+public class OrderServiceImpl implements OrderService {     // Det mesta Anna
+    private final CarServiceImpl carServiceImpl;
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
     private CarRepository carRepository;
@@ -37,16 +36,12 @@ public class OrderServiceImpl implements OrderService {
         this.carServiceImpl = carServiceImpl;
     }
 
-    @Override
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
 
     //  Wille & Anna
     @Override
     public Order addOrder(Order order) {
         Order newOrder = order;
-        userName = principal.getName();
+        userName = LOG.getLoggedInUser();
         newOrderCheckAndSetDetails(newOrder);
         orderRepository.save(newOrder);
         LOG.logInfo("added new order with id " + order.getId());
@@ -71,10 +66,10 @@ public class OrderServiceImpl implements OrderService {
             LOG.logWarn(String.format("tried to add a non-existing car with id %s to the order.", newOrder.getCar().getId()));
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
-/*        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
-            FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
-            //TODO skriv nytt exception
-        }*/
+        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
+            LOG.logWarn(String.format("tried to add a car during dates it's already booked."));
+            throw new ResourceNotAvailable("Car", "period");
+        }
         newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
@@ -91,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getActiveOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
-        userName = principal.getName();
+        userName = LOG.getLoggedInUser();
         LOG.logInfo("retrieved active orders");
         return orderRepository.findByCustomerPersonalnumberAndCanceledFalseAndDateEndAfter(userName, today);
     }
@@ -99,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOldOrdersCustomer() {        //Anna
         LocalDate today = LocalDate.now();
-        userName = principal.getName();
+        userName = LOG.getLoggedInUser();
         LOG.logInfo("retrieved old orders");
         return orderRepository.findByCustomerPersonalnumberAndCanceledTrueOrDateEndBefore(userName, today);
     }
@@ -148,6 +143,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void updateCanceledOrder(Order order) {
+        if (!order.getCustomer().getPersonalnumber().equals(LOG.getLoggedInUser())) {
+            throw new ResourceNotAvailable("Order", "user to cancel");
+        }
         order.setCanceled(true);
 //        order.getCar(). //TODO ta bort datum från bilens isBooked
         order.setCar(null);

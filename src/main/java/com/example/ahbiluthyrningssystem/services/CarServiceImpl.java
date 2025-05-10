@@ -24,28 +24,22 @@ public class CarServiceImpl implements CarService {
         this.LOG = LOG;
     }
 
-    // Elham - getAvailableCars
+    //  Wille
     @Override
     public List<Car> getAvailableCars() {
-        List<Car> cars = carRepository.findAll();
-         List<Car> availableCars = new ArrayList<>();
-         for (Car car : cars) {
-         if (!car.isBooked())
-             availableCars.add(car);
-         }
-         return availableCars;
-
         // Simplified
-//        return cars.stream().filter(c -> !c.isBooked()).toList();
+        // Change to hashmap instead of boolean
+        List<Car> cars = carRepository.findAll();
+        return cars.stream().filter(c -> !c.isBooked()).toList();
     }
 
-    //  Wille
+    // Wille
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
-    
-    //  Wille
+
+    // Wille
     @Override
     public Car addCar(Car car) {
         return carRepository.save(car);
@@ -58,11 +52,11 @@ public class CarServiceImpl implements CarService {
         carRepository.delete(car);
     }
 
-    //  Wille
+    // Wille
     @Override
     public Car updateCar(Car car) {
         checkIfCarExists(car);
-        
+
         if (car.getId() == 0) {
             throw new ResourceMissingDataException("Car", "ID");
         }
@@ -70,7 +64,7 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-    //  Wille
+    // Wille
     @Override
     public Car getCarById(Integer id) {
         return carRepository.findById(id).get();
@@ -81,14 +75,14 @@ public class CarServiceImpl implements CarService {
         return null;
     }
 
-    //  Wille
-    private void validateCar(Car car){
+    // Wille
+    private void validateCar(Car car) {
 
-        //  TODO
+        // TODO
     }
 
-    //  Wille
-    private void checkIfCarExists(Car car){
+    // Wille
+    private void checkIfCarExists(Car car) {
         if (!carRepository.existsById(car.getId())) {
             throw new ResourceNotFoundException("car", "id", car.getId());
         }

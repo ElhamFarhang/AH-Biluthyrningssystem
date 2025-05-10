@@ -21,7 +21,6 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final CarServiceImpl carServiceImpl;        // Det mesta Anna
-
     private Principal principal;
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
@@ -73,7 +72,8 @@ public class OrderServiceImpl implements OrderService {
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
 /*        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
-            //TODO skriv nytt exeption
+            FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
+            //TODO skriv nytt exception
         }*/
         newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
@@ -149,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void updateCanceledOrder(Order order) {
         order.setCanceled(true);
-/*        order.getCar().*/ //TODO ta bort datum från bilens isBooked
+//        order.getCar(). //TODO ta bort datum från bilens isBooked
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
         Double newCost;

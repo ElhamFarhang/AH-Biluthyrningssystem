@@ -35,6 +35,24 @@ public class Order {                //Anna
     public Order() {
     }
 
+    public Order(LocalDate dateStart, LocalDate dateEnd, boolean canceled, Customer customer) {
+        this.dateCreated = LocalDate.now();
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.canceled = canceled;
+        this.customer = customer;
+    }
+
+    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, boolean canceled, Double totalCost, Customer customer, Car car) {
+        this.dateCreated = dateCreated;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.canceled = canceled;
+        this.totalCost = totalCost;
+        this.customer = customer;
+        this.car = car;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -97,5 +115,19 @@ public class Order {                //Anna
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", canceled=" + canceled +
+                ", totalCost=" + totalCost +
+                ", customer=" + customer +
+                ", car=" + car +
+                '}';
     }
 }

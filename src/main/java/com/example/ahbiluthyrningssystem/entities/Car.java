@@ -3,6 +3,7 @@ package com.example.ahbiluthyrningssystem.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "CARS")
@@ -24,18 +25,22 @@ public class Car {
     @Column(length = 20, nullable = false)
     private String registrationNumber;
 
-    @Column(length = 10, nullable = false)
-    private boolean isBooked;
+    /* @Column(length = 10, nullable = false)
+    private boolean isBooked; */
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders;
 
     public Car() {
     }
 
-    public Car(boolean isBooked, String registrationNumber, String model, String make, Double pricePerDay) {
-        this.isBooked = isBooked;
-        this.registrationNumber = registrationNumber;
-        this.model = model;
-        this.make = make;
+    public Car(Integer id, Double pricePerDay, String make, String model, String registrationNumber, List<Order> orders) {
+        this.id = id;
         this.pricePerDay = pricePerDay;
+        this.make = make;
+        this.model = model;
+        this.registrationNumber = registrationNumber;
+        this.orders = orders;
     }
 
     public Integer getId() {
@@ -78,12 +83,12 @@ public class Car {
         this.registrationNumber = registrationNumber;
     }
 
-    public boolean isBooked() {
-        return isBooked;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setBooked(boolean booked) {
-        isBooked = booked;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class Car {
                 ", make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", registrationNumber='" + registrationNumber + '\'' +
-                ", isBooked=" + isBooked +
+                ", orders=" + orders +
                 '}';
     }
 }

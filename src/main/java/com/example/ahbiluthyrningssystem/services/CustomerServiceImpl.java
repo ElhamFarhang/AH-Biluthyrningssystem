@@ -28,13 +28,13 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
-
-    public Principal getPrincipal() {
-        return principal;
-    }
+//    public void setPrincipal(Principal principal) {
+//        this.principal = principal;
+//    }
+//
+//    public Principal getPrincipal() {
+//        return principal;
+//    }
 
     @Override
     public List<Customer> getAllCustomers() {

@@ -31,9 +31,6 @@ public class CarServiceImpl implements CarService {
              availableCars.add(car);
          }
          return availableCars;
-
-        // Simplified
-//        return cars.stream().filter(c -> !c.isBooked()).toList();
     }
 
     //  Wille

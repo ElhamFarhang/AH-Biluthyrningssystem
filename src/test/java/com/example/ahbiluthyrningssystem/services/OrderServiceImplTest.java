@@ -1,27 +1,45 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import com.example.ahbiluthyrningssystem.entities.Car;
+import com.example.ahbiluthyrningssystem.entities.Customer;
+import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.repositories.CarRepository;
+import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
+import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
- @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
 
-     private OrderServiceImpl orderService;
-     private OrderRepository orderRepository;
+    @Mock
+    private OrderRepository orderRepositoryMock;
+    @Mock
+    private CustomerRepository customerRepositoryMock;
+    @Mock
+    private CarRepository carRepositoryMock;
+    @Mock
+    private LoggerService loggerServiceMock;
+    @Mock
+    private CarServiceImpl carServiceImplMock;
+    @Mock
+    private Principal principalMock;
 
-     @Autowired
-     public void setOrderService(OrderServiceImpl orderService, OrderRepository orderRepository) {
-         this.orderService = orderService;
-         this.orderRepository = orderRepository;
-     }
+    @InjectMocks
+    private OrderServiceImpl orderService;
+
+    private Order order;
+    private Car car;
+    private Customer customer;
+
 
 
 
@@ -29,47 +47,24 @@ class OrderServiceImplTest {
     void setUp() {
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void setPrincipal() {
-    }
-
+    //addOrder----------------------------------------------------------
     @Test
     void addOrder() {
     }
 
+    //cancelOrder----------------------------------------------------------
     @Test
     void cancelOrder() {
     }
 
-    @Test
-    void getActiveOrdersCustomer() {
-         // Given
 
-        // When
-        // Then
+    //DeleteOneOrder----------------------------------------------------------
+    @Test
+    void deleteOrderThrowsIfNotExisting() {
+
     }
 
-    @Test
-    void getOldOrdersCustomer() {
-    }
 
-    @Test
-    void getActiveOrdersAdmin() {
-    }
 
-    @Test
-    void getOldOrdersAdmin() {
-    }
 
-    @Test
-    void deleteOrder() {
-    }
-
-    @Test
-    void deleteAllOrdersBeforeDate() {
-    }
 }

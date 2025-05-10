@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         }
 /*        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
             FUNCTIONALITY_LOGGER.warn("{} tried to add a car during dates it's already booked.", principal.getName());
-            //TODO skriv nytt exeption
+            //TODO skriv nytt exception
         }*/
         newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
@@ -125,6 +125,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
+    @Transactional
     @Override
     public void deleteOrder(Integer id) {        //Anna
         Optional<Order> orderToDelete = orderRepository.findById(id);
@@ -156,6 +157,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void updateCanceledOrder(Order order) {
+        //Kolla att den inloggade är den som laggt ordern
         order.setCanceled(true);
 /*        order.getCar().*/ //TODO ta bort datum från bilens isBooked
         order.setCar(null);

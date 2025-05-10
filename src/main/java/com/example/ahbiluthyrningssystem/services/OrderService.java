@@ -18,6 +18,5 @@ public interface OrderService {
     void deleteOrder(Integer id);
     void deleteAllOrdersBeforeDate(LocalDate date);;
 
-    void setPrincipal(Principal principal);
 
 }

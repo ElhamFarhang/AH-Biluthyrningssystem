@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestException extends RuntimeException {
     public BadRequestException(String field) {
-        super( String.format("%s are required", field));
+        super( String.format("%s is required", field));
     }
 }

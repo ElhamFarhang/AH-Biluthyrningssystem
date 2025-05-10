@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,15 +23,15 @@ public class AdminController {
     private CustomerService customerServiceImpl;
     private CarService carServiceImpl;
     private OrderService orderServiceImpl;
-    private StatisticsService statisticsServiceImpl;
+    private StatisticsService statisticsService;
 
     //Elham
     @Autowired
-    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsService statisticsService) {
+    public AdminController(CustomerService customerServiceImpl, CarService carService, OrderService orderService, StatisticsServiceImpl statisticsService) {
         this.customerServiceImpl = customerServiceImpl;
         this.carServiceImpl = carService;
         this.orderServiceImpl = orderService;
-        this.statisticsServiceImpl = statisticsService;
+        this.statisticsService = statisticsService;
     }
 
     //  Wille & Elham
@@ -113,6 +114,11 @@ public class AdminController {
     //  Wille & Anna
     @GetMapping("/statistics/{startDate}/{endDate}")
     public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
-           return ResponseEntity.ok(statisticsServiceImpl.getStats(startDate, endDate));
+           return ResponseEntity.ok(statisticsService.getStats(startDate, endDate));
     }
+
+
+
+
+
 }

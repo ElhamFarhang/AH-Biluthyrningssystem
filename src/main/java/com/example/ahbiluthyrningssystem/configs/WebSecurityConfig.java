@@ -24,34 +24,14 @@ public class WebSecurityConfig {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/cars").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/cars/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/v1/addorder").hasRole("USER")
                         .requestMatchers("/api/v1/cancelorder/**").hasRole("USER")
                         .requestMatchers("/api/v1/activeorders").hasRole("USER")
                         .requestMatchers("/api/v1/orders").hasRole("USER")
                         .requestMatchers("/api/v1/updateinfo/**").hasRole("USER")
-                        .requestMatchers("/api/v1/authenticated").hasRole("USER")
-                        .requestMatchers("/api/v1/admin/customers").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/customer/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/addcustomer").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/removecustomer/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/allcars").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/addcars").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/updatecar").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/removecar").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/orders").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/removeorders").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/removeorders-beforedate/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/statistics/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
-
-                        // Visa statistik såsom mest hyrda bilmärke under en viss period.
-                        //Antal gånger varje bil hyrts ut,
-                        // vanligaste hyresperiod (antal dagar)
-                        //genomsnittlig kostnad per hyresorder.
-                        //Total intäkt per bil.
-                        //Total intäkt under en viss tidsperiod.
                 )
                 .csrf(csrf-> csrf.disable());
         return http.build();

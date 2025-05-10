@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,36 +16,32 @@ import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
+    private final LoggerService LOG;
 
     @Autowired
-    public CarServiceImpl(CarRepository carRepository) {
+    public CarServiceImpl(CarRepository carRepository, LoggerService LOG) {
         this.carRepository = carRepository;
-    }
-
-    // Elham - getAvailableCars
-    @Override
-    public List<Car> getAvailableCars() {
-        List<Car> cars = carRepository.findAll();
-         List<Car> availableCars = new ArrayList<>();
-         for (Car car : cars) {
-         if (!car.isBooked())
-             availableCars.add(car);
-         }
-         return availableCars;
+        this.LOG = LOG;
     }
 
     //  Wille
+    @Override
+    public List<Car> getAvailableCars() {
+        // Simplified
+        // Change to hashmap instead of boolean
+        List<Car> cars = carRepository.findAll();
+        return cars.stream().filter(c -> !c.isBooked()).toList();
+    }
+
+    // Wille
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
-    
-    //  Wille
+
+    // Wille
     @Override
     public Car addCar(Car car) {
-        if(car.getId() != 0) {
-            car.setId(0);
-        }
         return carRepository.save(car);
     }
 
@@ -55,11 +52,11 @@ public class CarServiceImpl implements CarService {
         carRepository.delete(car);
     }
 
-    //  Wille
+    // Wille
     @Override
     public Car updateCar(Car car) {
         checkIfCarExists(car);
-        
+
         if (car.getId() == 0) {
             throw new ResourceMissingDataException("Car", "ID");
         }
@@ -67,19 +64,25 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-    //  Wille
+    // Wille
     @Override
-    public Car getCarById(int id) {
+    public Car getCarById(Integer id) {
         return carRepository.findById(id).get();
     }
 
-    //  Wille
-    private void validateCar(Car car){
-        //  TODO
+    @Override
+    public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
+        return false;
     }
 
-    //  Wille
-    private void checkIfCarExists(Car car){
+    // Wille
+    private void validateCar(Car car) {
+
+        // TODO
+    }
+
+    // Wille
+    private void checkIfCarExists(Car car) {
         if (!carRepository.existsById(car.getId())) {
             throw new ResourceNotFoundException("car", "id", car.getId());
         }

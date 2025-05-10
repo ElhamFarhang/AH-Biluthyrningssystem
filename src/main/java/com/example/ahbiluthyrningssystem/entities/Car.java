@@ -30,11 +30,12 @@ public class Car {
     public Car() {
     }
 
-    public Car(String make, String model, double pricePerDay, String registrationNumber) {
-        this.make = make;
-        this.model = model;
-        this.pricePerDay = pricePerDay;
+    public Car(boolean isBooked, String registrationNumber, String model, String make, Double pricePerDay) {
+        this.isBooked = isBooked;
         this.registrationNumber = registrationNumber;
+        this.model = model;
+        this.make = make;
+        this.pricePerDay = pricePerDay;
     }
 
     public Integer getId() {

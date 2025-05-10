@@ -23,7 +23,7 @@ public class Order {                //Anna
     @Column(length = 10, nullable = false)
     private Double totalCost = 0.0;
     @JsonIgnoreProperties("orders")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     @JsonIgnoreProperties("orders")
@@ -35,14 +35,22 @@ public class Order {                //Anna
     public Order() {
     }
 
-    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, Customer customer, Car car, boolean canceled, Double totalCost) {
+    public Order(LocalDate dateStart, LocalDate dateEnd, boolean canceled, Customer customer) {
+        this.dateCreated = LocalDate.now();
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.canceled = canceled;
+        this.customer = customer;
+    }
+
+    public Order(LocalDate dateCreated, LocalDate dateStart, LocalDate dateEnd, boolean canceled, Double totalCost, Customer customer, Car car) {
         this.dateCreated = dateCreated;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.customer = customer;
-        this.car = car;
         this.canceled = canceled;
         this.totalCost = totalCost;
+        this.customer = customer;
+        this.car = car;
     }
 
     public Integer getId() {
@@ -107,5 +115,19 @@ public class Order {                //Anna
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", canceled=" + canceled +
+                ", totalCost=" + totalCost +
+                ", customer=" + customer +
+                ", car=" + car +
+                '}';
     }
 }

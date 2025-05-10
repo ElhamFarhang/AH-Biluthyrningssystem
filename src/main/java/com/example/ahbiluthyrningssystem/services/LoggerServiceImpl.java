@@ -47,8 +47,7 @@ public class LoggerServiceImpl implements LoggerService {
     }
 
     private String getUserFullName(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String user = auth.getName();
+        String user = getLoggedInUser();
 
         if(user.equals("admin"))
             return user;

@@ -8,9 +8,6 @@ import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
-import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +21,6 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final CarServiceImpl carServiceImpl;        // Det mesta Anna
-
     private Principal principal;
     private final OrderRepository orderRepository;
     private CustomerRepository customerRepository;
@@ -153,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void updateCanceledOrder(Order order) {
         order.setCanceled(true);
-/*        order.getCar().*/ //TODO ta bort datum från bilens isBooked
+//        order.getCar(). //TODO ta bort datum från bilens isBooked
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
         Double newCost;

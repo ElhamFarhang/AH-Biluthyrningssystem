@@ -40,6 +40,12 @@ public class LoggerServiceImpl implements LoggerService {
         ERR_LOGGER.error("{} {}", getUserFullName(), msg);
 	}
 
+    @Override
+    public String getLoggedInUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
     private String getUserFullName(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String user = auth.getName();

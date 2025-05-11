@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +39,7 @@ class OrderServiceImplTest {         //Allt Anna
     private Car carMock;
     @Mock
     private Customer customerMock;
+    private Order order;
 
 
     @InjectMocks
@@ -46,13 +48,21 @@ class OrderServiceImplTest {         //Allt Anna
 
     @BeforeEach
     void setUp() {
+        order = new Order(
+                LocalDate.now().minusDays(20),
+                LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(15),
+                false,
+                55555.0,
+                customerMock,
+                carMock);
     }
 
     @Test
     void addOrderShouldSaveAndReturnOrderWhenValid() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),true, 55555.0,customerMock, carMock);
-//        when(orderRepositoryMock.save(order)).thenReturn(order);
+        order.setCanceled(true);
+        when(orderRepositoryMock.save(order)).thenReturn(order);
         when(carMock.getId()).thenReturn(1);
         when(carMock.getPricePerDay()).thenReturn(1.0);
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
@@ -63,16 +73,16 @@ class OrderServiceImplTest {         //Allt Anna
         Order savedOrder = orderService.addOrder(order);
         // Then
         assertNotNull(savedOrder);
-        assertThat(order.isCanceled()).isFalse();
-        assertEquals(order.getTotalCost(), 10.0);
-        assertEquals(order.getDateCreated(), LocalDate.now());
+        assertThat(savedOrder.isCanceled()).isFalse();
+        assertEquals(savedOrder.getTotalCost(), 10.0);
+        assertEquals(savedOrder.getDateCreated(), LocalDate.now());
         assertEquals(order, savedOrder);
+        verify(orderRepositoryMock).save(order);
     }
 
     @Test
     void addOrderShouldThrowExceptionWhenDateStartIsNull() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         order.setDateStart(null);
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
@@ -83,7 +93,6 @@ class OrderServiceImplTest {         //Allt Anna
     @Test
     void addOrderShouldThrowExceptionWhenDateEndIsNull() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         order.setDateEnd(null);
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
@@ -95,7 +104,6 @@ class OrderServiceImplTest {         //Allt Anna
     @Test
     void addOrderShouldThrowExceptionWhenGetCarIsNull() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         order.setCar(null);
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
@@ -107,7 +115,6 @@ class OrderServiceImplTest {         //Allt Anna
     @Test
     void addOrderShouldThrowExceptionWhenOptionalCarIsEmpty() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         when(carMock.getId()).thenReturn(1);
         when(carRepositoryMock.findById(1)).thenReturn(Optional.empty());
         // When & Then
@@ -119,7 +126,6 @@ class OrderServiceImplTest {         //Allt Anna
     @Test
     void addOrderShouldThrowExceptionWhenOptionalCustomerIsEmpty() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         when(carMock.getId()).thenReturn(1);
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
         when(carRepositoryMock.findById(1)).thenReturn(Optional.of(carMock));
@@ -133,7 +139,6 @@ class OrderServiceImplTest {         //Allt Anna
     @Test
     void addOrderShouldThrowExceptionWhenCarIsBooked() {
         //Given
-        Order order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customerMock, carMock);
         when(carMock.getId()).thenReturn(1);
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
         when(carRepositoryMock.findById(1)).thenReturn(Optional.of(carMock));
@@ -147,17 +152,83 @@ class OrderServiceImplTest {         //Allt Anna
 
     //cancelOrder----------------------------------------------------------
     @Test
-    void cancelOrder() {
+    void cancelOrderShouldThrowExceptionWhenOrderIdIsEmpty() {
+        //Given
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.empty());
+         // When & Then
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () ->
+                orderService.cancelOrder(1));
+        assertEquals("Order with id '1' not found", exception.getMessage());
     }
 
-
-    //DeleteOneOrder----------------------------------------------------------
     @Test
-    void deleteOrderThrowsIfNotExisting() {
+    void cancelOrderShouldThrowExceptionWhenPersonalnumberDontMatch() {
+        //Given
+        when(customerMock.getPersonalnumber()).thenReturn("2");
+        when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
+        // When & Then
+        ResourceNotAvailable exception = assertThrows(ResourceNotAvailable.class, () ->
+                orderService.cancelOrder(1));
+        assertEquals("Order not available for this user to cancel", exception.getMessage());
+    }
 
+    @Test
+    void cancelOrderShouldThrowExceptionWhenAlreadyCanceled() {
+        //Given
+        order.setCanceled(true);
+        when(customerMock.getPersonalnumber()).thenReturn("1");
+        when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
+        // When & Then
+        ResourceNotAvailable exception = assertThrows(ResourceNotAvailable.class, () ->
+                orderService.cancelOrder(1));
+        assertEquals("Cancellation not available for this already canceled order", exception.getMessage());
     }
 
 
+    @Test
+    void cancelOrderShouldThrowExceptionWhenToOld() {
+        //Given
+        order.setDateStart(LocalDate.now());
+        when(customerMock.getPersonalnumber()).thenReturn("1");
+        when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
+        // When & Then
+        ResourceNotAvailable exception = assertThrows(ResourceNotAvailable.class, () ->
+                orderService.cancelOrder(1));
+        assertEquals("Cancellation not available for this order as it's to old", exception.getMessage());
+    }
 
+    @Test
+    void orderShouldGetCanceledLessThanAWeekBefore(){
+        when(customerMock.getPersonalnumber()).thenReturn("1");
+        when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
+        when(orderRepositoryMock.save(order)).thenReturn(order);
+        // When
+        orderService.cancelOrder(1);
+        //Then
+        assertThat(order.isCanceled()).isTrue();
+        assertThat(order.getCar()).isNull();
+        assertThat(order.getTotalCost()).isEqualTo(55555.0/2);
+        //TODO assert: ta bort datum från bilens isBooked. Väntar på Theo.
+    }
+
+    @Test
+    void orderShouldGetCanceledLessMoreAWeekBefore(){
+        order.setDateStart(LocalDate.now().plusDays(8));
+        when(customerMock.getPersonalnumber()).thenReturn("1");
+        when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
+        when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
+        when(orderRepositoryMock.save(order)).thenReturn(order);
+        // When
+        orderService.cancelOrder(1);
+        //Then
+        assertThat(order.isCanceled()).isTrue();
+        assertThat(order.getCar()).isNull();
+        assertThat(order.getTotalCost()).isEqualTo(0.0);
+        //TODO assert: ta bort datum från bilens isBooked. Väntar på Theo.
+    }
 
 }

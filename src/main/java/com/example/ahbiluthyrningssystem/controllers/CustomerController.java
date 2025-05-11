@@ -62,8 +62,8 @@ public class CustomerController {
 
     //  Wille & Elham
     @PutMapping("/updateinfo")
-    public ResponseEntity<Customer> updateInfo(@RequestBody Customer customer, Principal principal) {
+    public ResponseEntity<Customer> updateInfo(@RequestBody Customer customer) {
         System.out.println("Received customer for update: " + customer);
-        return ResponseEntity.ok(customerServiceImpl.updateInfo(customer, principal));
+        return ResponseEntity.ok(customerServiceImpl.updateInfo(customer));
     }
 }

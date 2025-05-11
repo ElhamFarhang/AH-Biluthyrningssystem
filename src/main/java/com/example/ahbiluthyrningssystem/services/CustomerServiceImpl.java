@@ -103,54 +103,5 @@ public class CustomerServiceImpl implements CustomerService {
         LOG.logInfo("deleted customer with id:" + id);
         customerRepository.deleteById(id);
     }
-
-//    @Override
-//    public Customer addCustomer(Customer customer) {
-//        if (checkInfo(customer, "add"))
-//            LOG.logInfo("added a new customer");
-//        LOG.logWarn(("tried to add an invalid customer"));
-//        return customerRepository.save(customer);
-//    }
-
-//    @Override
-//    public Customer updateInfo(Customer customer) {
-//        Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(LOG.getLoggedInUser());
-//        if (optionalCustomer.isEmpty()) {
-//            LOG.logWarn("tried to update a non-existent customer");
-//            throw new ResourceNotFoundException("Customer", "Personal_number", LOG.getLoggedInUser());
-//        }
-//        Customer customerToUpdate = optionalCustomer.get();
-//        customer.setId(customerToUpdate.getId());
-//        if (checkInfo(customer,"update")) {
-//            if (!(customer.getPersonalnumber().equals(LOG.getLoggedInUser()))) {
-//                LOG.logWarn("tried to update a customer with a mismatched personal number");
-//                throw new NotAcceptableException(customer.getPersonalnumber());
-//            }
-//            customerToUpdate.setPersonalnumber(LOG.getLoggedInUser());
-//            LOG.logInfo(String.format("with id %s updated her/his information.", customer.getId()));
-//        }
-//        return customerRepository.save(customer);
-//    }
-
-
-//    private boolean checkInfo(Customer customer,String msg) {
-//        if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("FirstName and lastName");
-//        }
-//        if (customer.getPersonalnumber().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Personal_number");
-//        }
-//        if (customer.getAddress().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Address_Id");
-//        }
-//        if (customer.getEmail().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Email");
-//        }
-//        return true;
-//    }
 }
 //--------------------- Elham - class CustomerServiceImp --------------

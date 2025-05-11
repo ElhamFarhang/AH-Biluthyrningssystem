@@ -1,6 +1,5 @@
 package com.example.ahbiluthyrningssystem.controllers;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -116,9 +115,4 @@ public class AdminController {
     public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
            return ResponseEntity.ok(statisticsService.getStats(startDate, endDate));
     }
-
-
-
-
-
 }

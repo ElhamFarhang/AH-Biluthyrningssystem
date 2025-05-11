@@ -110,6 +110,3 @@ class AdminControllerOrderServiceOrderRepositoryIntegrationTest {
         assertThat(orderListBefore.size()).isEqualTo(orderListAfter.size());
     }
 }
-
-
-

@@ -17,4 +17,10 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
     @Test
     void getOrders() {
     }
+
+    @Test
+    void deleteOrderThrowsIfNotExisting() {
+
+
+    }
 }

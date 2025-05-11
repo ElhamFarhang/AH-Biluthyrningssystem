@@ -3,6 +3,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
+import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import com.example.ahbiluthyrningssystem.services.*;
@@ -19,20 +20,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 @Rollback
-class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
+class AdminControllerOrderServiceOrderRepositoryIntegrationTest {
 
-    private CustomerController customerController;
+    private AdminController adminController;
     private OrderRepository orderRepository;
     private CustomerRepository customerRepository;
     private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com");
@@ -44,9 +42,14 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
     private Order order3;
     private Order order4;
 
-
     @Mock
     private CarService carServiceMock;
+
+    @Mock
+    private CustomerService customerServiceMock;
+    @Mock
+    private StatisticsServiceImpl statisticsServiceMock;
+
 
     @InjectMocks
     private OrderService orderService;
@@ -54,13 +57,12 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
 
 
     @Autowired
-    public CustomerControllerOrderServiceOrderRepositoryIntegrationTest(OrderRepository orderRepository, OrderService orderService, CustomerRepository customerRepository, CustomerService customerServiceMock) {
+    public AdminControllerOrderServiceOrderRepositoryIntegrationTest(OrderRepository orderRepository, OrderService orderService, CustomerRepository customerRepository, CustomerService customerServiceMock) {
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.customerRepository = customerRepository;
-        this.customerController = new CustomerController(customerServiceMock, carServiceMock,orderService);
+        this.adminController = new AdminController(customerServiceMock, carServiceMock, orderService,statisticsServiceMock);
     }
-
 
     @BeforeEach
     void setUp() {
@@ -81,21 +83,33 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
         customerRepository.save(customer2);
     }
 
+
     @Test
-    void ShouldOnlyReturnActiveOrdersForLoggedInCustomer() {
+    void deleteOrder() {
+        //Given
+        List<Order> orderListBefore = orderRepository.findAll();
+        int toDelete = orderListBefore.get(2).getId();
         // When
-        ResponseEntity<List<Order>> response = customerController.getActiveOrders();
-        List<Order> orderList = response.getBody();
+        ResponseEntity<String> response = adminController.deleteOrder(toDelete);
+        List<Order> orderListAfter = orderRepository.findAll();
         // Then
         assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.OK));
-        assertThat(orderList).isNotNull();
-        assertThat(orderList.size()).isEqualTo(2);
-        assertThat(orderList.get(0)).isEqualTo(order);
-        assertThat(orderList.get(1)).isEqualTo(order4);
-        assertThat(orderList.get(0).isCanceled()).isFalse();
-        assertThat(orderList.get(0).getDateEnd()).isAfter(LocalDate.now());
-        assertThat(orderList.get(1).isCanceled()).isFalse();
-        assertThat(orderList.get(1).getDateEnd()).isAfter(LocalDate.now());
+        assertThat(orderListBefore.size()).isEqualTo(orderListAfter.size()+1);
+        for (Order order : orderListAfter) {
+            assertNotEquals(toDelete, order.getId(), "Deleted order ID should not be present");
+        }
     }
 
+
+    @Test
+    void deleteNonExistingOrderShouldThrowException() {
+        List<Order> orderListBefore = orderRepository.findAll();
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () ->
+                adminController.deleteOrder(-1));
+        List<Order> orderListAfter = orderRepository.findAll();
+        assertThat(orderListBefore.size()).isEqualTo(orderListAfter.size());
+    }
 }
+
+
+

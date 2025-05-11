@@ -119,7 +119,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             throw new ResourceNotFoundException("Order", "id", id);
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
-
     }
 
     @Override

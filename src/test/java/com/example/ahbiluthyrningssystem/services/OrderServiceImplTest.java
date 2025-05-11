@@ -144,7 +144,9 @@ class OrderServiceImplTest {         //Allt Anna
         when(carRepositoryMock.findById(1)).thenReturn(Optional.of(carMock));
         when(carServiceImplMock.isCarBooked(carMock,order.getDateStart(),order.getDateEnd()).booleanValue()).thenReturn(true);
         // When & Then
+
         ResourceNotAvailableException exception = assertThrows(ResourceNotAvailableException.class, () ->
+
                 orderService.addOrder(order));
         assertEquals("Car not available for this period", exception.getMessage());
     }
@@ -168,7 +170,9 @@ class OrderServiceImplTest {         //Allt Anna
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
         when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
         // When & Then
+
         ResourceNotAvailableException exception = assertThrows(ResourceNotAvailableException.class, () ->
+
                 orderService.cancelOrder(1));
         assertEquals("Order not available for this user to cancel", exception.getMessage());
     }
@@ -182,6 +186,7 @@ class OrderServiceImplTest {         //Allt Anna
         when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
         // When & Then
         ResourceNotAvailableException exception = assertThrows(ResourceNotAvailableException.class, () ->
+
                 orderService.cancelOrder(1));
         assertEquals("Cancellation not available for this already canceled order", exception.getMessage());
     }
@@ -196,6 +201,7 @@ class OrderServiceImplTest {         //Allt Anna
         when(orderRepositoryMock.findById(1)).thenReturn(Optional.of(order));
         // When & Then
         ResourceNotAvailableException exception = assertThrows(ResourceNotAvailableException.class, () ->
+
                 orderService.cancelOrder(1));
         assertEquals("Cancellation not available for this order as it's to old", exception.getMessage());
     }

@@ -3,14 +3,12 @@ package com.example.ahbiluthyrningssystem.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.entities.Stats;
 import com.example.ahbiluthyrningssystem.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 
@@ -116,9 +114,4 @@ public class AdminController {
     public ResponseEntity<Stats> getStatistics(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
            return ResponseEntity.ok(statisticsService.getStats(startDate, endDate));
     }
-
-
-
-
-
 }

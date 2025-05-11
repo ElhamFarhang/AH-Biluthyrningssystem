@@ -11,7 +11,6 @@ import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -75,7 +74,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         newOrder.setDateCreated(LocalDate.now());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
         if (thisCustomer.isEmpty()) {
-            throw new ResourceNotFoundException("Customer", "Personal_number", userName);
+            throw new ResourceNotFoundException("Customer", "Personalnumber", userName);
        }
         newOrder.setCustomer(thisCustomer.get());
         int days = (int) ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());

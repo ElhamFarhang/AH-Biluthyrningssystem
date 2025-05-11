@@ -40,14 +40,6 @@ public class Customer {
         this.phone_number = phone_number;
     }
 
-    public Customer(String first_name, String last_name, String personalnumber, String address, String email) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.personalnumber = personalnumber;
-        this.address = address;
-        this.email = email;
-    }
-
     public Integer getId() {
         return id;
     }

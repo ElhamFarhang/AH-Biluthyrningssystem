@@ -21,7 +21,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     private final CustomerRepository customerRepository;
-    private Principal principal;
     private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
@@ -29,25 +28,19 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public void setPrincipal(Principal principal) {
-        this.principal = principal;
-    }
-
-    public Principal getPrincipal() {
-        return principal;
-    }
-
     @Override
     public List<Customer> getAllCustomers() {
-        FUNCTIONALITY_LOGGER.info("Retrieving all customers from the database.");
+        FUNCTIONALITY_LOGGER.info("All customers are being retrieved from the database.");
         return customerRepository.findAll();
     }
 
     @Override
     public Customer getCustomerById(Integer id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        if (!customer.isPresent())
+        if (!customer.isPresent()) {
+            FUNCTIONALITY_LOGGER.warn("User tried to access a non-existent customer");
             throw new ResourceNotFoundException("Customer", "id", id);
+        }
         FUNCTIONALITY_LOGGER.info("Retrieving customer with ID: {}", id);
         return customer.get();
     }
@@ -55,22 +48,22 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer addCustomer(Customer customer) {
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("FirstName and lastName");
         }
         if (customer.getPersonalnumber().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("Personal_number");
         }
         if (customer.getAddress().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
-            throw new BadRequestException("Address_Id");
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
+            throw new BadRequestException("Address");
         }
         if (customer.getEmail().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to add an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("Email");
         }
-        FUNCTIONALITY_LOGGER.info("A new customer by the name {} has been saved", customer.getFirst_name());
+        FUNCTIONALITY_LOGGER.info("New customer '{}' has been successfully saved", customer.getFirst_name());
         return customerRepository.save(customer);
     }
 
@@ -78,21 +71,21 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer updateInfo(Customer customer, Principal principal) {
         Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(principal.getName());
         if (optionalCustomer.isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update a non-existent customer with personal number: {}", principal.getName());
+            FUNCTIONALITY_LOGGER.warn("User attempted to update a non-existent customer with personal number: {}", principal.getName());
             throw new ResourceNotFoundException("Customer", "Personal_number", principal.getName());
         }
         Customer customerToUpdate = optionalCustomer.get();
         customer.setId(customerToUpdate.getId());
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("FirstName and lastName");
         }
         if (customer.getEmail().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("Email");
         }
         if (customer.getAddress().isEmpty()) {
-            FUNCTIONALITY_LOGGER.warn("User tried to update an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("Address");
         }
         if (!(customer.getPersonalnumber().equals(principal.getName()))) {
@@ -100,67 +93,18 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotAcceptableException(customer.getPersonalnumber());
         }
         customerToUpdate.setPersonalnumber(principal.getName());
-        FUNCTIONALITY_LOGGER.info("Customer by the id:{} updated", customer.getId());
+        FUNCTIONALITY_LOGGER.info("Customer with ID:{} has been updated.", customer.getId());
         return customerRepository.save(customer);
     }
 
     @Override
     public void deleteCustomerById(Integer id) {
         if (!customerRepository.existsById(id)) {
-            FUNCTIONALITY_LOGGER.warn("User tried to delete an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to delete a customer that does not exist");
             throw new ResourceNotFoundException("Customer", "id", id);
         }
         FUNCTIONALITY_LOGGER.info("Customer by the id:{} deleted",id);
         customerRepository.deleteById(id);
     }
-
-//    @Override
-//    public Customer addCustomer(Customer customer) {
-//        if (checkInfo(customer, "add"))
-//            LOG.logInfo("added a new customer");
-//        LOG.logWarn(("tried to add an invalid customer"));
-//        return customerRepository.save(customer);
-//    }
-
-//    @Override
-//    public Customer updateInfo(Customer customer) {
-//        Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(LOG.getLoggedInUser());
-//        if (optionalCustomer.isEmpty()) {
-//            LOG.logWarn("tried to update a non-existent customer");
-//            throw new ResourceNotFoundException("Customer", "Personal_number", LOG.getLoggedInUser());
-//        }
-//        Customer customerToUpdate = optionalCustomer.get();
-//        customer.setId(customerToUpdate.getId());
-//        if (checkInfo(customer,"update")) {
-//            if (!(customer.getPersonalnumber().equals(LOG.getLoggedInUser()))) {
-//                LOG.logWarn("tried to update a customer with a mismatched personal number");
-//                throw new NotAcceptableException(customer.getPersonalnumber());
-//            }
-//            customerToUpdate.setPersonalnumber(LOG.getLoggedInUser());
-//            LOG.logInfo(String.format("with id %s updated her/his information.", customer.getId()));
-//        }
-//        return customerRepository.save(customer);
-//    }
-
-
-//    private boolean checkInfo(Customer customer,String msg) {
-//        if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("FirstName and lastName");
-//        }
-//        if (customer.getPersonalnumber().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Personal_number");
-//        }
-//        if (customer.getAddress().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Address_Id");
-//        }
-//        if (customer.getEmail().isEmpty()) {
-//            LOG.logWarn(String.format("tried to % an invalid customer", msg));
-//            throw new BadRequestException("Email");
-//        }
-//        return true;
-//    }
 }
 //--------------------- Elham - class CustomerServiceImp --------------

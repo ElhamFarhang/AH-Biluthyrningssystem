@@ -4,14 +4,13 @@ import com.example.ahbiluthyrningssystem.entities.Car;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
-import com.example.ahbiluthyrningssystem.exceptions.ResourceNotAvailable;
+import com.example.ahbiluthyrningssystem.exceptions.ResourceNotAvailableException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -68,14 +67,14 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         }
         if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
             LOG.logWarn(String.format("tried to add a car during dates it's already booked."));
-            throw new ResourceNotAvailable("Car", "period");
+            throw new ResourceNotAvailableException("Car", "period");
         }
         newOrder.setCar(optionalCar.get());
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
         if (thisCustomer.isEmpty()) {
-            throw new ResourceNotFoundException("Customer", "Personal_number", userName);
+            throw new ResourceNotFoundException("Customer", "Personalnumber", userName);
        }
         newOrder.setCustomer(thisCustomer.get());
         int days = (int) ChronoUnit.DAYS.between(newOrder.getDateStart(), newOrder.getDateEnd());
@@ -120,7 +119,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             throw new ResourceNotFoundException("Order", "id", id);
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
-
     }
 
     @Override
@@ -144,13 +142,26 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
 
     private void updateCanceledOrder(Order order) {
         if (!order.getCustomer().getPersonalnumber().equals(LOG.getLoggedInUser())) {
-            throw new ResourceNotAvailable("Order", "user to cancel");
+            throw new ResourceNotAvailableException("Order", "user to cancel");
+        }
+        if (order.isCanceled()){
+            throw new ResourceNotAvailableException("Cancellation", "already canceled order");
+        }
+        if (order.getDateStart().isBefore(LocalDate.now().plusDays((1)))) {
+            throw new ResourceNotAvailableException("Cancellation", "order as it's to old");
+        }
+        if (order.isCanceled()){
+            throw new ResourceNotAvailableException("Cancellation", "already canceled order");
+        }
+        if (order.getDateStart().isBefore(LocalDate.now().plusDays((1)))) {
+            throw new ResourceNotAvailableException("Cancellation", "order as it's to old");
         }
         order.setCanceled(true);
-//        order.getCar(). //TODO ta bort datum från bilens isBooked
+//      order.getCar(). //TODO ta bort datum från bilens isBooked. Väntar på Theo.
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
         Double newCost;
+        System.out.println(daysBeforeStart);
         if (daysBeforeStart <= 7)
             newCost = order.getTotalCost()*0.5;
         else

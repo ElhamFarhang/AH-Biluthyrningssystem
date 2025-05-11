@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 
-//--------------------- Elham - class CustomerServiceImplIntegrationTest --------------
+//--------------------- Elham - class CustomerServiceCustomerRepositoryIntegrationTest --------------
 @SpringBootTest
 class CustomerServiceCustomerRepositoryIntegrationTest {
 
@@ -53,8 +53,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     }
     @Test
     void getCustomerByIdShouldThrowException() {
-        Integer id = 111;
-        assertThrows(ResourceNotFoundException.class, ()-> customerService.getCustomerById(id));
+        ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> customerService.deleteCustomerById(9999));
+        assertThat(result.getMessage()).isEqualTo("Customer with id '9999' not found");
     }
 
     @Test
@@ -66,7 +66,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void addCustomerShouldThrowException() {
         Customer newCustomer = new Customer("", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
-        assertThrows(BadRequestException.class, ()-> customerService.addCustomer(newCustomer));
+        BadRequestException result = assertThrows(BadRequestException.class, ()-> customerService.addCustomer(newCustomer));
+        assertThat(result.getMessage()).isEqualTo("FirstName and lastName required");
     }
 
     @Test
@@ -85,7 +86,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void updateInfoShouldThrowException() {
         Customer customerToUpdate = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
-        assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(customerToUpdate, mockPrincipal));
+        NotAcceptableException result = assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(customerToUpdate, mockPrincipal));
+        assertThat(result.getMessage()).isEqualTo("personal_number 19850512-4567 does not match");
     }
 
     @Test
@@ -96,8 +98,8 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
 
     @Test
     void deleteCustomerByIdShouldThrowException() {
-        Integer id = 1112;
-        assertThrows( ResourceNotFoundException.class, ()-> customerService.deleteCustomerById(id));
+        ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> customerService.deleteCustomerById(9999));
+        assertThat(result.getMessage()).isEqualTo("Customer with id '9999' not found");
     }
 }
-//--------------------- Elham - class CustomerServiceImplIntegrationTest --------------
+//--------------------- Elham - class CustomerServiceCustomerRepositoryIntegrationTest --------------

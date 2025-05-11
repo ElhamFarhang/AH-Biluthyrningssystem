@@ -75,7 +75,7 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void addCustomerShouldReturnException() {
         BadRequestException result = assertThrows(BadRequestException.class, () -> adminController.addCustomer(invalidCustomer));
-        assertThat(result.getMessage()).isEqualTo("FirstName and lastName are required");
+        assertThat(result.getMessage()).isEqualTo("FirstName and lastName required");
     }
 
     // Elham
@@ -94,7 +94,6 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThrows( ResourceNotFoundException.class, ()-> adminController.deleteCustomerById(id));
         ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.deleteCustomerById(id));
         assertThat(result.getMessage()).isEqualTo("Customer with id '1112' not found");
-
     }
 }
 

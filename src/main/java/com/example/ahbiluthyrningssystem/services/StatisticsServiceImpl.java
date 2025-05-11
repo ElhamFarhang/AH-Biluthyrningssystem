@@ -72,7 +72,7 @@ public class StatisticsServiceImpl implements StatisticsService {
   }
 
 
-    //Elham
+    // Elham - mostCommonRentalPeriodInDays
     public int mostCommonRentalPeriodInDays() {
         int numberOfDays = 0;
         Map<Integer, Integer> frequencyMap = new HashMap<>();
@@ -95,7 +95,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return mostCommonRentalPeriod;
     }
 
-    //Elham
+    // Elham - calculateAverageOrderCost
     public double calculateAverageOrderCost() {
         List<Order> allOrders = orderRepo.findAll();
         double sum = 0;

@@ -21,8 +21,8 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     private final CarServiceImpl carServiceImpl;
     private final OrderRepository orderRepository;
-    private CustomerRepository customerRepository;
-    private CarRepository carRepository;
+    private final CustomerRepository customerRepository;
+    private final CarRepository carRepository;
     private final LoggerService LOG;
     private String userName;
 
@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     @Override
     public void deleteOrder(Integer id) {        //Anna
         Optional<Order> orderToDelete = orderRepository.findById(id);
-        if (!orderToDelete.isPresent())
+        if (orderToDelete.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
@@ -131,7 +131,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     @Override
     public void cancelOrder(Integer id) {
         Optional<Order> orderToCancel = orderRepository.findById(id);
-        if (!orderToCancel.isPresent())
+        if (orderToCancel.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
         else {
             Order order = orderToCancel.get();

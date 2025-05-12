@@ -2,7 +2,6 @@ package com.example.ahbiluthyrningssystem.services;
 
 import com.example.ahbiluthyrningssystem.entities.Order;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,7 +15,5 @@ public interface OrderService {
     List<Order> getActiveOrdersAdmin();
     List<Order> getOldOrdersAdmin();
     void deleteOrder(Integer id);
-    void deleteAllOrdersBeforeDate(LocalDate date);;
-
-
+    void deleteAllOrdersBeforeDate(LocalDate date);
 }

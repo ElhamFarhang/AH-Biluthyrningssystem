@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 class AdminControllerOrderServiceOrderRepositoryIntegrationTest {
 
-    private AdminController adminController;
-    private OrderRepository orderRepository;
-    private CustomerRepository customerRepository;
-    private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com",null);
-    private Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com",null);
-    private Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
-    private Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
+    private final AdminController adminController;
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
+    private final Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com",null);
+    private final Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com",null);
+    private final Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
+    private final Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
     private Order order;
     private Order order2;
     private Order order3;

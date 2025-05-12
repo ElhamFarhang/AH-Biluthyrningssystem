@@ -150,12 +150,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         if (order.getDateStart().isBefore(LocalDate.now().plusDays((1)))) {
             throw new ResourceNotAvailableException("Cancellation", "order as it's to old");
         }
-        if (order.isCanceled()){
-            throw new ResourceNotAvailableException("Cancellation", "already canceled order");
-        }
-        if (order.getDateStart().isBefore(LocalDate.now().plusDays((1)))) {
-            throw new ResourceNotAvailableException("Cancellation", "order as it's to old");
-        }
         order.setCanceled(true);
 //      order.getCar(). //TODO ta bort datum från bilens isBooked. Väntar på Theo.
         order.setCar(null);

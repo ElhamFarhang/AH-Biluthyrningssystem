@@ -108,7 +108,7 @@ class CustomerServiceImplEnhetsTest {
         testCustomer.setAddress("Stockholm");
         when(mockCustomerRepository.save(testCustomer)).thenReturn(testCustomer);
         when(mockCustomerRepository.findByPersonalnumber("19850512-1230")).thenReturn(Optional.of(testCustomer));
-        Customer customerToUpdate = mockCustomerService.updateInfo(testCustomer);
+        Customer customerToUpdate = mockCustomerService.updateInfo(testCustomer,mockPrincipal);
         assertThat(customerToUpdate).isNotNull();
         assertThat(customerToUpdate.getPersonalnumber()).isEqualTo(testCustomer.getPersonalnumber());
         assertThat(customerToUpdate.getId()).isEqualTo(testCustomer.getId());
@@ -123,7 +123,7 @@ class CustomerServiceImplEnhetsTest {
     void updateInfoShouldThrowNotAcceptableExceptionWhenPersonalNumberDoesNotMatch() {
         Customer customerToUpdate = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
         when(mockCustomerRepository.findByPersonalnumber("19850512-1230")).thenReturn(Optional.of(testCustomer));
-        NotAcceptableException result = assertThrows( NotAcceptableException.class, ()-> mockCustomerService.updateInfo(customerToUpdate));
+        NotAcceptableException result = assertThrows( NotAcceptableException.class, ()-> mockCustomerService.updateInfo(customerToUpdate,mockPrincipal));
         assertThat(result.getMessage()).isEqualTo("personal_number 19850512-4567 does not match");
     }
 

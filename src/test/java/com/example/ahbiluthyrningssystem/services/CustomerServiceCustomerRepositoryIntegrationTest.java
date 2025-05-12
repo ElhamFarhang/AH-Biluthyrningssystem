@@ -76,7 +76,7 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
         customer.setFirst_name("Sa");
         customer.setLast_name("Åh");
         customer.setAddress("Stockholm");
-        Customer customerToUpdate = customerService.updateInfo(customer);
+        Customer customerToUpdate = customerService.updateInfo(customer,mockPrincipal);
         assertThat(customerToUpdate.getPersonalnumber()).isEqualTo(savedCustomer.getPersonalnumber());
         assertThat(customerToUpdate.getFirst_name()).isEqualTo(savedCustomer.getFirst_name());
         assertThat(customerToUpdate.getLast_name()).isEqualTo(savedCustomer.getLast_name());
@@ -86,7 +86,7 @@ class CustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void updateInfoShouldThrowException() {
         Customer customerToUpdate = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
-        NotAcceptableException result = assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(customerToUpdate));
+        NotAcceptableException result = assertThrows( NotAcceptableException.class, ()-> customerService.updateInfo(customerToUpdate,mockPrincipal));
         assertThat(result.getMessage()).isEqualTo("personal_number 19850512-4567 does not match");
     }
 

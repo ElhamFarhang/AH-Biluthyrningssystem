@@ -9,6 +9,7 @@ import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CarRepository;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -65,7 +66,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             LOG.logWarn(String.format("tried to add a non-existing car with id %s to the order.", newOrder.getCar().getId()));
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
-        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
+        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){  //Tills Theo gjort klart isCarBooked kommer false alltid att returneras
             LOG.logWarn(String.format("tried to add a car during dates it's already booked."));
             throw new ResourceNotAvailableException("Car", "period");
         }
@@ -112,6 +113,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         return orderRepository.findByCanceledTrueOrDateEndBefore(today);
     }
 
+    @Transactional
     @Override
     public void deleteOrder(Integer id) {        //Anna
         Optional<Order> orderToDelete = orderRepository.findById(id);
@@ -121,6 +123,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         LOG.logInfo("deleted order with id " + id);
     }
 
+    @Transactional
     @Override
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
         orderRepository.deleteByDateEndBefore(date);

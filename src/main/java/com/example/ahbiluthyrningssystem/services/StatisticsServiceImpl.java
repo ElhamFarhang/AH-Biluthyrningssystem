@@ -22,11 +22,13 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final OrderRepository orderRepo;
     private final CarRepository carRepo;
+    private final LoggerService LOG;
 
     @Autowired
-    public StatisticsServiceImpl(OrderRepository orderRepo, CarRepository carRepo){
+    public StatisticsServiceImpl(LoggerService LOG,OrderRepository orderRepo, CarRepository carRepo){
         this.carRepo = carRepo;
         this.orderRepo = orderRepo;
+        this.LOG = LOG;
     }
 
     public Stats getStats(LocalDate start, LocalDate End) {
@@ -37,6 +39,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         stats.setAverageOrderCost(calculateAverageOrderCost());
         stats.setTotalIncomeEveryCar(totalIncomeEveryCar());
         stats.setTotalIncomePeriod(totalIncomePeriod(start, End));
+        LOG.logInfo("retrieved statistics");
         return stats;
     }
 

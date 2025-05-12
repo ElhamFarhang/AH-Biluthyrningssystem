@@ -108,5 +108,6 @@ class AdminControllerOrderServiceOrderRepositoryIntegrationTest {
                 adminController.deleteOrder(-1));
         List<Order> orderListAfter = orderRepository.findAll();
         assertThat(orderListBefore.size()).isEqualTo(orderListAfter.size());
+        assertThat(exception.getMessage()).isEqualTo("Order with id '-1' not found");
     }
 }

@@ -47,7 +47,7 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
     // Elham
     @Test
     void updateInfoShouldReturnCustomer() {
-        ResponseEntity<Customer> response = customerController.updateInfo(testCustomer, mockPrincipal);
+        ResponseEntity<Customer> response = customerController.updateInfo(testCustomer);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -55,9 +55,9 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
     @Test
     void updateInfoShouldThrowException() {
         invalidCustomer = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
-        assertThrows( NotAcceptableException.class, ()-> customerController.updateInfo(invalidCustomer, mockPrincipal));
+        assertThrows( NotAcceptableException.class, ()-> customerController.updateInfo(invalidCustomer));
 
-        NotAcceptableException result = assertThrows(NotAcceptableException.class, () -> customerController.updateInfo(invalidCustomer, mockPrincipal));
+        NotAcceptableException result = assertThrows(NotAcceptableException.class, () -> customerController.updateInfo(invalidCustomer));
         assertThat(result.getMessage()).isEqualTo("personal_number 19850512-4567 does not match");
 
     }

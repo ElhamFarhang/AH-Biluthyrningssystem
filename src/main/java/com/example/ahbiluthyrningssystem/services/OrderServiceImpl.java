@@ -155,7 +155,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
         Double newCost;
-        System.out.println(daysBeforeStart);
         if (daysBeforeStart <= 7)
             newCost = order.getTotalCost()*0.5;
         else

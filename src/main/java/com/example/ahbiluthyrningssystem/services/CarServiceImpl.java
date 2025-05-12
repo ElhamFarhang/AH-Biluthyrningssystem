@@ -24,7 +24,7 @@ public class CarServiceImpl implements CarService {
         this.LOG = LOG;
     }
 
-    //  Wille
+    //  Theo
     @Override
     public List<Car> getAvailableCars() {
         // Simplified
@@ -70,14 +70,14 @@ public class CarServiceImpl implements CarService {
         return carRepository.findById(id).get();
     }
 
-    @Override
+
+    @Override //Theo
     public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
         return false;
     }
 
     // Wille
     private void validateCar(Car car) {
-
         // TODO
     }
 

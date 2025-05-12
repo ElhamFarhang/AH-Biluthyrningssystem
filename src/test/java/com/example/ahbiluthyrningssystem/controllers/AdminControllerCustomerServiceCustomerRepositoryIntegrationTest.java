@@ -36,7 +36,7 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
     // Elham
     @BeforeEach
     void beforeEach() {
-        testCustomer = new Customer("Sara", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
+        testCustomer = new Customer("Sara", "Åhlen", "19850912-1678", "Skåne", "Sara@mail.com", "0728645678");
         invalidCustomer = new Customer("", "", "19850512-1984", "Skåne", "Alice@mail.com", "0728645678");
     }
 

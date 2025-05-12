@@ -33,8 +33,8 @@ class AdminControllerOrderServiceOrderRepositoryIntegrationTest {
     private AdminController adminController;
     private OrderRepository orderRepository;
     private CustomerRepository customerRepository;
-    private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com");
-    private Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com");
+    private Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com","");
+    private Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com","");
     private Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
     private Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
     private Order order;

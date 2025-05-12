@@ -5,9 +5,12 @@ import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.NotAcceptableException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,18 +19,18 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+
     private final CustomerRepository customerRepository;
-    private final LoggerService LOG;
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, LoggerService LOG) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.LOG = LOG;
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-        LOG.logInfo("retrieved all customers from the database.");
+        FUNCTIONALITY_LOGGER.info("All customers are being retrieved from the database.");
         return customerRepository.findAll();
     }
 
@@ -35,72 +38,72 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerById(Integer id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {
-            LOG.logWarn("tried to retrieve a non-existent customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to access a non-existent customer");
             throw new ResourceNotFoundException("Customer", "id", id);
         }
-        LOG.logInfo("retrieved a customer with id:" + id);
+        FUNCTIONALITY_LOGGER.info("Retrieving customer with ID: {}", id);
         return customer.get();
     }
 
     @Override
     public Customer addCustomer(Customer customer) {
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-            LOG.logWarn(("tried to add an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("FirstName and lastName");
         }
         if (customer.getPersonalnumber().isEmpty()) {
-            LOG.logWarn(("tried to add an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("Personal_number");
         }
         if (customer.getAddress().isEmpty()) {
-            LOG.logWarn(("tried to add an invalid customer"));
-            throw new BadRequestException("Address_Id");
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
+            throw new BadRequestException("Address");
         }
         if (customer.getEmail().isEmpty()) {
-            LOG.logWarn(("tried to add an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to add a customer with missing or invalid fields");
             throw new BadRequestException("Email");
         }
-        LOG.logInfo("added a new customer");
+        FUNCTIONALITY_LOGGER.info("New customer '{}' has been successfully saved", customer.getFirst_name());
         return customerRepository.save(customer);
     }
 
     @Override
-    public Customer updateInfo(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(LOG.getLoggedInUser());
+    public Customer updateInfo(Customer customer, Principal principal) {
+        Optional<Customer> optionalCustomer = customerRepository.findByPersonalnumber(principal.getName());
         if (optionalCustomer.isEmpty()) {
-            LOG.logWarn("tried to update a non-existent customer");
-            throw new ResourceNotFoundException("Customer", "Personal_number", LOG.getLoggedInUser());
+            FUNCTIONALITY_LOGGER.warn("User attempted to update a non-existent customer with personal number: {}", principal.getName());
+            throw new ResourceNotFoundException("Customer", "Personal_number", principal.getName());
         }
         Customer customerToUpdate = optionalCustomer.get();
         customer.setId(customerToUpdate.getId());
         if (customer.getFirst_name().isEmpty() || customer.getLast_name().isEmpty()) {
-            LOG.logWarn(("tried to update an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("FirstName and lastName");
         }
         if (customer.getEmail().isEmpty()) {
-            LOG.logWarn(("tried to update an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("Email");
         }
         if (customer.getAddress().isEmpty()) {
-            LOG.logWarn(("tried to update an invalid customer"));
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with invalid data");
             throw new BadRequestException("Address");
         }
-        if (!(customer.getPersonalnumber().equals(LOG.getLoggedInUser()))) {
-            LOG.logWarn("tried to update a customer with a mismatched personal number");
+        if (!(customer.getPersonalnumber().equals(principal.getName()))) {
+            FUNCTIONALITY_LOGGER.warn("User tried to update a customer with a mismatched personal number.");
             throw new NotAcceptableException(customer.getPersonalnumber());
         }
-        customerToUpdate.setPersonalnumber(LOG.getLoggedInUser());
-        LOG.logInfo(String.format("with id %s updated her/his information.", customer.getId()));
+        customerToUpdate.setPersonalnumber(principal.getName());
+        FUNCTIONALITY_LOGGER.info("Customer with ID:{} has been updated.", customer.getId());
         return customerRepository.save(customer);
     }
 
     @Override
     public void deleteCustomerById(Integer id) {
         if (!customerRepository.existsById(id)) {
-            LOG.logWarn("tried to delete an invalid customer");
+            FUNCTIONALITY_LOGGER.warn("User tried to delete a customer that does not exist");
             throw new ResourceNotFoundException("Customer", "id", id);
         }
-        LOG.logInfo("deleted customer with id:" + id);
+        FUNCTIONALITY_LOGGER.info("Customer by the id:{} deleted",id);
         customerRepository.deleteById(id);
     }
 }

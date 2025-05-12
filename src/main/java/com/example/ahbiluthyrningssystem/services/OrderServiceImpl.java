@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             LOG.logWarn(String.format("tried to add a non-existing car with id %s to the order.", newOrder.getCar().getId()));
             throw new ResourceNotFoundException("Car", "id", newOrder.getCar().getId());
         }
-        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){
+        if (carServiceImpl.isCarBooked(optionalCar.get(), newOrder.getDateStart(), newOrder.getDateEnd())){  //Tills Theo gjort klart isCarBooked kommer false alltid att returneras
             LOG.logWarn(String.format("tried to add a car during dates it's already booked."));
             throw new ResourceNotAvailableException("Car", "period");
         }

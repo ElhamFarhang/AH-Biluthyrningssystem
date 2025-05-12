@@ -137,7 +137,7 @@ class OrderServiceImplTest {         //Allt Anna
     }
 
     @Test
-    void addOrderShouldThrowExceptionWhenCarIsBooked() {
+    void addOrderShouldThrowExceptionWhenCarIsBooked() {  //Tills Theo gjort klart isCarBooked kommer bilen inte att kunna vara bokad.
         //Given
         when(carMock.getId()).thenReturn(1);
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");

@@ -87,7 +87,7 @@ class OrderServiceImplTest {         //Allt Anna
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
                 orderService.addOrder(order));
-        assertEquals("Start date are required", exception.getMessage());
+        assertEquals("Start date required", exception.getMessage());
     }
 
     @Test
@@ -97,7 +97,7 @@ class OrderServiceImplTest {         //Allt Anna
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
                 orderService.addOrder(order));
-        assertEquals("End date are required", exception.getMessage());
+        assertEquals("End date required", exception.getMessage());
     }
 
 
@@ -108,7 +108,7 @@ class OrderServiceImplTest {         //Allt Anna
         // When & Then
         BadRequestException exception = assertThrows(BadRequestException.class, () ->
                 orderService.addOrder(order));
-        assertEquals("Car are required", exception.getMessage());
+        assertEquals("Car required", exception.getMessage());
     }
 
 
@@ -222,7 +222,7 @@ class OrderServiceImplTest {         //Allt Anna
     }
 
     @Test
-    void orderShouldGetCanceledLessMoreAWeekBefore(){
+    void orderShouldGetCanceledMoreAWeekBefore(){
         order.setDateStart(LocalDate.now().plusDays(8));
         when(customerMock.getPersonalnumber()).thenReturn("1");
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");

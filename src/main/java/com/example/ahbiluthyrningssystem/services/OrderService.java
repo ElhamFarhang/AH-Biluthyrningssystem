@@ -5,7 +5,7 @@ import com.example.ahbiluthyrningssystem.entities.Order;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface OrderService {
+public interface OrderService {         //Anna
 
 
     Order addOrder(Order order);

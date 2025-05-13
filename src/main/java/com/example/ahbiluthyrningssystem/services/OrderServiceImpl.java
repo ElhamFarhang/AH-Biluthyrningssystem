@@ -71,6 +71,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             throw new ResourceNotAvailableException("Car", "period");
         }
         newOrder.setCar(optionalCar.get());
+        //newOrder.getCar().isBooked() TODO lägg in datumen som bokade i bilen. Hur?
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);
@@ -119,6 +120,8 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         Optional<Order> orderToDelete = orderRepository.findById(id);
         if (orderToDelete.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
+        orderToDelete.get().setCar(null);
+        orderToDelete.get().setCustomer(null);
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
     }
@@ -126,6 +129,11 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     @Transactional
     @Override
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
+        List<Order> ordersToDelete = orderRepository.findByDateEndBefore(date);
+        for (Order order : ordersToDelete) {
+            order.setCustomer(null);
+            order.setCar(null);
+        }
         orderRepository.deleteByDateEndBefore(date);
         LOG.logInfo("deleted orders before " + date);
     }
@@ -143,7 +151,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         }
     }
 
-    private void updateCanceledOrder(Order order) {
+    private void updateCanceledOrder(Order order) {     //Anna
         if (!order.getCustomer().getPersonalnumber().equals(LOG.getLoggedInUser())) {
             throw new ResourceNotAvailableException("Order", "user to cancel");
         }

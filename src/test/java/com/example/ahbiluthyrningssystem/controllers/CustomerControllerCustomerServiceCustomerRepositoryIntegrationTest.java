@@ -39,21 +39,21 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
     // Elham
     @BeforeEach
     void beforeEach() {
-        testCustomer = new Customer("Sara", "Åhlen", "19850512-1230", "Skåne", "Sara@mail.com", "0728645678");
+        testCustomer = new Customer("Sara", "Åhlen", "19860606-1206", "Skåne", "Sara@mail.com", "0728645678");
         adminController.addCustomer(testCustomer);
         mockPrincipal = ()->testCustomer.getPersonalnumber();
     }
 
     // Elham
     @Test
-    void updateInfoShouldReturnCustomer() {
+    void updateInfoShouldReturnReturnStatusCode200AndCustomer() {
         ResponseEntity<Customer> response = customerController.updateInfo(testCustomer,mockPrincipal);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     // Elham
     @Test
-    void updateInfoShouldThrowException() {
+    void updateInfoShouldThrowReturnStatusCode406NotAcceptableException() {
         invalidCustomer = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
         assertThrows( NotAcceptableException.class, ()-> customerController.updateInfo(invalidCustomer,mockPrincipal));
 

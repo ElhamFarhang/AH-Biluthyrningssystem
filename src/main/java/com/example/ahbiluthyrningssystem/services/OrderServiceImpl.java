@@ -121,7 +121,9 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         if (orderToDelete.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
         orderToDelete.get().setCar(null);
-        orderToDelete.get().setCustomer(null);
+        //Jag vet inte hur jag ska bryta associationen med customer.
+        // Jag kan inte göra den null och har vi inte CascadeType.ALL blir det andra fel.
+        // Jag kom på att detta var ett problem lite försent för att kunna gräva i det ordentligt.
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
     }
@@ -131,7 +133,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
         List<Order> ordersToDelete = orderRepository.findByDateEndBefore(date);
         for (Order order : ordersToDelete) {
-            order.setCustomer(null);
             order.setCar(null);
         }
         orderRepository.deleteByDateEndBefore(date);

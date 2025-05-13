@@ -105,7 +105,7 @@ public class AdminController {
     @DeleteMapping("removeorders-beforedate/{date}")
     public ResponseEntity<String> deleteOrdersBefore(@PathVariable LocalDate date) {
         orderServiceImpl.deleteAllOrdersBeforeDate(date);
-        return ResponseEntity.ok(String.format("Orders before date: %s", date));
+        return ResponseEntity.ok(String.format("Orders before date: %s deleted", date));
     }
 
     //  Wille & Anna

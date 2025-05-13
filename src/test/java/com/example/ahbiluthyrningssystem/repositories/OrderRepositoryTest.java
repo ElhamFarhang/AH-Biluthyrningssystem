@@ -21,8 +21,8 @@ class OrderRepositoryTest {     //Allt Anna
 
     private final Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com",null);
     private final Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com",null);
-    private final Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
-    private final Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
+    //private final Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
+    //private final Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
     private Order order;
     private Order order2;
     private Order order3;
@@ -33,10 +33,10 @@ class OrderRepositoryTest {     //Allt Anna
     @Transactional
     void beforeEach() {
         orderRepository.deleteAll();
-        order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
-        order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);
-        order3 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0,customer, car2);
-        order4 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0, customer2, car);
+        //order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
+        //order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);
+        //order3 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0,customer, car2);
+        //order4 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0, customer2, car);
         orderRepository.save(order);
         orderRepository.save(order2);
         orderRepository.save(order3);

@@ -3,7 +3,9 @@ package com.example.ahbiluthyrningssystem.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.example.ahbiluthyrningssystem.entities.Order;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceMissingDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,12 @@ public class CarServiceImpl implements CarService {
     //  Theo
     @Override
     public List<Car> getAvailableCars() {
-        // Simplified
-        // Change to hashmap instead of boolean
         List<Car> cars = carRepository.findAll();
-        return cars.stream().filter(c -> !c.isBooked()).toList();
+        LocalDate today = LocalDate.now();
+
+        return cars.stream()
+                .filter(car -> !isCarBooked(car, today, today))
+                .collect(Collectors.toList());
     }
 
     // Wille
@@ -71,8 +75,31 @@ public class CarServiceImpl implements CarService {
     }
 
 
-    @Override //Theo
+    /*@Override //Theo
     public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
+       return null;
+    }*/
+
+    //Theo
+    @Override
+    public Boolean isCarBooked(Car car, LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
+            return false;
+        }
+
+        for (Order order : car.getOrders().values()) {
+            if (order.isCanceled()) {
+                continue;
+            }
+
+            LocalDate orderStart = order.getDateStart();
+            LocalDate orderEnd = order.getDateEnd();
+
+            boolean overlaps = !(endDate.isBefore(orderStart) || startDate.isAfter(orderEnd));
+            if (overlaps) {
+                return true;
+            }
+        }
         return false;
     }
 

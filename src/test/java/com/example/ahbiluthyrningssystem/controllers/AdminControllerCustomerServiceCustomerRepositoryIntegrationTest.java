@@ -4,7 +4,6 @@ import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
 import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
-import com.example.ahbiluthyrningssystem.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,12 +86,9 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
     void deleteCustomerByIdShouldStatusCode200AndRemoveCustomer() {
         adminController.addCustomer(testCustomer);
         Integer id = testCustomer.getId();
-//        adminController.deleteCustomerById(id);
         ResponseEntity<String> response = adminController.deleteCustomerById(id);
         assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
         assertThat(response.getBody()).isEqualTo("Customer with Id: " + id + " has been successfully deleted.");
-//        ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(id));
-//        assertThat(result.getMessage()).isEqualTo("Customer with id '"+id+"' not found");
     }
     // Elham
     @Test

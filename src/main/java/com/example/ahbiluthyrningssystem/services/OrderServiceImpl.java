@@ -71,6 +71,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
             throw new ResourceNotAvailableException("Car", "period");
         }
         newOrder.setCar(optionalCar.get());
+        //newOrder.getCar().isBooked() TODO lägg in datumen som bokade i bilen. Hur?
         newOrder.setCanceled(false);
         newOrder.setDateCreated(LocalDate.now());
         Optional<Customer> thisCustomer = customerRepository.findByPersonalnumber(userName);

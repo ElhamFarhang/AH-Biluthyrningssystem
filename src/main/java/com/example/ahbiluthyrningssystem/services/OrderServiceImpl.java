@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         }
     }
 
-    private void updateCanceledOrder(Order order) {
+    private void updateCanceledOrder(Order order) {     //Anna
         if (!order.getCustomer().getPersonalnumber().equals(LOG.getLoggedInUser())) {
             throw new ResourceNotAvailableException("Order", "user to cancel");
         }

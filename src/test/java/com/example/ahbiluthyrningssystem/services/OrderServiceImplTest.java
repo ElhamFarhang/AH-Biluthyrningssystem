@@ -216,7 +216,6 @@ class OrderServiceImplTest {         //Allt Anna
         orderService.cancelOrder(1);
         //Then
         assertThat(order.isCanceled()).isTrue();
-        assertThat(order.getCar()).isNull();
         assertThat(order.getTotalCost()).isEqualTo(55555.0/2);
         //TODO assert: ta bort datum från bilens isBooked. Väntar på Theo.
     }
@@ -232,7 +231,6 @@ class OrderServiceImplTest {         //Allt Anna
         orderService.cancelOrder(1);
         //Then
         assertThat(order.isCanceled()).isTrue();
-        assertThat(order.getCar()).isNull();
         assertThat(order.getTotalCost()).isEqualTo(0.0);
         //TODO assert: ta bort datum från bilens isBooked. Väntar på Theo.
     }

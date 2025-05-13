@@ -168,7 +168,6 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         }
         order.setCanceled(true);
 //      order.getCar(). //TODO ta bort datum från bilens isBooked. Väntar på Theo.
-        order.setCar(null);
         int daysBeforeStart = (int) ChronoUnit.DAYS.between(LocalDate.now(), order.getDateStart());
         Double newCost;
         if (daysBeforeStart <= 7)

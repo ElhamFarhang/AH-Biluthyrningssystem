@@ -119,6 +119,8 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         Optional<Order> orderToDelete = orderRepository.findById(id);
         if (orderToDelete.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
+        orderToDelete.get().setCar(null);
+        orderToDelete.get().setCustomer(null);
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
     }
@@ -126,6 +128,11 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     @Transactional
     @Override
     public void deleteAllOrdersBeforeDate(LocalDate date) {        //Anna
+        List<Order> ordersToDelete = orderRepository.findByDateEndBefore(date);
+        for (Order order : ordersToDelete) {
+            order.setCustomer(null);
+            order.setCar(null);
+        }
         orderRepository.deleteByDateEndBefore(date);
         LOG.logInfo("deleted orders before " + date);
     }

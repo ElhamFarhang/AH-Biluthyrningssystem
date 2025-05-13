@@ -29,21 +29,18 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
     private CustomerRepository customerRepository;
     Customer testCustomer, invalidCustomer;
 
-    // Elham
     @Autowired
     public AdminControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController,CustomerRepository customerRepository) {
         this.adminController = adminController;
         this.customerRepository = customerRepository;
     }
 
-    // Elham
     @BeforeEach
     void beforeEach() {
         testCustomer = new Customer("Sara", "Åhlen", "19850912-1678", "Skåne", "Sara@mail.com", "0728645678");
         invalidCustomer = new Customer("", "", "19850512-1984", "Skåne", "Alice@mail.com", "0728645678");
     }
 
-    // Elham
     @Test
     void getAllCustomersShouldReturnStatusCode200AndAllCustomers() {
         ResponseEntity<List<Customer>> response = adminController.getAllCustomers();
@@ -51,7 +48,6 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(response.getBody().size()).isEqualTo(customerRepository.findAll().size());
     }
 
-    // Elham
     @Test
     void getCustomerByIdShouldReturnStatusCode200AndCustomerBody() {
         adminController.addCustomer(testCustomer);
@@ -59,14 +55,12 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
     }
 
-    // Elham
     @Test
     void getCustomerShouldThrowStatusCode404NotFoundException() {
         ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(99999));
         assertThat(result.getMessage()).isEqualTo("Customer with id '99999' not found");
     }
 
-    // Elham
     @Test
     void addCustomerShouldReturnStatusCode200AndCustomerBody() {
         ResponseEntity<Customer> response =adminController.addCustomer(testCustomer);
@@ -74,14 +68,12 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(response.getBody()).isEqualTo(testCustomer);
     }
 
-    // Elham
     @Test
     void addCustomerShouldReturnStatusCode400BadRequestException() {
         BadRequestException result = assertThrows(BadRequestException.class, () -> adminController.addCustomer(invalidCustomer));
         assertThat(result.getMessage()).isEqualTo("FirstName and lastName required");
     }
 
-    // Elham
     @Test
     void deleteCustomerByIdShouldStatusCode200AndRemoveCustomer() {
         adminController.addCustomer(testCustomer);
@@ -90,7 +82,7 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
         assertThat(response.getBody()).isEqualTo("Customer with Id: " + id + " has been successfully deleted.");
     }
-    // Elham
+    
     @Test
     void deleteCustomerByIdShouldThrowStatusCode404NotFoundException() {
         Integer id = 1112;
@@ -99,4 +91,4 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(result.getMessage()).isEqualTo("Customer with id '1112' not found");
     }
 }
-
+//--------------------- Elham - class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest --------------

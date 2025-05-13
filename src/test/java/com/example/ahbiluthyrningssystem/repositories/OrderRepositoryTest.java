@@ -21,6 +21,8 @@ class OrderRepositoryTest {     //Allt Anna
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private final Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com",null);
     private final Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com",null);
@@ -37,6 +39,7 @@ class OrderRepositoryTest {     //Allt Anna
     @BeforeEach
     @Transactional
     void beforeEach() {
+        customerRepository.deleteAll();
         orderRepository.deleteAll();
         order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
         order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);

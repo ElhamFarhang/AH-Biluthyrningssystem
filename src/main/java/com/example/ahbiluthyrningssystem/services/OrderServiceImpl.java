@@ -117,13 +117,14 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
     @Transactional
     @Override
     public void deleteOrder(Integer id) {        //Anna
-        Optional<Order> orderToDelete = orderRepository.findById(id);
-        if (orderToDelete.isEmpty())
+        Optional<Order> optionalOrderToDelete = orderRepository.findById(id);
+        if (optionalOrderToDelete.isEmpty())
             throw new ResourceNotFoundException("Order", "id", id);
-        orderToDelete.get().setCar(null);
-        //Jag vet inte hur jag ska bryta associationen med customer.
-        // Jag kan inte göra den null och har vi inte CascadeType.ALL blir det andra fel.
-        // Jag kom på att detta var ett problem lite försent för att kunna gräva i det ordentligt.
+        Order orderToDelete = optionalOrderToDelete.get();
+        orderToDelete.setCar(null);
+        if (orderToDelete.getCustomer().getOrders()!=null&&orderToDelete.getCustomer().getOrders().contains(orderToDelete)) {
+            orderToDelete.getCustomer().getOrders().remove(orderToDelete);
+        }
         orderRepository.deleteById(id);
         LOG.logInfo("deleted order with id " + id);
     }
@@ -134,6 +135,9 @@ public class OrderServiceImpl implements OrderService {     // Det mesta Anna
         List<Order> ordersToDelete = orderRepository.findByDateEndBefore(date);
         for (Order order : ordersToDelete) {
             order.setCar(null);
+            if (order.getCustomer().getOrders()!=null&&order.getCustomer().getOrders().contains(order)) {
+                order.getCustomer().getOrders().remove(order);
+            }
         }
         orderRepository.deleteByDateEndBefore(date);
         LOG.logInfo("deleted orders before " + date);

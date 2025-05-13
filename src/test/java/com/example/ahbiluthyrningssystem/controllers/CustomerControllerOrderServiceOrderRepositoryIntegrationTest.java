@@ -21,7 +21,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,8 +39,10 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
     private final CustomerRepository customerRepository;
     private final Customer customer = new Customer("Ida", "Svensson", "19850101-1235", "Skåne", "Ida@mail.com",null);
     private final Customer customer2 = new Customer("Sara", "Svensson", "19850101-9999", "Skåne", "sara@mail.com",null);
-    //private final Car car = new Car(false, "reg111","9-3", "SAAB",500.0);
-    //private final Car car2 = new Car(false, "reg222","9-3", "SAAB",500.0);
+    private Map<LocalDate, Order> carOrders = new HashMap<>();
+    private Map<LocalDate, Order> carOrders2 = new HashMap<>();
+    private final Car car = new Car(500.0,"SAAB", "9-3", "reg111",carOrders);
+    private final Car car2 = new Car(500.0, "SAAB","9-3","reg222", carOrders2);
     private Order order;
     private Order order2;
     private Order order3;
@@ -69,10 +73,10 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         orderRepository.deleteAll();
         customerRepository.deleteAll();
-        //order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
-        //order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);
-        //order3 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0,customer, car2);
-        //order4 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().plusDays(2),false, 55555.0, customer, car);
+        order = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer, car);
+        order2 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(5), LocalDate.now().plusDays(5),false, 55555.0,customer2, car2);
+        order3 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().minusDays(2),true, 55555.0,customer, car2);
+        order4 = new Order(LocalDate.now().minusDays(20),LocalDate.now().minusDays(10), LocalDate.now().plusDays(2),false, 55555.0, customer, car);
         orderRepository.save(order);
         orderRepository.save(order2);
         orderRepository.save(order3);
@@ -82,7 +86,7 @@ class CustomerControllerOrderServiceOrderRepositoryIntegrationTest {
     }
 
     @Test
-    void ShouldOnlyReturnActiveOrdersForLoggedInCustomer() {
+    void getActiveOrdersShouldReturnStatusCode200AndOnlyActiveOrdersForLoggedInCustomer() {
         // When
         ResponseEntity<List<Order>> response = customerController.getActiveOrders();
         List<Order> orderList = response.getBody();

@@ -49,9 +49,9 @@ class OrderServiceImplTest {         //Allt Anna
     @BeforeEach
     void setUp() {
         order = new Order(
-                LocalDate.now().minusDays(20),
-                LocalDate.now().plusDays(5),
-                LocalDate.now().plusDays(15),
+                LocalDate.now().minusDays(20), //Created
+                LocalDate.now().plusDays(5),      //Start
+                LocalDate.now().plusDays(15),     //End
                 false,
                 55555.0,
                 customerMock,
@@ -68,13 +68,13 @@ class OrderServiceImplTest {         //Allt Anna
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
         when(carRepositoryMock.findById(1)).thenReturn(Optional.of(carMock));
         when(customerRepositoryMock.findByPersonalnumber("1")).thenReturn(Optional.of(customerMock));
-        when(carServiceImplMock.isCarBooked(carMock,order.getDateStart(),order.getDateEnd()).booleanValue()).thenReturn(false);
+        when(carServiceImplMock.isCarBooked(carMock,order.getDateStart(),order.getDateEnd())).thenReturn(false);
         // When
         Order savedOrder = orderService.addOrder(order);
         // Then
         assertNotNull(savedOrder);
         assertThat(savedOrder.isCanceled()).isFalse();
-        assertEquals(savedOrder.getTotalCost(), 10.0);
+        assertEquals(10.0, savedOrder.getTotalCost());
         assertEquals(savedOrder.getDateCreated(), LocalDate.now());
         assertEquals(order, savedOrder);
         verify(orderRepositoryMock).save(order);
@@ -142,7 +142,7 @@ class OrderServiceImplTest {         //Allt Anna
         when(carMock.getId()).thenReturn(1);
         when(loggerServiceMock.getLoggedInUser()).thenReturn("1");
         when(carRepositoryMock.findById(1)).thenReturn(Optional.of(carMock));
-        when(carServiceImplMock.isCarBooked(carMock,order.getDateStart(),order.getDateEnd()).booleanValue()).thenReturn(true);
+        when(carServiceImplMock.isCarBooked(carMock,order.getDateStart(),order.getDateEnd())).thenReturn(true);
         // When & Then
 
         ResourceNotAvailableException exception = assertThrows(ResourceNotAvailableException.class, () ->

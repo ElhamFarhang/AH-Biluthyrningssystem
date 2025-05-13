@@ -101,9 +101,7 @@ class AdminControllerOrderServiceOrderRepositoryIntegrationTest {   //Anna
         assertTrue(response.getStatusCode().isSameCodeAs(HttpStatus.OK));
         assertThat(orderListBefore.size()).isEqualTo(orderListAfter.size()+1);
         assertThat(response.getBody()).isEqualTo("Order with Id: " + toDelete + " has been successfully deleted.");
-        for (Order order : orderListAfter) {
-            assertNotEquals(toDelete, order.getId(), "Deleted order ID should not be present");
-        }
+        assertThat(orderListAfter.contains(orderListBefore.get(2))).isFalse();
     }
 
 

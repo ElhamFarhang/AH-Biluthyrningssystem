@@ -34,8 +34,7 @@ public class Car {
     public Car() {
     }
 
-    public Car(Integer id, Double pricePerDay, String make, String model, String registrationNumber, Map<LocalDate, Order> orders) {
-        this.id = id;
+    public Car(Double pricePerDay, String make, String model, String registrationNumber, Map<LocalDate, Order> orders) {
         this.pricePerDay = pricePerDay;
         this.make = make;
         this.model = model;

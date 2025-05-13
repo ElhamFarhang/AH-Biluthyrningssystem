@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 //--------------------- Elham - class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest --------------
-
 @SpringBootTest
 @Transactional
 @Rollback
@@ -29,14 +28,12 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
     Customer testCustomer, invalidCustomer;
     private Principal mockPrincipal;
 
-    // Elham
     @Autowired
     public CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController, CustomerController customerController) {
         this.adminController = adminController;
         this.customerController = customerController;
     }
 
-    // Elham
     @BeforeEach
     void beforeEach() {
         testCustomer = new Customer("Sara", "Åhlen", "19860606-1206", "Skåne", "Sara@mail.com", "0728645678");
@@ -44,14 +41,12 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
         mockPrincipal = ()->testCustomer.getPersonalnumber();
     }
 
-    // Elham
     @Test
     void updateInfoShouldReturnReturnStatusCode200AndCustomer() {
         ResponseEntity<Customer> response = customerController.updateInfo(testCustomer,mockPrincipal);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-    // Elham
     @Test
     void updateInfoShouldThrowReturnStatusCode406NotAcceptableException() {
         invalidCustomer = new Customer("Sara", "Åhlen", "19850512-4567", "Skåne", "Sara@mail.com", "0728645678");
@@ -61,3 +56,4 @@ class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest {
         assertThat(result.getMessage()).isEqualTo("personal_number 19850512-4567 does not match");
     }
 }
+//--------------------- Elham - class CustomerControllerCustomerServiceCustomerRepositoryIntegrationTest --------------

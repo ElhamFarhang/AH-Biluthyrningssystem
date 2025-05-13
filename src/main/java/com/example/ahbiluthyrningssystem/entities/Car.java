@@ -1,5 +1,6 @@
 package com.example.ahbiluthyrningssystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapKey(name = "dateStart")
+    @JsonIgnore
     private Map<LocalDate, Order> orders = new HashMap<>();
 
     public Car() {

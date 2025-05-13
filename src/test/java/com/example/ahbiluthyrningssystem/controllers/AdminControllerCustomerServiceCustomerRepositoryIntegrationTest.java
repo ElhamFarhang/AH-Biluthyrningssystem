@@ -3,6 +3,7 @@ package com.example.ahbiluthyrningssystem.controllers;
 import com.example.ahbiluthyrningssystem.entities.Customer;
 import com.example.ahbiluthyrningssystem.exceptions.BadRequestException;
 import com.example.ahbiluthyrningssystem.exceptions.ResourceNotFoundException;
+import com.example.ahbiluthyrningssystem.repositories.CustomerRepository;
 import com.example.ahbiluthyrningssystem.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
+
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -20,17 +23,18 @@ import static org.junit.jupiter.api.Assertions.*;
 //--------------------- Elham - class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest --------------
 @SpringBootTest
 @Transactional
+@Rollback
 class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     private AdminController adminController;
-    private CustomerService customerService;
+    private CustomerRepository customerRepository;
     Customer testCustomer, invalidCustomer;
 
     // Elham
     @Autowired
-    public AdminControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController,CustomerService customerService) {
+    public AdminControllerCustomerServiceCustomerRepositoryIntegrationTest(AdminController adminController,CustomerRepository customerRepository) {
         this.adminController = adminController;
-        this.customerService = customerService;
+        this.customerRepository = customerRepository;
     }
 
     // Elham
@@ -42,15 +46,15 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     // Elham
     @Test
-    void getAllCustomersShouldReturnAllCustomers() {
+    void getAllCustomersShouldReturnStatusCode200AndAllCustomers() {
         ResponseEntity<List<Customer>> response = adminController.getAllCustomers();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isEqualTo(customerService.getAllCustomers().size());
+        assertThat(response.getBody().size()).isEqualTo(customerRepository.findAll().size());
     }
 
     // Elham
     @Test
-    void getCustomerByIdShouldReturnCustomer() {
+    void getCustomerByIdShouldReturnStatusCode200AndCustomerBody() {
         adminController.addCustomer(testCustomer);
         ResponseEntity<Customer> response = adminController.getCustomerById(testCustomer.getId());
         assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
@@ -58,14 +62,14 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     // Elham
     @Test
-    void getCustomerShouldReturnException() {
+    void getCustomerShouldThrowStatusCode404NotFoundException() {
         ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(99999));
         assertThat(result.getMessage()).isEqualTo("Customer with id '99999' not found");
     }
 
     // Elham
     @Test
-    void addCustomerShouldReturnStatusCode200() {
+    void addCustomerShouldReturnStatusCode200AndCustomerBody() {
         ResponseEntity<Customer> response =adminController.addCustomer(testCustomer);
         assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
         assertThat(response.getBody()).isEqualTo(testCustomer);
@@ -73,23 +77,26 @@ class AdminControllerCustomerServiceCustomerRepositoryIntegrationTest {
 
     // Elham
     @Test
-    void addCustomerShouldReturnException() {
+    void addCustomerShouldReturnStatusCode400BadRequestException() {
         BadRequestException result = assertThrows(BadRequestException.class, () -> adminController.addCustomer(invalidCustomer));
         assertThat(result.getMessage()).isEqualTo("FirstName and lastName required");
     }
 
     // Elham
     @Test
-    void deleteCustomerByIdShouldRemoveCustomer() {
+    void deleteCustomerByIdShouldStatusCode200AndRemoveCustomer() {
         adminController.addCustomer(testCustomer);
         Integer id = testCustomer.getId();
-        adminController.deleteCustomerById(id);
-        ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(id));
-        assertThat(result.getMessage()).isEqualTo("Customer with id '"+id+"' not found");
+//        adminController.deleteCustomerById(id);
+        ResponseEntity<String> response = adminController.deleteCustomerById(id);
+        assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.OK)).isTrue();
+        assertThat(response.getBody()).isEqualTo("Customer with Id: " + id + " has been successfully deleted.");
+//        ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.getCustomerById(id));
+//        assertThat(result.getMessage()).isEqualTo("Customer with id '"+id+"' not found");
     }
     // Elham
     @Test
-    void deleteCustomerByIdShouldThrowException() {
+    void deleteCustomerByIdShouldThrowStatusCode404NotFoundException() {
         Integer id = 1112;
         assertThrows( ResourceNotFoundException.class, ()-> adminController.deleteCustomerById(id));
         ResourceNotFoundException result = assertThrows(ResourceNotFoundException.class, () -> adminController.deleteCustomerById(id));

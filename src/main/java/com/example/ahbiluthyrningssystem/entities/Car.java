@@ -1,8 +1,10 @@
 package com.example.ahbiluthyrningssystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 @Table(name = "CARS")
@@ -24,18 +26,20 @@ public class Car {
     @Column(length = 20, nullable = false)
     private String registrationNumber;
 
-    @Column(length = 10, nullable = false)
-    private boolean isBooked;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @MapKey(name = "dateStart")
+    @JsonIgnore
+    private Map<LocalDate, Order> orders = new HashMap<>();
 
     public Car() {
     }
 
-    public Car(boolean isBooked, String registrationNumber, String model, String make, Double pricePerDay) {
-        this.isBooked = isBooked;
-        this.registrationNumber = registrationNumber;
-        this.model = model;
-        this.make = make;
+    public Car(Double pricePerDay, String make, String model, String registrationNumber, Map<LocalDate, Order> orders) {
         this.pricePerDay = pricePerDay;
+        this.make = make;
+        this.model = model;
+        this.registrationNumber = registrationNumber;
+        this.orders = orders;
     }
 
     public Integer getId() {
@@ -78,12 +82,12 @@ public class Car {
         this.registrationNumber = registrationNumber;
     }
 
-    public boolean isBooked() {
-        return isBooked;
+    public Map<LocalDate, Order> getOrders() {
+        return orders;
     }
 
-    public void setBooked(boolean booked) {
-        isBooked = booked;
+    public void setOrders(Map<LocalDate, Order> orders) {
+        this.orders = orders;
     }
 
     @Override
@@ -94,7 +98,7 @@ public class Car {
                 ", make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", registrationNumber='" + registrationNumber + '\'' +
-                ", isBooked=" + isBooked +
+                ", orders=" + orders +
                 '}';
     }
 }
